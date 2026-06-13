@@ -8,6 +8,7 @@ pnpm-debug.log*
 lerna-debug.log*
 
 node_modules
+node_modules - Copy/
 dist
 dist-ssr
 .output
@@ -30,3 +31,14 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+# Lovable IDE
+.lovable/
+
+# Lock files (use bun.lock only)
+package-lock.json
+
+# Environment variables
+.env
+.env.local
+.env.production

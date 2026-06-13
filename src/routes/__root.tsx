@@ -7,10 +7,10 @@ import {
   HeadContent,
   Scripts,
 } from "@tanstack/react-router";
-import { useEffect, type ReactNode } from "react";
+import { type ReactNode } from "react";
+import { MessageCircle } from "lucide-react";
 
 import appCss from "../styles.css?url";
-import { reportLovableError } from "../lib/lovable-error-reporting";
 
 function NotFoundComponent() {
   return (
@@ -37,9 +37,6 @@ function NotFoundComponent() {
 function ErrorComponent({ error, reset }: { error: Error; reset: () => void }) {
   console.error(error);
   const router = useRouter();
-  useEffect(() => {
-    reportLovableError(error, { boundary: "tanstack_root_error_component" });
-  }, [error]);
 
   return (
     <div className="flex min-h-screen items-center justify-center bg-background px-4">
@@ -77,14 +74,19 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "Premium Designer Bags" },
-      { name: "description", content: "Premium designer bags shipped from Italy & Dubai." },
+      { title: "Premium Designer Bags — Luxury Fashion from Italy & Dubai" },
+      { name: "description", content: "Shop authentic luxury designer bags, shoes, jewelry and accessories sourced from Italy & Dubai. Louis Vuitton, Chanel, Hermès, Dior and more. Worldwide delivery." },
       { name: "author", content: "Premium Designer Bags" },
-      { property: "og:title", content: "Premium Designer Bags" },
-      { property: "og:description", content: "Premium designer bags shipped from Italy & Dubai." },
+      { name: "robots", content: "index, follow" },
+      { property: "og:site_name", content: "Premium Designer Bags" },
+      { property: "og:title", content: "Premium Designer Bags — Luxury Fashion from Italy & Dubai" },
+      { property: "og:description", content: "Shop authentic luxury designer bags, shoes, jewelry and accessories sourced from Italy & Dubai. Worldwide delivery." },
       { property: "og:type", content: "website" },
-      { name: "twitter:card", content: "summary" },
-      { name: "twitter:site", content: "@Lovable" },
+      { property: "og:url", content: "https://premiumdesignerbags.com" },
+      { property: "og:image", content: "https://premiumdesignerbags.com/og-image.jpg" },
+      { name: "twitter:card", content: "summary_large_image" },
+      { name: "twitter:title", content: "Premium Designer Bags — Luxury Fashion from Italy & Dubai" },
+      { name: "twitter:description", content: "Authentic luxury designer fashion from Italy & Dubai. WhatsApp ordering, worldwide delivery." },
     ],
     links: [
       {
@@ -124,8 +126,18 @@ function RootComponent() {
 
   return (
     <QueryClientProvider client={queryClient}>
-      {/* Required: nested routes render here. Removing <Outlet /> breaks all child routes. */}
       <Outlet />
+      <a
+        href="https://wa.me/393515439347"
+        target="_blank"
+        rel="noopener noreferrer"
+        aria-label="Chat on WhatsApp"
+        className="fixed bottom-6 right-6 z-50 flex items-center gap-2 rounded-full px-4 py-3 text-white shadow-2xl transition hover:scale-105 hover:opacity-95"
+        style={{ background: "#25D366" }}
+      >
+        <MessageCircle className="h-5 w-5" />
+        <span className="text-sm font-semibold">Order via WhatsApp</span>
+      </a>
     </QueryClientProvider>
   );
 }
