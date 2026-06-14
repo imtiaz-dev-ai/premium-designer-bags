@@ -2,7 +2,6 @@ import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useState, useEffect } from "react";
 import { ShoppingBag, MessageCircle, ChevronLeft, Star, Truck, ShieldCheck, RotateCcw, Plus, Minus, Heart } from "lucide-react";
 import { addToCart, getCartCount } from "@/lib/cart-store";
-import heroBag from "@/assets/hero-bag.jpg";
 import logoImg from "@/assets/Logo.png";
 
 export const Route = createFileRoute("/products/$id")({
@@ -35,15 +34,14 @@ function ProductPage() {
   }
 
   // Decode product info from id (base64 encoded json)
-  let product = { title: "Designer Bag", price: "$299", tag: "Luxury", imgs: [heroBag], description: "" };
+  let product = { title: "Designer Bag", price: "$299", tag: "Luxury", imgs: [""], description: "" };
   try {
     const decoded = JSON.parse(utf8Base64Decode(id));
-    // Support both single img and imgs array
     const imgs: string[] = decoded.imgs?.length
       ? decoded.imgs
       : decoded.img
       ? [decoded.img]
-      : [heroBag];
+      : [""];
     product = {
       title: decoded.title,
       price: decoded.price,
@@ -51,9 +49,7 @@ function ProductPage() {
       imgs,
       description: decoded.description ?? "",
     };
-  } catch {
-    // If decoding fails, keep fallback product
-  }
+  } catch { /* use fallback */ }
 
   function handleAddToCart() {
     if (!selectedSize) {
@@ -113,12 +109,16 @@ function ProductPage() {
         <div className="grid gap-12 lg:grid-cols-2">
           {/* Image */}
           <div className="relative overflow-hidden rounded-3xl border border-border bg-card">
-            <img
-              src={product.imgs[0]}
-              alt={product.title}
-              className="aspect-square w-full object-cover"
-              onError={(e) => { (e.target as HTMLImageElement).src = "https://placehold.co/600x600?text=No+Image"; }}
-            />
+            {product.imgs[0] ? (
+              <img
+                src={product.imgs[0]}
+                alt={product.title}
+                className="aspect-square w-full object-cover"
+                onError={(e) => { (e.target as HTMLImageElement).style.display = "none"; }}
+              />
+            ) : (
+              <div className="aspect-square w-full flex items-center justify-center bg-secondary text-muted-foreground text-sm">No Image</div>
+            )}
             <button
               onClick={() => setWishlist(!wishlist)}
               className="absolute right-4 top-4 rounded-full bg-white/90 p-2.5 shadow-md transition hover:scale-110"
