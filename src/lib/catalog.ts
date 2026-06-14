@@ -1,3 +1,180 @@
+// ── Bags Brand Images ───────────────────────────────────────────────────────────────────
+import bagBrandBottega from "@/assets/bags/brands/Bottega bag.jpeg";
+import bagBrandCeline from "@/assets/bags/brands/Celine.jpeg";
+import bagBrandChanel from "@/assets/bags/brands/Chanel.jpeg";
+import bagBrandChloe from "@/assets/bags/brands/Chloe brand .jpeg";
+import bagBrandFendi from "@/assets/bags/brands/Fendi.jpeg";
+import bagBrandGoyard from "@/assets/bags/brands/Goyard.jpeg";
+import bagBrandGucci from "@/assets/bags/brands/Gucci.jpeg";
+import bagBrandHermes from "@/assets/bags/brands/Hermes.jpeg";
+import bagBrandLv from "@/assets/bags/brands/Lv.jpeg";
+import bagBrandPrada from "@/assets/bags/brands/Prada.jpeg";
+import bagBrandValentino from "@/assets/bags/brands/Valentino.jpeg";
+import bagBrandYsl from "@/assets/bags/brands/Ysl.jpeg";
+
+// ── Shoes Brand Images ──────────────────────────────────────────────────────────────────
+import shoeBrandBottega from "@/assets/shoes/brands/Bottega Veneta.jfif";
+import shoeBrandChanel from "@/assets/shoes/brands/chanel.jpeg";
+import shoeBrandDior from "@/assets/shoes/brands/dior.jpeg";
+import shoeBrandFendi from "@/assets/shoes/brands/fendi.jfif";
+import shoeBrandGucci from "@/assets/shoes/brands/Gucci.jpeg";
+import shoeBrandHermes from "@/assets/shoes/brands/Hermes.jpeg";
+import shoeBrandLoewe from "@/assets/shoes/brands/Loewe.jfif";
+import shoeBrandLv from "@/assets/shoes/brands/LV.jpeg";
+import shoeBrandPrada from "@/assets/shoes/brands/Prada.jpeg";
+import shoeBrandValentino from "@/assets/shoes/brands/Valetino shoe.jpeg";
+
+// ── Clothes Brand Images ────────────────────────────────────────────────────────────────
+import clothBrandBurberry from "@/assets/Clothes/Brands/Burberry.jfif";
+import clothBrandChanel from "@/assets/Clothes/Brands/Channel.jpeg";
+import clothBrandDior from "@/assets/Clothes/Brands/Dior.jpeg";
+import clothBrandGucci from "@/assets/Clothes/Brands/Gucci.jpg";
+import clothBrandLoroPiana from "@/assets/Clothes/Brands/Loro Piana.jfif";
+import clothBrandPrada from "@/assets/Clothes/Brands/prada.jfif";
+import clothBrandSaintLaurent from "@/assets/Clothes/Brands/SAINT LAURENT.jpeg";
+
+// ── Hats Brand Images ──────────────────────────────────────────────────────────────────────
+import hatBrandBurberry from "@/assets/hats/brands/Burberry.jfif";
+import hatBrandChanel from "@/assets/hats/brands/Channel.jpg";
+import hatBrandFendi from "@/assets/hats/brands/Fendi.jfif";
+import hatBrandGucci from "@/assets/hats/brands/gucci.jfif";
+import hatBrandLv from "@/assets/hats/brands/LV.jpeg";
+import hatBrandPrada from "@/assets/hats/brands/Prada.jfif";
+
+// ── Jewelry Brand Images ──────────────────────────────────────────────────────────────────
+import jewelBrandChanel from "@/assets/jewelry/Brands/Channel.jfif";
+import jewelBrandGucci from "@/assets/jewelry/Brands/Gucci.jfif";
+import jewelBrandHermes from "@/assets/jewelry/Brands/Hermes.jfif";
+import jewelBrandTiffany from "@/assets/jewelry/Brands/Tiffany & Co.jfif";
+import jewelBrandVanCleef from "@/assets/jewelry/Brands/van cleef and arpels.jpg";
+
+// ── Scarfs Brand Images ───────────────────────────────────────────────────────────────────
+import scarfBrandBurberry from "@/assets/Scarfs/Brands/Burberry.jpg";
+import scarfBrandChanel from "@/assets/Scarfs/Brands/Channel.jpg";
+import scarfBrandFendi from "@/assets/Scarfs/Brands/fendi.jpg";
+import scarfBrandGucci from "@/assets/Scarfs/Brands/Gucci.jfif";
+import scarfBrandHermes from "@/assets/Scarfs/Brands/Hermes.jfif";
+import scarfBrandLv from "@/assets/Scarfs/Brands/LV.jpeg";
+
+// ── Sunglasses Brand Images ───────────────────────────────────────────────────────────────
+import sunBrandCeline from "@/assets/sunglasses/Brands/Celine.jfif";
+import sunBrandChanel from "@/assets/sunglasses/Brands/Channel.jpeg";
+import sunBrandDior from "@/assets/sunglasses/Brands/Dior.jpg";
+import sunBrandGucci from "@/assets/sunglasses/Brands/Gucci.jfif";
+import sunBrandPrada from "@/assets/sunglasses/Brands/Prada.jpeg";
+import sunBrandSaintLaurent from "@/assets/sunglasses/Brands/Saint Laurent.jpg";
+
+// ── Belts Brand Images ──────────────────────────────────────────────────────────────────────
+import beltBrandBottega from "@/assets/belts/Brands/bottega veneta.jfif";
+import beltBrandFendi from "@/assets/belts/Brands/Fendi.jfif";
+import beltBrandGucci from "@/assets/belts/Brands/Gucci.jpg";
+import beltBrandHermes from "@/assets/belts/Brands/Hermes.jpeg";
+import beltBrandLv from "@/assets/belts/Brands/lv.jpeg";
+import beltBrandPrada from "@/assets/belts/Brands/Prada.jfif";
+
+// ── Watches Brand Images ───────────────────────────────────────────────────────────────────
+import watchBrandHermes from "@/assets/watchs/Brands/Hermes.jpg";
+import watchBrandOmega from "@/assets/watchs/Brands/Omega.jfif";
+import watchBrandPatek from "@/assets/watchs/Brands/patek philippe.jfif";
+import watchBrandRolex from "@/assets/watchs/Brands/Rolex.jpg";
+import watchBrandTagHeuer from "@/assets/watchs/Brands/Tag Heuer.jfif";
+
+// ── Belt/sun/scarf brand images used in new brand products ───────────────────────────────
+const beltBrandGucciImg = beltBrandGucci;
+const beltBrandPradaImg = beltBrandPrada;
+const beltBrandBottegaImg = beltBrandBottega;
+const beltBrandFendiImg = beltBrandFendi;
+const sunBrandGucciImg = sunBrandGucci;
+const sunBrandSaintLaurentImg = sunBrandSaintLaurent;
+const sunBrandCelineImg = sunBrandCeline;
+const scarfBrandFendiImg = scarfBrandFendi;
+const scarfBrandGucciImg = scarfBrandGucci;
+
+// ── Category Brand Images Map ───────────────────────────────────────────────────────────────
+export const CATEGORY_BRAND_IMAGES: Record<string, Record<string, string>> = {
+  bags: {
+    "Louis Vuitton": bagBrandLv,
+    "Chanel": bagBrandChanel,
+    "Hermès": bagBrandHermes,
+    "Gucci": bagBrandGucci,
+    "Prada": bagBrandPrada,
+    "Celine": bagBrandCeline,
+    "Bottega Veneta": bagBrandBottega,
+    "Goyard": bagBrandGoyard,
+    "Fendi": bagBrandFendi,
+    "Saint Laurent": bagBrandYsl,
+    "Valentino": bagBrandValentino,
+    "Chloé": bagBrandChloe,
+  },
+  shoes: {
+    "Hermès": shoeBrandHermes,
+    "Chanel": shoeBrandChanel,
+    "Louis Vuitton": shoeBrandLv,
+    "Fendi": shoeBrandFendi,
+    "Gucci": shoeBrandGucci,
+    "Dior": shoeBrandDior,
+    "Bottega Veneta": shoeBrandBottega,
+    "Loewe": shoeBrandLoewe,
+    "Prada": shoeBrandPrada,
+    "Valentino": shoeBrandValentino,
+  },
+  clothes: {
+    "Chanel": clothBrandChanel,
+    "Dior": clothBrandDior,
+    "Gucci": clothBrandGucci,
+    "Prada": clothBrandPrada,
+    "Burberry": clothBrandBurberry,
+    "Loro Piana": clothBrandLoroPiana,
+    "Saint Laurent": clothBrandSaintLaurent,
+  },
+  hats: {
+    "Louis Vuitton": hatBrandLv,
+    "Gucci": hatBrandGucci,
+    "Prada": hatBrandPrada,
+    "Burberry": hatBrandBurberry,
+    "Fendi": hatBrandFendi,
+    "Chanel": hatBrandChanel,
+  },
+  jewelry: {
+    "Chanel": jewelBrandChanel,
+    "Gucci": jewelBrandGucci,
+    "Hermès": jewelBrandHermes,
+    "Tiffany & Co": jewelBrandTiffany,
+    "Van Cleef & Arpels": jewelBrandVanCleef,
+  },
+  scarfs: {
+    "Hermès": scarfBrandHermes,
+    "Gucci": scarfBrandGucci,
+    "Louis Vuitton": scarfBrandLv,
+    "Burberry": scarfBrandBurberry,
+    "Chanel": scarfBrandChanel,
+    "Fendi": scarfBrandFendi,
+  },
+  sunglasses: {
+    "Chanel": sunBrandChanel,
+    "Dior": sunBrandDior,
+    "Gucci": sunBrandGucci,
+    "Prada": sunBrandPrada,
+    "Celine": sunBrandCeline,
+    "Saint Laurent": sunBrandSaintLaurent,
+  },
+  belts: {
+    "Louis Vuitton": beltBrandLv,
+    "Gucci": beltBrandGucci,
+    "Hermès": beltBrandHermes,
+    "Prada": beltBrandPrada,
+    "Fendi": beltBrandFendi,
+    "Bottega Veneta": beltBrandBottega,
+  },
+  watches: {
+    "Hermès": watchBrandHermes,
+    "Rolex": watchBrandRolex,
+    "Omega": watchBrandOmega,
+    "Patek Philippe": watchBrandPatek,
+    "Tag Heuer": watchBrandTagHeuer,
+  },
+};
+
 // ── Bags ──────────────────────────────────────────────────────────────────────
 import lvBag1 from "@/assets/bags/lv/1.jpeg";
 import lvBag2 from "@/assets/bags/lv/2.jpeg";
@@ -170,6 +347,20 @@ import pradaSun12 from "@/assets/sunglasses/Prada sunglasses/12.jpeg";
 import pradaSun13 from "@/assets/sunglasses/Prada sunglasses/13.jpeg";
 import pradaSun14 from "@/assets/sunglasses/Prada sunglasses/14.jpeg";
 
+// ── Clothes ───────────────────────────────────────────────────────────────────
+import chanelCloth1 from "@/assets/Clothes/Chanel/1.jpeg";
+import chanelCloth2 from "@/assets/Clothes/Chanel/2.jpeg";
+import chanelCloth3 from "@/assets/Clothes/Chanel/3.jpeg";
+import chanelCloth4 from "@/assets/Clothes/Chanel/4.jpeg";
+import diorCloth1 from "@/assets/Clothes/Dior/1.jpeg";
+import diorCloth2 from "@/assets/Clothes/Dior/2.jpeg";
+import diorCloth3 from "@/assets/Clothes/Dior/3.jpeg";
+import diorCloth4 from "@/assets/Clothes/Dior/4.jpeg";
+import diorCloth5 from "@/assets/Clothes/Dior/5.jpeg";
+import diorCloth6 from "@/assets/Clothes/Dior/6.jpeg";
+import diorCloth7 from "@/assets/Clothes/Dior/7.jpeg";
+import diorCloth8 from "@/assets/Clothes/Dior/8.jpeg";
+
 // ── Hats ──────────────────────────────────────────────────────────────────────
 import lvHat1 from "@/assets/hats/Lv hats/1.jpeg";
 import lvHat2 from "@/assets/hats/Lv hats/2.jpeg";
@@ -228,6 +419,10 @@ export const BRAND_PRODUCTS: Record<string, CatalogProduct[]> = {
     { title: "Chanel Boy Bag — Grey Lambskin", price: "$620", tag: "Chanel", img: chanelBag6 },
     { title: "Chanel 19 Bag — Black Lambskin", price: "$480", tag: "Chanel", img: chanelBagMain },
     { title: "Chanel Timeless Clutch — Pearl White", price: "$390", tag: "Chanel", img: chanelBag5 },
+    { title: "Chanel Tweed Jacket — Ivory", price: "$1,890", tag: "Chanel", img: chanelCloth1 },
+    { title: "Chanel Bouclé Blazer — Black", price: "$2,150", tag: "Chanel", img: chanelCloth2 },
+    { title: "Chanel Silk Blouse — White", price: "$980", tag: "Chanel", img: chanelCloth3 },
+    { title: "Chanel CC Logo Dress — Beige", price: "$2,490", tag: "Chanel", img: chanelCloth4 },
   ],
   "Hermès": [
     { title: "Hermès Oran Sandal — Gold Epsom Leather", price: "$389", tag: "Hermès", img: hermesShoe1 },
@@ -241,6 +436,14 @@ export const BRAND_PRODUCTS: Record<string, CatalogProduct[]> = {
     { title: "Dior J'Adior Slingback Pump — Black Mesh", price: "$319", tag: "Dior", img: diorShoe1 },
     { title: "Dior CD Mule — White Patent", price: "$289", tag: "Dior", img: diorShoe2 },
     { title: "Dior Walk'n'Dior Sneaker — White", price: "$349", tag: "Dior", img: diorShoe3 },
+    { title: "Dior Bar Jacket — Powder Pink", price: "$2,350", tag: "Dior", img: diorCloth1 },
+    { title: "Dior Oblique Dress — Silk", price: "$1,980", tag: "Dior", img: diorCloth2 },
+    { title: "Dior CD Monogram Sweater — Cream", price: "$1,290", tag: "Dior", img: diorCloth3 },
+    { title: "Dior Tailored Trouser — Black", price: "$1,150", tag: "Dior", img: diorCloth4 },
+    { title: "Dior Toile de Jouy Blouse", price: "$1,450", tag: "Dior", img: diorCloth5 },
+    { title: "Dior Floral Midi Skirt", price: "$1,680", tag: "Dior", img: diorCloth6 },
+    { title: "Dior Wool Coat — Camel", price: "$3,200", tag: "Dior", img: diorCloth7 },
+    { title: "Dior Lady Dior Silk Shirt", price: "$1,390", tag: "Dior", img: diorCloth8 },
   ],
   "Gucci": [
     { title: "Gucci Horsebit 1953 Loafer — Brown GG Canvas", price: "$289", tag: "Gucci", img: gucciBag1 },
@@ -301,20 +504,77 @@ export const BRAND_PRODUCTS: Record<string, CatalogProduct[]> = {
     { title: "Valentino Garavani Rockstud Pump — Nude", price: "$389", tag: "Valentino", img: valentinoShoe1 },
     { title: "Valentino Garavani VLogo Sandal — Black", price: "$349", tag: "Valentino", img: valentinoShoe2 },
   ],
+  "Fendi": [
+    { title: "Fendi Baguette Sandal — FF Jacquard", price: "$309", tag: "Fendi", img: shoeBrandFendi },
+    { title: "Fendi Flow Sneaker — White", price: "$349", tag: "Fendi", img: shoeBrandFendi },
+  ],
+  "Bottega Veneta": [
+    { title: "Bottega Veneta Stretch Flat Sandal — Cream", price: "$359", tag: "BV", img: shoeBrandBottega },
+    { title: "Bottega Veneta BV Tire Loafer — Black", price: "$389", tag: "BV", img: shoeBrandBottega },
+  ],
+  "Loewe": [
+    { title: "Loewe Toy Puffy Mule — Ivory Nappa", price: "$299", tag: "Loewe", img: shoeBrandLoewe },
+    { title: "Loewe Campo Sneaker — White", price: "$319", tag: "Loewe", img: shoeBrandLoewe },
+  ],
+  "Celine": [
+    { title: "Celine Triomphe Bag — Black Calfskin", price: "$689", tag: "Celine", img: bagBrandCeline },
+    { title: "Celine Classic Box Bag — Tan", price: "$750", tag: "Celine", img: bagBrandCeline },
+  ],
+  "Goyard": [
+    { title: "Goyard Saint Louis PM Tote — Natural", price: "$680", tag: "Goyard", img: bagBrandGoyard },
+    { title: "Goyard Belvedere MM Crossbody — Black", price: "$590", tag: "Goyard", img: bagBrandGoyard },
+  ],
+  "Chloé": [
+    { title: "Chloé Marcie Small Saddle Bag — Caramel", price: "$480", tag: "Chloé", img: bagBrandChloe },
+    { title: "Chloé Woody Tote — Beige", price: "$390", tag: "Chloé", img: bagBrandChloe },
+  ],
+  "Burberry": [
+    { title: "Burberry TB Monogram Trench Coat", price: "$1,890", tag: "Burberry", img: clothBrandBurberry },
+    { title: "Burberry Classic Check Scarf", price: "$380", tag: "Burberry", img: scarfBrandBurberry },
+    { title: "Burberry Monogram Cap", price: "$290", tag: "Burberry", img: hatBrandBurberry },
+  ],
+  "Loro Piana": [
+    { title: "Loro Piana Baby Cashmere Sweater — Cream", price: "$1,650", tag: "Loro Piana", img: clothBrandLoroPiana },
+    { title: "Loro Piana Cashmere Coat — Camel", price: "$3,200", tag: "Loro Piana", img: clothBrandLoroPiana },
+  ],
+  "Tiffany & Co": [
+    { title: "Tiffany T Wire Bracelet — Rose Gold", price: "$2,100", tag: "Tiffany", img: jewelBrandTiffany },
+    { title: "Tiffany Setting Solitaire Ring", price: "$4,500", tag: "Tiffany", img: jewelBrandTiffany },
+  ],
+  "Van Cleef & Arpels": [
+    { title: "Van Cleef Alhambra Necklace — Mother of Pearl", price: "$3,800", tag: "VCA", img: jewelBrandVanCleef },
+    { title: "Van Cleef Magic Alhambra Bracelet", price: "$5,200", tag: "VCA", img: jewelBrandVanCleef },
+  ],
+  "Rolex": [
+    { title: "Rolex Datejust 36 — Steel & Gold", price: "$12,500", tag: "Rolex", img: watchBrandRolex },
+    { title: "Rolex Lady-Datejust 28 — White Gold", price: "$16,000", tag: "Rolex", img: watchBrandRolex },
+  ],
+  "Omega": [
+    { title: "Omega Constellation 29mm — Steel", price: "$4,200", tag: "Omega", img: watchBrandOmega },
+    { title: "Omega De Ville Prestige — Rose Gold", price: "$6,800", tag: "Omega", img: watchBrandOmega },
+  ],
+  "Patek Philippe": [
+    { title: "Patek Philippe Calatrava 35mm — White Gold", price: "$28,000", tag: "Patek", img: watchBrandPatek },
+    { title: "Patek Philippe Aquanaut Luce", price: "$35,000", tag: "Patek", img: watchBrandPatek },
+  ],
+  "Tag Heuer": [
+    { title: "Tag Heuer Aquaracer 32mm — Steel", price: "$2,800", tag: "Tag Heuer", img: watchBrandTagHeuer },
+    { title: "Tag Heuer Carrera Lady Chronograph", price: "$4,100", tag: "Tag Heuer", img: watchBrandTagHeuer },
+  ],
 };
 
 export const CATEGORY_BRANDS: Record<string, string[]> = {
-  shoes: ["Hermès", "Chanel", "Louis Vuitton", "Gucci", "Dior", "Prada", "Valentino"],
-  jewelry: ["Cartier", "Bvlgari", "Messika"],
-  watches: ["Cartier"],
-  clothes: [],
+  bags: ["Louis Vuitton", "Chanel", "Hermès", "Gucci", "Prada", "Saint Laurent", "Celine", "Bottega Veneta", "Goyard", "Fendi", "Valentino", "Chloé"],
+  shoes: ["Hermès", "Chanel", "Louis Vuitton", "Gucci", "Dior", "Prada", "Valentino", "Fendi", "Bottega Veneta", "Loewe"],
+  jewelry: ["Cartier", "Bvlgari", "Messika", "Chanel", "Gucci", "Hermès", "Tiffany & Co", "Van Cleef & Arpels"],
+  watches: ["Cartier", "Hermès", "Rolex", "Omega", "Patek Philippe", "Tag Heuer"],
+  clothes: ["Chanel", "Dior", "Gucci", "Prada", "Burberry", "Loro Piana", "Saint Laurent"],
+  hats: ["Louis Vuitton", "Chanel", "Gucci", "Prada", "Burberry", "Fendi"],
+  scarfs: ["Louis Vuitton", "Hermès", "Chanel", "Gucci", "Burberry", "Fendi"],
+  sunglasses: ["Chanel", "Prada", "Dior", "Gucci", "Celine", "Saint Laurent"],
+  belts: ["Louis Vuitton", "Hermès", "Gucci", "Prada", "Fendi", "Bottega Veneta"],
   accessories: ["Louis Vuitton", "Gucci", "Hermès", "Prada", "Cartier"],
   collection: ["Louis Vuitton", "Chanel", "Hermès", "Gucci", "Prada", "Saint Laurent"],
-  bags: ["Louis Vuitton", "Chanel", "Saint Laurent", "Gucci"],
-  hats: ["Louis Vuitton"],
-  scarfs: ["Louis Vuitton"],
-  sunglasses: ["Chanel", "Prada"],
-  belts: ["Louis Vuitton", "Hermès"],
 };
 
 export const NAV_CATEGORIES = [
@@ -409,7 +669,20 @@ export const WATCHES: CatalogProduct[] = [
   { title: "Cartier Couple Set IV", price: "$12,900", tag: "Cartier", img: cartierWatchCouple4 },
 ];
 
-export const CLOTHES: CatalogProduct[] = [];
+export const CLOTHES: CatalogProduct[] = [
+  { title: "Chanel Tweed Jacket — Ivory", price: "$1,890", tag: "Chanel", img: chanelCloth1 },
+  { title: "Chanel Bouclé Blazer — Black", price: "$2,150", tag: "Chanel", img: chanelCloth2 },
+  { title: "Chanel Silk Blouse — White", price: "$980", tag: "Chanel", img: chanelCloth3 },
+  { title: "Chanel CC Logo Dress — Beige", price: "$2,490", tag: "Chanel", img: chanelCloth4 },
+  { title: "Dior Bar Jacket — Powder Pink", price: "$2,350", tag: "Dior", img: diorCloth1 },
+  { title: "Dior Oblique Dress — Silk", price: "$1,980", tag: "Dior", img: diorCloth2 },
+  { title: "Dior CD Monogram Sweater — Cream", price: "$1,290", tag: "Dior", img: diorCloth3 },
+  { title: "Dior Tailored Trouser — Black", price: "$1,150", tag: "Dior", img: diorCloth4 },
+  { title: "Dior Toile de Jouy Blouse", price: "$1,450", tag: "Dior", img: diorCloth5 },
+  { title: "Dior Floral Midi Skirt", price: "$1,680", tag: "Dior", img: diorCloth6 },
+  { title: "Dior Wool Coat — Camel", price: "$3,200", tag: "Dior", img: diorCloth7 },
+  { title: "Dior Lady Dior Silk Shirt", price: "$1,390", tag: "Dior", img: diorCloth8 },
+];
 
 export const HATS: CatalogProduct[] = [
   { title: "LV Monogram Bucket Hat", price: "$389", tag: "LV", img: lvHat1 },
@@ -518,6 +791,123 @@ export const CATEGORY_PAGES = [
 
 export function getCategoryBySlug(slug: string) {
   return CATEGORY_PAGES.find((page) => page.slug === slug);
+}
+
+// ── Featured brands for the home brand section ───────────────────────────────
+export const FEATURED_BRANDS = [
+  "Louis Vuitton", "Chanel", "Hermès", "Gucci", "Prada", "Saint Laurent",
+  "Celine", "Bottega Veneta", "Goyard", "Fendi", "Valentino", "Chloé",
+];
+
+export type BrandProduct = {
+  id: string;
+  brand: string;
+  category: string;
+  name: string;
+  price: string;
+  images: string[];
+  description: string;
+};
+
+function bp(brand: string, category: string, name: string, price: string, images: string[], description: string): BrandProduct {
+  return { id: `${brand}-${category}-${name}`.toLowerCase().replace(/[^a-z0-9]+/g, "-"), brand, category, name, price, images, description };
+}
+
+export const ALL_BRAND_PRODUCTS: BrandProduct[] = [
+  // ── Louis Vuitton ──
+  bp("Louis Vuitton", "Bags", "LV Neverfull MM", "$369", [lvBag1, lvBag2], "Iconic monogram canvas tote, spacious and versatile."),
+  bp("Louis Vuitton", "Bags", "LV OnTheGo PM", "$369", [lvBag3, lvBag4], "Structured tote with bold LV motif, perfect for everyday."),
+  bp("Louis Vuitton", "Bags", "LV Pochette Métis", "$349", [lvBag5, lvBag1], "Compact crossbody with vintage-inspired hardware."),
+  bp("Louis Vuitton", "Shoes", "LV Archlight Sneaker", "$349", [lvShoe1, lvShoe2], "Chunky sole sneaker with monogram canvas detail."),
+  bp("Louis Vuitton", "Shoes", "LV Stellar Mule", "$319", [lvShoe3, lvShoe4], "Slip-on mule with LV logo strap."),
+  bp("Louis Vuitton", "Belts", "LV Initiales Belt 40mm", "$480", [lvBelt1, lvBelt2], "Classic monogram canvas belt with gold-tone buckle."),
+  bp("Louis Vuitton", "Belts", "LV Pyramide Belt 40mm", "$520", [lvBelt3, lvBelt4], "Bold pyramid-stud belt in supple leather."),
+  bp("Louis Vuitton", "Accessories", "LV Monogram Silk Scarf", "$289", [lvScarf1, lvScarf2], "Luxurious silk scarf with all-over monogram print."),
+  bp("Louis Vuitton", "Accessories", "LV Monogram Bucket Hat", "$389", [lvHat1, lvHat2], "Casual bucket hat in signature monogram canvas."),
+  // ── Chanel ──
+  bp("Chanel", "Bags", "Chanel Classic Flap Medium", "$780", [chanelBag3, chanelBag1], "The iconic quilted lambskin flap bag with interlocking CC."),
+  bp("Chanel", "Bags", "Chanel 19 Large Handbag", "$289", [chanelBag1, chanelBag2], "Relaxed yet luxurious multi-chain bag in lambskin."),
+  bp("Chanel", "Bags", "Chanel Boy Bag", "$620", [chanelBag6, chanelBagMain], "Edgy structured flap with ruthenium hardware."),
+  bp("Chanel", "Shoes", "Chanel Slingback Pump", "$329", [chanelShoe1, chanelShoe2], "Timeless cap-toe pump with CC logo."),
+  bp("Chanel", "Shoes", "Chanel Cap-Toe Ballerina", "$279", [chanelShoe3, chanelShoe4], "Ballet flat with signature two-tone cap toe."),
+  bp("Chanel", "Accessories", "Chanel Round Sunglasses", "$389", [chanelSun1, chanelSun2], "Iconic CC-logo round frame sunglasses."),
+  bp("Chanel", "Accessories", "Chanel Oval Sunglasses", "$349", [chanelSun3, chanelSun4], "Elegant oval acetate frame with CC temples."),
+  // ── Hermès ──
+  bp("Hermès", "Shoes", "Hermès Oran Sandal", "$389", [hermesShoe1, hermesShoe2], "Minimalist H-strap flat sandal in Epsom leather."),
+  bp("Hermès", "Shoes", "Hermès Izmir Sandal", "$359", [hermesShoe3, hermesShoe4], "Casual leather sandal with iconic Hermès H buckle."),
+  bp("Hermès", "Belts", "Hermès Constance Belt 32mm", "$690", [hermesBelt1, hermesBelt2], "Refined belt with Constance H buckle in Epsom leather."),
+  bp("Hermès", "Belts", "Hermès H Belt 42mm", "$620", [hermesBelt3, hermesBelt4], "Bold double-tour belt with signature H buckle."),
+  bp("Hermès", "Belts", "Hermès Kelly Belt 18mm", "$720", [hermesBelt5, hermesBelt6], "Delicate belt with gold Kelly buckle, ideal for evenings."),
+  bp("Hermès", "Accessories", "Hermès Silk Carré Scarf", "$380", [scarf1, scarf2], "Hand-rolled 90cm silk twill scarf with artistic print."),
+  // ── Gucci ──
+  bp("Gucci", "Bags", "Gucci GG Marmont Bag", "$490", [gucciBag2, gucciBag1], "Quilted Chevron leather bag with Double G hardware."),
+  bp("Gucci", "Bags", "Gucci Dionysus Mini", "$560", [gucciBag3, gucciBag4], "Compact shoulder bag with tiger-head closure."),
+  bp("Gucci", "Bags", "Gucci Blondie Top Handle", "$620", [gucciBag5, gucciBag1], "Structured bag with interlocking G logo."),
+  bp("Gucci", "Shoes", "Gucci Horsebit Loafer", "$289", [gucciShoe1, gucciShoe2], "Iconic horsebit loafer in GG canvas."),
+  bp("Gucci", "Shoes", "Gucci Ace Sneaker", "$279", [gucciShoe3, gucciShoe4], "Low-top leather sneaker with embroidered motif."),
+  bp("Gucci", "Belts", "Gucci GG Canvas Belt", "$380", [beltBrandGucciImg, hermesBelt1], "Classic GG Supreme canvas belt with gold buckle."),
+  bp("Gucci", "Accessories", "Gucci GG Sunglasses", "$320", [sunBrandGucciImg, chanelSun1], "Oversized GG logo acetate sunglasses."),
+  // ── Prada ──
+  bp("Prada", "Bags", "Prada Galleria Bag", "$680", [pradaShoe1, pradaShoe2], "Structured Saffiano leather tote, a Prada icon."),
+  bp("Prada", "Shoes", "Prada Monolith Boot", "$429", [pradaShoe1, pradaShoe2], "Lug-sole leather boot with Re-Nylon panel."),
+  bp("Prada", "Shoes", "Prada Slingback Pump", "$389", [pradaShoe2, pradaShoe3], "Kitten heel pump with signature Prada plaque."),
+  bp("Prada", "Belts", "Prada Saffiano Belt", "$390", [beltBrandPradaImg, hermesBelt2], "Slim Saffiano leather belt with enamel triangle logo."),
+  bp("Prada", "Accessories", "Prada Symbole Sunglasses", "$329", [pradaSun1, pradaSun2], "Geometric acetate frame with Prada logo plaque."),
+  bp("Prada", "Accessories", "Prada Minimal Baroque Sunglasses", "$349", [pradaSun3, pradaSun4], "Bold baroque-inspired frame in gradient lens."),
+  // ── Saint Laurent ──
+  bp("Saint Laurent", "Bags", "YSL Saddle Bag", "$258", [yslBag1, yslBag2], "Smooth calfskin saddle-shape bag with YSL hardware."),
+  bp("Saint Laurent", "Bags", "YSL Lou Camera Bag", "$258", [yslBag3, yslBag4], "Quilted lambskin crossbody with YSL logo."),
+  bp("Saint Laurent", "Bags", "YSL Niki Medium", "$340", [yslBag5, yslBag1], "Crinkled vintage leather shoulder bag."),
+  bp("Saint Laurent", "Accessories", "YSL Cat Eye Sunglasses", "$310", [sunBrandSaintLaurentImg, chanelSun5], "Sleek metal cat-eye frame with SL logo."),
+  // ── Celine ──
+  bp("Celine", "Bags", "Celine Triomphe Bag", "$689", [bagBrandCeline, chanelBag1], "Structured calfskin bag with gold Triomphe clasp."),
+  bp("Celine", "Bags", "Celine Classic Box Bag", "$750", [bagBrandCeline, chanelBag2], "Timeless box bag in smooth polished calfskin."),
+  bp("Celine", "Accessories", "Celine Triomphe Sunglasses", "$380", [sunBrandCelineImg, chanelSun3], "Rectangular acetate frame with Triomphe hardware."),
+  // ── Bottega Veneta ──
+  bp("Bottega Veneta", "Bags", "BV Cassette Bag", "$560", [bagBrandBottega, chanelBag3], "Signature intrecciato woven leather crossbody."),
+  bp("Bottega Veneta", "Shoes", "BV Stretch Flat Sandal", "$359", [shoeBrandBottega, pradaShoe1], "Stretch lambskin flat sandal with BV weave."),
+  bp("Bottega Veneta", "Belts", "BV Intrecciato Belt", "$420", [beltBrandBottegaImg, hermesBelt3], "Woven Intrecciato leather belt in smooth calfskin."),
+  // ── Goyard ──
+  bp("Goyard", "Bags", "Goyard Saint Louis PM", "$680", [bagBrandGoyard, chanelBag1], "Classic open tote in signature Goyardine canvas."),
+  bp("Goyard", "Bags", "Goyard Belvedere Crossbody", "$590", [bagBrandGoyard, chanelBag2], "Structured crossbody bag in Goyardine canvas."),
+  // ── Fendi ──
+  bp("Fendi", "Bags", "Fendi Baguette Bag", "$480", [bagBrandFendi, chanelBag3], "The iconic shoulder bag that defined 90s fashion."),
+  bp("Fendi", "Shoes", "Fendi Baguette Sandal", "$309", [shoeBrandFendi, pradaShoe2], "FF Jacquard strap sandal inspired by the Baguette bag."),
+  bp("Fendi", "Belts", "Fendi FF Belt", "$360", [beltBrandFendiImg, hermesBelt4], "Classic FF monogram belt with reversible strap."),
+  bp("Fendi", "Accessories", "Fendi FF Scarf", "$290", [scarfBrandFendiImg, lvScarf1], "Silk scarf with all-over FF logo print."),
+  // ── Valentino ──
+  bp("Valentino", "Bags", "Valentino Rockstud Bag", "$580", [bagBrandValentino, chanelBag1], "Signature rockstud-embellished leather tote."),
+  bp("Valentino", "Shoes", "Valentino Rockstud Pump", "$389", [valentinoShoe1, valentinoShoe2], "Stiletto pump with signature pyramid rockstud trim."),
+  bp("Valentino", "Shoes", "Valentino VLogo Sandal", "$349", [valentinoShoe2, valentinoShoe1], "Block heel sandal with gold VLogo buckle."),
+  bp("Valentino", "Accessories", "Valentino VLogo Scarf", "$310", [scarfBrandGucciImg, lvScarf2], "Wool-blend scarf with VLogo signature."),
+  // ── Chloé ──
+  bp("Chloé", "Bags", "Chloé Marcie Saddle Bag", "$480", [bagBrandChloe, chanelBag2], "Relaxed saddle bag in grained calfskin with stitching."),
+  bp("Chloé", "Bags", "Chloé Woody Tote", "$390", [bagBrandChloe, chanelBag1], "Canvas and leather tote with Chloé name strap."),
+  bp("Chloé", "Accessories", "Chloé Frameé Sunglasses", "$340", [sunBrandCelineImg, pradaSun5], "Round gold-wire frame with Chloé C hinge detail."),
+];
+
+export function getBrandProducts(brand: string): BrandProduct[] {
+  return ALL_BRAND_PRODUCTS.filter((p) => p.brand === brand);
+}
+
+export function getBrandProductsByCategory(brand: string): Record<string, BrandProduct[]> {
+  const products = getBrandProducts(brand);
+  const grouped: Record<string, BrandProduct[]> = {};
+  for (const p of products) {
+    if (!grouped[p.category]) grouped[p.category] = [];
+    grouped[p.category].push(p);
+  }
+  return grouped;
+}
+
+export const BRAND_CATEGORY_ORDER = ["Bags", "Shoes", "Wallets", "Belts", "Accessories"];
+
+export function brandToSlug(brand: string): string {
+  return brand.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/(^-|-$)/g, "");
+}
+
+export function slugToBrand(slug: string): string | undefined {
+  return FEATURED_BRANDS.find((b) => brandToSlug(b) === slug);
 }
 
 export function utf8Base64Encode(value: string) {

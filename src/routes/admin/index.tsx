@@ -3,7 +3,7 @@ import { useState, useEffect } from "react";
 import {
   isAdminLoggedIn, adminLogout,
   getProducts, addProduct, updateProduct, deleteProduct, bulkInsertProducts,
-  getSettings, saveSettings,
+  getSettings, saveSettings, getSiteBrands, saveSiteBrands,
   defaultSettings,
   type Product, type SiteSettings,
 } from "@/lib/store";
@@ -17,8 +17,7 @@ import {
   Settings, Tag, X, Check, GripVertical, Eye, Loader2, Database,
 } from "lucide-react";
 
-export const Route = createFileRoute("/admin/")({\n  component: AdminDashboard,
-});
+export const Route = createFileRoute("/admin/")({ component: AdminDashboard });
 
 type Tab = "products" | "settings" | "brands" | "migrate";
 type Section = "bestsellers" | "shoes" | "collection";
@@ -43,8 +42,8 @@ function AdminDashboard() {
   useEffect(() => {
     if (!isAdminLoggedIn()) { navigate({ to: "/admin/login" }); return; }
     setSettings(getSettings());
-    const stored = localStorage.getItem("admin_brands");
-    if (stored) setBrands(JSON.parse(stored));
+    const stored = getSiteBrands();
+    if (stored) setBrands(stored);
     getProducts().then((p) => { setProducts(p); setLoading(false); });
   }, []);
 
@@ -53,7 +52,7 @@ function AdminDashboard() {
   function saveAllSettings() { saveSettings(settings); flash(); }
   function saveBrands(b: string[]) {
     setBrands(b);
-    localStorage.setItem("admin_brands", JSON.stringify(b));
+    saveSiteBrands(b);
     flash();
   }
 

@@ -1,10 +1,9 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { getSettings, defaultSettings } from "@/lib/store";
-import { CATEGORY_PAGES, BRANDS } from "@/lib/catalog";
+import { getSettings, defaultSettings, getSiteBrands } from "@/lib/store";
+import { CATEGORY_PAGES, BRANDS, FEATURED_BRANDS, brandToSlug } from "@/lib/catalog";
 import { useState, useEffect } from "react";
-import type React from "react";
 import { getCartCount } from "@/lib/cart-store";
-import { Menu, X, Search, ShoppingBag, MapPin, Phone, ChevronDown, Truck, ShieldCheck, MessageCircle, RotateCcw, Mail, Star, Sparkles, Shirt, Gem, Sun } from "lucide-react";
+import { Menu, X, Search, ShoppingBag, MapPin, Phone, ChevronDown, Truck, ShieldCheck, MessageCircle, RotateCcw, Mail, Star, Sparkles } from "lucide-react";
 import heroModel from "@/assets/hero-model.jpg";
 import zelleQr from "@/assets/zelle-qr.jpeg";
 import venmoQr from "@/assets/venmo-qr.jpeg";
@@ -37,18 +36,7 @@ import lvHat1 from "@/assets/hats/Lv hats/1.jpeg";
 import cartierWatch1 from "@/assets/watchs/Cartier watches women/1.jpeg";
 import cartier1 from "@/assets/jewelry/Cartier/1.jpeg";
 import bvlgari1 from "@/assets/jewelry/Bvlgari jewelry/1.jpeg";
-import brandLv from "@/assets/brand/Lv.jpeg";
-import brandChanel from "@/assets/brand/Chanel.jpeg";
-import brandHermes from "@/assets/brand/Hermes.jpeg";
-import brandGucci from "@/assets/brand/Gucci.jpeg";
-import brandPrada from "@/assets/brand/Prada.jpeg";
-import brandCeline from "@/assets/brand/Celine.jpeg";
-import brandBottega from "@/assets/brand/Bottega bag.jpeg";
-import brandGoyard from "@/assets/brand/Goyard.jpeg";
-import brandFendi from "@/assets/brand/Fendi.jpeg";
-import brandYsl from "@/assets/brand/Ysl.jpeg";
-import brandValentino from "@/assets/brand/Valentino.jpeg";
-import brandChloe from "@/assets/brand/Chloe brand .jpeg";
+import brandBottega from "@/assets/bags/brands/Bottega bag.jpeg";
 import brandShoes from "@/assets/brand/Shoes.jfif";
 import brandJewellery from "@/assets/brand/Jewellery.jpeg";
 import brandWatch from "@/assets/brand/watch.jfif";
@@ -57,7 +45,7 @@ import brandBelt from "@/assets/brand/belt.jpeg";
 import brandSunglasses from "@/assets/brand/sunglasses.jpeg";
 import brandScarf from "@/assets/brand/scarf.jpg";
 import brandHats from "@/assets/brand/hats.jfif";
-const collectionBanner = heroModel;
+import collectionBanner from "@/assets/hero-model.jpg";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -131,6 +119,7 @@ const COLLECTION: Product[] = [
 function Index() {
   const settings = getSettings();
   const wa = settings.whatsappLink || defaultSettings.whatsappLink;
+  const activeBrands = getSiteBrands() ?? BRANDS;
 
   return (
     <div className="min-h-screen bg-background text-foreground" style={{ fontFamily: "var(--font-sans)" }}>
@@ -140,11 +129,11 @@ function Index() {
       <Marquee items={settings.marqueeItems} />
       <FeaturesStrip wa={settings.whatsapp} />
       <CategoriesGrid />
-      <BrandsStrip />
+      <BrandsStrip brands={activeBrands} />
       <ValueProps />
       <Reviews />
       <CTASection wa={settings.whatsapp} waLink={settings.whatsappLink} />
-      <Footer settings={settings} />
+      <Footer settings={settings} activeBrands={activeBrands} />
     </div>
   );
 }
@@ -543,89 +532,57 @@ function CategoriesGrid() {
 }
 
 function brandLogoInitials(name: string) {
-  const known = {
-    "Louis Vuitton": "LV",
-    "Bottega Veneta": "BV",
-    "Saint Laurent": "SL",
-    "Van Cleef & Arpels": "VA",
-    "Tiffany & Co": "TC",
-    "Hermès": "H",
-    "Loro Piana": "LP",
-    "The Row": "TR",
-    "Balenciaga": "BB",
-  } as Record<string, string>;
+  const known: Record<string, string> = {
+    "Louis Vuitton": "LV", "Bottega Veneta": "BV", "Saint Laurent": "SL",
+    "Van Cleef & Arpels": "VA", "Tiffany & Co": "TC", "Hermès": "H",
+    "Loro Piana": "LP", "The Row": "TR", "Balenciaga": "BB", "Patek Philippe": "PP",
+    "Tag Heuer": "TH",
+  };
   if (known[name]) return known[name];
-  const initials = name
-    .split(/\s+/)
-    .filter((word) => word.length > 0)
-    .map((word) => word[0])
-    .join("");
-  return initials.slice(0, 2).toUpperCase();
+  return name.split(/\s+/).filter(Boolean).map((w) => w[0]).join("").slice(0, 2).toUpperCase();
 }
 
 function brandLogoColor(name: string) {
   const colors: Record<string, string> = {
-    "Louis Vuitton": "#3c2a1a",
-    "Chanel": "#000000",
-    "Hermès": "#e78a00",
-    "Dior": "#4f4f4f",
-    "Gucci": "#18412f",
-    "Prada": "#1c1f25",
-    "Celine": "#0b0b0b",
-    "Saint Laurent": "#101010",
-    "Bottega Veneta": "#2f2d28",
-    "Loewe": "#332d27",
+    "Louis Vuitton": "#3c2a1a", "Chanel": "#000000", "Hermès": "#e78a00",
+    "Dior": "#4f4f4f", "Gucci": "#18412f", "Prada": "#1c1f25",
+    "Celine": "#0b0b0b", "Saint Laurent": "#101010", "Bottega Veneta": "#2f2d28",
+    "Loewe": "#332d27", "Cartier": "#8b0000", "Bvlgari": "#1a1a6e",
+    "Rolex": "#155724", "Omega": "#003366", "Burberry": "#8b6914",
+    "Loro Piana": "#4a3728", "Fendi": "#8b7536", "Valentino": "#8b0000",
+    "Chloé": "#c4956a", "Goyard": "#2d5a27", "Loewe": "#332d27",
+    "Messika": "#b8860b", "Tiffany & Co": "#0abab5", "Van Cleef & Arpels": "#1a1a2e",
+    "Patek Philippe": "#1a2744", "Tag Heuer": "#cc0000",
   };
   if (colors[name]) return colors[name];
-  const hash = name.split("").reduce((acc, char) => acc + char.charCodeAt(0), 0);
-  return `hsl(${hash % 360} 50% 55%)`;
+  const hash = name.split("").reduce((acc, c) => acc + c.charCodeAt(0), 0);
+  return `hsl(${hash % 360} 40% 30%)`;
 }
 
-const BRAND_IMAGES: Record<string, string> = {
-  "Louis Vuitton": brandLv,
-  "Chanel": brandChanel,
-  "Hermès": brandHermes,
-  "Dior": heroBag,
-  "Gucci": brandGucci,
-  "Prada": brandPrada,
-  "Celine": brandCeline,
-  "Saint Laurent": brandYsl,
-  "Bottega Veneta": brandBottega,
-  "Loewe": heroBag,
-  "Goyard": brandGoyard,
-  "Fendi": brandFendi,
-  "Valentino": brandValentino,
-  "Chloé": brandChloe,
-};
-
-function BrandsStrip() {
+function BrandsStrip({ brands: _brands }: { brands: string[] }) {
   return (
-    <section className="border-b border-border" style={{ background: "linear-gradient(180deg, var(--secondary), var(--background))" }}>
+    <section id="brands" className="border-b border-border" style={{ background: "linear-gradient(180deg, var(--secondary), var(--background))" }}>
       <div className="mx-auto max-w-7xl px-4 py-16">
-        <div className="mb-10 text-center">
+        <div className="mb-12 text-center">
           <p className="mb-2 text-[10px] font-semibold uppercase tracking-[0.35em] text-gold">— Shop By Brand</p>
           <h2 className="text-4xl tracking-tight text-ink md:text-5xl" style={{ fontFamily: "var(--font-display)" }}>Our Brands</h2>
+          <p className="mx-auto mt-3 max-w-md text-sm text-muted-foreground">Select a house to explore its full collection.</p>
         </div>
-        <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5">
-          {BRANDS.slice(0, 10).map((brand) => (
-            <a key={brand} href={`/categories/collection?brand=${encodeURIComponent(brand)}`} className="group relative overflow-hidden rounded-2xl border border-border bg-card shadow-sm transition hover:-translate-y-1 hover:border-gold hover:shadow-xl">
-              {BRAND_IMAGES[brand] ? (
-                <img src={BRAND_IMAGES[brand]} alt={brand} className="h-40 w-full object-cover transition duration-500 group-hover:scale-105" />
-              ) : (
-                <div className="flex h-40 w-full items-center justify-center" style={{ background: brandLogoColor(brand) }}>
-                  <span className="text-4xl font-semibold text-cream" style={{ fontFamily: "var(--font-display)" }}>{brandLogoInitials(brand)}</span>
-                </div>
-              )}
-              <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent" />
-              <div className="absolute bottom-0 w-full px-4 py-3">
-                <span className="text-sm font-semibold text-cream" style={{ fontFamily: "var(--font-display)", fontStyle: "italic" }}>{brand}</span>
-              </div>
+        <div className="grid grid-cols-2 gap-px bg-border sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6">
+          {FEATURED_BRANDS.map((brand) => (
+            <a
+              key={brand}
+              href={`/brand/${brandToSlug(brand)}`}
+              className="group flex flex-col items-center justify-center gap-3 bg-card px-4 py-8 text-center transition hover:bg-secondary"
+            >
+              <span
+                className="text-base font-medium tracking-wide text-ink transition group-hover:text-burgundy"
+                style={{ fontFamily: "var(--font-display)", fontStyle: "italic" }}
+              >
+                {brand}
+              </span>
+              <span className="h-px w-8 bg-gold opacity-0 transition-all duration-300 group-hover:w-12 group-hover:opacity-100" />
             </a>
-          ))}
-        </div>
-        <div className="mt-10 flex flex-wrap items-center justify-center gap-x-8 gap-y-3 border-t border-border pt-8">
-          {BRANDS.slice(10).map((brand) => (
-            <a key={brand} href={`/categories/collection?brand=${encodeURIComponent(brand)}`} className="text-sm tracking-wide text-foreground/50 transition hover:text-burgundy" style={{ fontFamily: "var(--font-display)", fontStyle: "italic" }}>{brand}</a>
           ))}
         </div>
       </div>
@@ -754,7 +711,7 @@ function Reviews() {
   );
 }
 
-function Footer({ settings }: { settings: ReturnType<typeof getSettings> }) {
+function Footer({ settings, activeBrands }: { settings: ReturnType<typeof getSettings>; activeBrands: string[] }) {
   return (
     <footer className="text-cream" style={{ background: "var(--gradient-luxe)" }}>
       <div className="mx-auto max-w-7xl px-4 py-16">
@@ -788,8 +745,8 @@ function Footer({ settings }: { settings: ReturnType<typeof getSettings> }) {
           <div>
             <h4 className="mb-4 text-xs font-bold uppercase tracking-[0.3em] text-gold">Top Brands</h4>
             <ul className="space-y-2 text-sm opacity-80">
-              {BRANDS.slice(0, 8).map((l) => (
-                <li key={l}><a href="#collection" className="hover:text-gold">{l}</a></li>
+              {FEATURED_BRANDS.map((l) => (
+                <li key={l}><a href={`/brand/${brandToSlug(l)}`} className="hover:text-gold">{l}</a></li>
               ))}
             </ul>
           </div>

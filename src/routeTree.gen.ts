@@ -19,6 +19,7 @@ import { Route as CategoriesIndexRouteImport } from './routes/categories/index'
 import { Route as AdminIndexRouteImport } from './routes/admin/index'
 import { Route as ProductsIdRouteImport } from './routes/products/$id'
 import { Route as CategoriesCategoryRouteImport } from './routes/categories/$category'
+import { Route as BrandBrandRouteImport } from './routes/brand/$brand'
 import { Route as AdminLoginRouteImport } from './routes/admin/login'
 
 const ReceiptRoute = ReceiptRouteImport.update({
@@ -71,6 +72,11 @@ const CategoriesCategoryRoute = CategoriesCategoryRouteImport.update({
   path: '/categories/$category',
   getParentRoute: () => rootRouteImport,
 } as any)
+const BrandBrandRoute = BrandBrandRouteImport.update({
+  id: '/brand/$brand',
+  path: '/brand/$brand',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const AdminLoginRoute = AdminLoginRouteImport.update({
   id: '/admin/login',
   path: '/admin/login',
@@ -85,6 +91,7 @@ export interface FileRoutesByFullPath {
   '/policy': typeof PolicyRoute
   '/receipt': typeof ReceiptRoute
   '/admin/login': typeof AdminLoginRoute
+  '/brand/$brand': typeof BrandBrandRoute
   '/categories/$category': typeof CategoriesCategoryRoute
   '/products/$id': typeof ProductsIdRoute
   '/admin/': typeof AdminIndexRoute
@@ -98,6 +105,7 @@ export interface FileRoutesByTo {
   '/policy': typeof PolicyRoute
   '/receipt': typeof ReceiptRoute
   '/admin/login': typeof AdminLoginRoute
+  '/brand/$brand': typeof BrandBrandRoute
   '/categories/$category': typeof CategoriesCategoryRoute
   '/products/$id': typeof ProductsIdRoute
   '/admin': typeof AdminIndexRoute
@@ -112,6 +120,7 @@ export interface FileRoutesById {
   '/policy': typeof PolicyRoute
   '/receipt': typeof ReceiptRoute
   '/admin/login': typeof AdminLoginRoute
+  '/brand/$brand': typeof BrandBrandRoute
   '/categories/$category': typeof CategoriesCategoryRoute
   '/products/$id': typeof ProductsIdRoute
   '/admin/': typeof AdminIndexRoute
@@ -127,6 +136,7 @@ export interface FileRouteTypes {
     | '/policy'
     | '/receipt'
     | '/admin/login'
+    | '/brand/$brand'
     | '/categories/$category'
     | '/products/$id'
     | '/admin/'
@@ -140,6 +150,7 @@ export interface FileRouteTypes {
     | '/policy'
     | '/receipt'
     | '/admin/login'
+    | '/brand/$brand'
     | '/categories/$category'
     | '/products/$id'
     | '/admin'
@@ -153,6 +164,7 @@ export interface FileRouteTypes {
     | '/policy'
     | '/receipt'
     | '/admin/login'
+    | '/brand/$brand'
     | '/categories/$category'
     | '/products/$id'
     | '/admin/'
@@ -167,6 +179,7 @@ export interface RootRouteChildren {
   PolicyRoute: typeof PolicyRoute
   ReceiptRoute: typeof ReceiptRoute
   AdminLoginRoute: typeof AdminLoginRoute
+  BrandBrandRoute: typeof BrandBrandRoute
   CategoriesCategoryRoute: typeof CategoriesCategoryRoute
   ProductsIdRoute: typeof ProductsIdRoute
   AdminIndexRoute: typeof AdminIndexRoute
@@ -245,6 +258,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof CategoriesCategoryRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/brand/$brand': {
+      id: '/brand/$brand'
+      path: '/brand/$brand'
+      fullPath: '/brand/$brand'
+      preLoaderRoute: typeof BrandBrandRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/admin/login': {
       id: '/admin/login'
       path: '/admin/login'
@@ -263,6 +283,7 @@ const rootRouteChildren: RootRouteChildren = {
   PolicyRoute: PolicyRoute,
   ReceiptRoute: ReceiptRoute,
   AdminLoginRoute: AdminLoginRoute,
+  BrandBrandRoute: BrandBrandRoute,
   CategoriesCategoryRoute: CategoriesCategoryRoute,
   ProductsIdRoute: ProductsIdRoute,
   AdminIndexRoute: AdminIndexRoute,
