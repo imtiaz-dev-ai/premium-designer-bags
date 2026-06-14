@@ -1,7 +1,7 @@
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { MessageCircle, ShoppingBag, Menu, X, Search, ChevronDown, MapPin, Phone } from "lucide-react";
 import { useState, useEffect } from "react";
-import { getCategoryBySlug, utf8Base64Encode, CATEGORY_BRANDS, BRANDS, CATEGORY_BRAND_IMAGES, brandToSlug, FEATURED_BRANDS } from "@/lib/catalog";
+import { getCategoryBySlug, CATEGORY_BRANDS, BRANDS, CATEGORY_BRAND_IMAGES, brandToSlug } from "@/lib/catalog";
 import { getSettings, getProducts, type Product } from "@/lib/store";
 import { supabase } from "@/lib/supabase";
 import logoImg from "@/assets/Logo.png";
@@ -122,27 +122,6 @@ function SiteHeader() {
   );
 }
 
-function brandLogoColor(name: string) {
-  const colors: Record<string, string> = {
-    "Louis Vuitton": "#3c2a1a", "Chanel": "#000000", "Hermès": "#e78a00",
-    "Dior": "#4f4f4f", "Gucci": "#18412f", "Prada": "#1c1f25",
-    "Celine": "#0b0b0b", "Saint Laurent": "#101010", "Bottega Veneta": "#2f2d28",
-  };
-  if (colors[name]) return colors[name];
-  const hash = name.split("").reduce((acc, c) => acc + c.charCodeAt(0), 0);
-  return `hsl(${hash % 360} 50% 40%)`;
-}
-
-function brandInitials(name: string) {
-  const known: Record<string, string> = {
-    "Louis Vuitton": "LV", "Bottega Veneta": "BV", "Saint Laurent": "SL",
-    "Hermès": "H", "Loro Piana": "LP", "The Row": "TR",
-    "Van Cleef & Arpels": "VA", "Tiffany & Co": "TC",
-  };
-  if (known[name]) return known[name];
-  return name.split(/\s+/).map((w) => w[0]).join("").slice(0, 2).toUpperCase();
-}
-
 function CategoryPage() {
   const { category } = Route.useParams();
   const navigate = useNavigate();
@@ -248,45 +227,6 @@ function CategoryPage() {
                 <MessageCircle className="h-4 w-4" /> WhatsApp
               </a>
             </div>
-
-            {/* Products grid */}
-            {page.products.length > 0 && (
-              <section className="mt-16">
-                <div className="mb-8 flex items-center gap-4">
-                  <div className="h-px flex-1 bg-border" />
-                  <h2 className="text-xs font-bold uppercase tracking-[0.45em] text-gold">Featured Products</h2>
-                  <div className="h-px flex-1 bg-border" />
-                </div>
-                <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4">
-                  {page.products.map((p, i) => {
-                    const id = utf8Base64Encode(JSON.stringify({ title: p.title, price: p.price, tag: p.tag ?? "Luxury", img: p.img }));
-                    return (
-                      <a key={i} href={`/products/${id}`} className="group overflow-hidden rounded-[1.5rem] border border-border bg-card shadow-sm transition hover:-translate-y-1 hover:shadow-2xl">
-                        <div className="relative overflow-hidden">
-                          <img src={p.img} alt={p.title} loading="lazy" className="h-56 w-full object-cover transition duration-700 group-hover:scale-105" />
-                          <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/75 to-transparent px-4 py-4">
-                            <div className="flex items-center justify-between text-[11px] font-semibold uppercase tracking-[0.22em] text-cream">
-                              <span>{p.tag ?? "Designer"}</span>
-                              <span>{p.price}</span>
-                            </div>
-                          </div>
-                          <span className="absolute left-4 top-4 rounded-full bg-gold px-3 py-1 text-[10px] font-bold uppercase tracking-[0.25em] text-ink shadow-sm">{p.tag ?? "Luxury"}</span>
-                        </div>
-                        <div className="px-4 pb-4 pt-3">
-                          <h3 className="text-sm font-semibold leading-snug text-ink">{p.title}</h3>
-                          <div className="mt-3 flex items-center justify-between">
-                            <span className="text-base font-bold text-burgundy">{p.price}</span>
-                            <a href={WHATSAPP_LINK} className="flex items-center gap-1.5 rounded-full border border-border px-3 py-1 text-xs font-semibold text-ink hover:border-burgundy hover:text-burgundy">
-                              <MessageCircle className="h-3 w-3" /> Order
-                            </a>
-                          </div>
-                        </div>
-                      </a>
-                    );
-                  })}
-                </div>
-              </section>
-            )}
           </>
         )}
       </main>
