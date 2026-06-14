@@ -1,7 +1,9 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { MessageCircle, ChevronLeft, Menu, X, Search, ChevronDown, MapPin, Phone, ShoppingBag } from "lucide-react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { FEATURED_BRANDS, BRAND_CATEGORY_ORDER, getBrandProductsByCategory, slugToBrand, brandToSlug, utf8Base64Encode } from "@/lib/catalog";
+import { getProducts, type Product } from "@/lib/store";
+import { supabase } from "@/lib/supabase";
 import { getSettings } from "@/lib/store";
 import logoImg from "@/assets/Logo.png";
 
@@ -118,7 +120,47 @@ function SiteHeader() {
 
 function BrandPage() {
   const { brand: brandSlug } = Route.useParams();
-  const brand = slugToBrand(decodeURIComponent(brandSlug));
+  const resolvedBrand = slugToBrand(decodeURIComponent(brandSlug));
+  const [dbProducts, setDbProducts] = useState<Product[]>([]);
+  const [dbBrandName, setDbBrandName] = useState<string | null>(null);
+
+  useEffect(() => {
+    const load = () =>
+      getProducts().then((data) => {
+        // Find products whose tag slugifies to this brandSlug
+        const matched = data.filter(
+          (p) => p.inStock !== false && brandToSlug(p.tag) === brandSlug
+        );
+        setDbProducts(matched);
+        if (matched.length > 0 && !resolvedBrand) setDbBrandName(matched[0].tag);
+      });
+    load();
+    const channel = supabase
+      .channel(`brand-${brandSlug}`)
+      .on("postgres_changes", { event: "*", schema: "public", table: "products" }, load)
+      .subscribe();
+    return () => { supabase.removeChannel(channel); };
+  }, [brandSlug, resolvedBrand]);
+
+  const brand = resolvedBrand ?? dbBrandName;
+
+  // Group DB products by category
+  const dbByCategory = dbProducts.reduce<Record<string, Product[]>>((acc, p) => {
+    const cat = p.category ? p.category.charAt(0).toUpperCase() + p.category.slice(1) : "Other";
+    (acc[cat] ??= []).push(p);
+    return acc;
+  }, {});
+
+  // Catalog static products grouped by category
+  const catalogByCategory = brand ? getBrandProductsByCategory(brand) : {};
+
+  // Merge: DB products take priority; fill remaining from catalog for any category not covered by DB
+  const allCategories = Array.from(
+    new Set([
+      ...BRAND_CATEGORY_ORDER.filter((c) => catalogByCategory[c]?.length || dbByCategory[c]?.length),
+      ...Object.keys(dbByCategory),
+    ])
+  );
 
   if (!brand) {
     return (
@@ -134,8 +176,7 @@ function BrandPage() {
     );
   }
 
-  const byCategory = getBrandProductsByCategory(brand);
-  const categories = BRAND_CATEGORY_ORDER.filter((cat) => byCategory[cat]?.length);
+  const hasProducts = allCategories.length > 0;
 
   return (
     <div className="min-h-screen bg-background text-foreground" style={{ fontFamily: "var(--font-sans)" }}>
@@ -177,7 +218,7 @@ function BrandPage() {
           ))}
         </div>
 
-        {categories.length === 0 ? (
+        {!hasProducts ? (
           <div className="rounded-3xl border border-border bg-card py-20 text-center text-muted-foreground">
             <p className="text-base font-semibold text-ink mb-2">No products listed yet for {brand}.</p>
             <p className="text-sm mb-6">Contact us on WhatsApp for current stock.</p>
@@ -187,50 +228,74 @@ function BrandPage() {
           </div>
         ) : (
           <div className="space-y-16">
-            {categories.map((cat) => (
-              <section key={cat}>
-                {/* Category heading */}
-                <div className="mb-6 flex items-center gap-4">
-                  <div className="h-px flex-1 bg-border" />
-                  <h2 className="text-xs font-bold uppercase tracking-[0.45em] text-gold">{cat}</h2>
-                  <div className="h-px flex-1 bg-border" />
-                </div>
-
-                <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-                  {byCategory[cat].map((product) => {
-                    const productId = utf8Base64Encode(
-                      JSON.stringify({ title: product.name, price: product.price, tag: product.brand, img: product.images[0] })
-                    );
-                    return (
-                      <div key={product.id} className="group overflow-hidden rounded-[1.5rem] border border-border bg-card shadow-sm transition hover:-translate-y-1 hover:shadow-xl">
-                        <a href={`/products/${productId}`}>
-                          <div className="relative overflow-hidden">
-                            <img
-                              src={product.images[0]}
-                              alt={product.name}
-                              className="h-64 w-full object-cover transition duration-500 group-hover:scale-105"
-                            />
-                            <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/60 to-transparent px-4 py-3">
-                              <span className="text-[10px] font-semibold uppercase tracking-[0.3em] text-gold">{cat}</span>
+            {allCategories.map((cat) => {
+              const dbItems = dbByCategory[cat] ?? [];
+              const catalogItems = dbItems.length === 0 ? (catalogByCategory[cat] ?? []) : [];
+              return (
+                <section key={cat}>
+                  <div className="mb-6 flex items-center gap-4">
+                    <div className="h-px flex-1 bg-border" />
+                    <h2 className="text-xs font-bold uppercase tracking-[0.45em] text-gold">{cat}</h2>
+                    <div className="h-px flex-1 bg-border" />
+                  </div>
+                  <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+                    {/* DB products for this brand+category */}
+                    {dbItems.map((p) => {
+                      const productId = utf8Base64Encode(JSON.stringify({ title: p.title, price: p.price, tag: p.tag, img: p.img }));
+                      return (
+                        <div key={p.id} className="group overflow-hidden rounded-[1.5rem] border border-border bg-card shadow-sm transition hover:-translate-y-1 hover:shadow-xl">
+                          <a href={`/products/${productId}`}>
+                            <div className="relative overflow-hidden">
+                              <img src={p.img} alt={p.title} className="h-64 w-full object-cover transition duration-500 group-hover:scale-105"
+                                onError={(e) => { (e.target as HTMLImageElement).src = "https://placehold.co/400x400?text=No+Image"; }} />
+                              <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/60 to-transparent px-4 py-3">
+                                <span className="text-[10px] font-semibold uppercase tracking-[0.3em] text-gold">{cat}</span>
+                              </div>
+                            </div>
+                          </a>
+                          <div className="p-5">
+                            <h3 className="text-sm font-semibold text-ink leading-snug" style={{ fontFamily: "var(--font-display)" }}>{p.title}</h3>
+                            {p.description && <p className="mt-1 text-xs text-muted-foreground line-clamp-2">{p.description}</p>}
+                            <div className="mt-4 flex items-center justify-between">
+                              <span className="text-lg font-bold text-burgundy">{p.price}</span>
+                              <a href={WHATSAPP_LINK} className="flex items-center gap-1.5 rounded-full border border-border px-3 py-1.5 text-xs font-semibold text-ink transition hover:border-burgundy hover:text-burgundy">
+                                <MessageCircle className="h-3.5 w-3.5" /> Order
+                              </a>
                             </div>
                           </div>
-                        </a>
-                        <div className="p-5">
-                          <h3 className="text-sm font-semibold text-ink leading-snug" style={{ fontFamily: "var(--font-display)" }}>{product.name}</h3>
-                          <p className="mt-1 text-xs text-muted-foreground line-clamp-2">{product.description}</p>
-                          <div className="mt-4 flex items-center justify-between">
-                            <span className="text-lg font-bold text-burgundy">{product.price}</span>
-                            <a href={WHATSAPP_LINK} className="flex items-center gap-1.5 rounded-full border border-border px-3 py-1.5 text-xs font-semibold text-ink transition hover:border-burgundy hover:text-burgundy">
-                              <MessageCircle className="h-3.5 w-3.5" /> Order
-                            </a>
+                        </div>
+                      );
+                    })}
+                    {/* Catalog fallback products */}
+                    {catalogItems.map((product) => {
+                      const productId = utf8Base64Encode(JSON.stringify({ title: product.name, price: product.price, tag: product.brand, img: product.images[0] }));
+                      return (
+                        <div key={product.id} className="group overflow-hidden rounded-[1.5rem] border border-border bg-card shadow-sm transition hover:-translate-y-1 hover:shadow-xl">
+                          <a href={`/products/${productId}`}>
+                            <div className="relative overflow-hidden">
+                              <img src={product.images[0]} alt={product.name} className="h-64 w-full object-cover transition duration-500 group-hover:scale-105" />
+                              <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/60 to-transparent px-4 py-3">
+                                <span className="text-[10px] font-semibold uppercase tracking-[0.3em] text-gold">{cat}</span>
+                              </div>
+                            </div>
+                          </a>
+                          <div className="p-5">
+                            <h3 className="text-sm font-semibold text-ink leading-snug" style={{ fontFamily: "var(--font-display)" }}>{product.name}</h3>
+                            <p className="mt-1 text-xs text-muted-foreground line-clamp-2">{product.description}</p>
+                            <div className="mt-4 flex items-center justify-between">
+                              <span className="text-lg font-bold text-burgundy">{product.price}</span>
+                              <a href={WHATSAPP_LINK} className="flex items-center gap-1.5 rounded-full border border-border px-3 py-1.5 text-xs font-semibold text-ink transition hover:border-burgundy hover:text-burgundy">
+                                <MessageCircle className="h-3.5 w-3.5" /> Order
+                              </a>
+                            </div>
                           </div>
                         </div>
-                      </div>
-                    );
-                  })}
-                </div>
-              </section>
-            ))}
+                      );
+                    })}
+                  </div>
+                </section>
+              );
+            })}
           </div>
         )}
 

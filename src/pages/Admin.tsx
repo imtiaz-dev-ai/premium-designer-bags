@@ -8,7 +8,7 @@ import {
 } from "@/lib/store";
 import { migrateCatalogToSupabase } from "@/lib/migrate";
 import {
-  BESTSELLERS, SHOES, JEWELRY, WATCHES, CLOTHES, HATS, SCARFS, SUNGLASSES, BELTS, ACCESSORIES, COLLECTION,
+  BESTSELLERS, SHOES, JEWELRY, WATCHES, CLOTHES, HATS, SCARFS, SUNGLASSES, BELTS, COLLECTION,
 } from "@/lib/catalog";
 import {
   ShoppingBag, Settings, Plus, Pencil, Trash2,
@@ -25,7 +25,7 @@ const DEFAULT_BRANDS = [
 
 const CATEGORIES = [
   "bags", "shoes", "jewelry", "watches", "clothes",
-  "hats", "scarfs", "sunglasses", "belts", "accessories", "collection",
+  "hats", "scarfs", "sunglasses", "belts", "collection",
 ];
 
 type Tab = "products" | "brands" | "settings" | "account";
@@ -67,7 +67,6 @@ export default function AdminPage() {
       ...SCARFS.map((p) => ({ ...p, tag: p.tag ?? "", category: "scarfs", section: "scarfs", description: "" })),
       ...SUNGLASSES.map((p) => ({ ...p, tag: p.tag ?? "", category: "sunglasses", section: "sunglasses", description: "" })),
       ...BELTS.map((p) => ({ ...p, tag: p.tag ?? "", category: "belts", section: "belts", description: "" })),
-      ...ACCESSORIES.map((p) => ({ ...p, tag: p.tag ?? "", category: "accessories", section: "accessories", description: "" })),
       ...COLLECTION.map((p) => ({ ...p, tag: p.tag ?? "", category: "collection", section: "collection", description: "" })),
     ];
     const { inserted, error } = await migrateCatalogToSupabase(allCatalog);
@@ -384,8 +383,8 @@ function ProductForm({ initial, brands, onSave, onClose }: {
     price: initial?.price ?? "",
     tag: initial?.tag ?? "",
     img: initial?.img ?? "",
-    category: initial?.category ?? "bags",
-    section: initial?.section ?? "bestsellers",
+    category: initial?.category ?? "",
+    section: initial?.section ?? "",
     description: initial?.description ?? "",
     inStock: initial?.inStock ?? true,
   });
@@ -409,8 +408,8 @@ function ProductForm({ initial, brands, onSave, onClose }: {
 
   function submit(e: React.FormEvent) {
     e.preventDefault();
-    if (!form.title.trim() || !form.price.trim()) return;
-    onSave({ ...form, id: initial?.id ?? "" });
+    if (!form.title.trim() || !form.price.trim() || !form.category) return;
+    onSave({ ...form, id: initial?.id ?? "", section: form.category });
   }
 
   return (
@@ -445,9 +444,10 @@ function ProductForm({ initial, brands, onSave, onClose }: {
                 </select>
               </div>
               <div>
-                <label className="mb-1.5 block text-[10px] font-semibold uppercase tracking-widest text-muted-foreground">Category</label>
-                <select value={form.category} onChange={(e) => set("category", e.target.value)}
+                <label className="mb-1.5 block text-[10px] font-semibold uppercase tracking-widest text-muted-foreground">Category *</label>
+                <select value={form.category} onChange={(e) => { set("category", e.target.value); set("section", e.target.value); }}
                   className="w-full rounded-xl border border-border bg-background px-3 py-3 text-sm outline-none focus:border-burgundy">
+                  <option value="">Select Category</option>
                   {CATEGORIES.map((c) => <option key={c} value={c}>{c}</option>)}
                 </select>
               </div>

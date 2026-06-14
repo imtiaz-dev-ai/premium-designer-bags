@@ -2,6 +2,7 @@ import { useParams, useNavigate, Link } from "react-router-dom";
 import { MessageCircle } from "lucide-react";
 import { getCategoryBySlug, CATEGORY_BRANDS, BRANDS, brandToSlug, utf8Base64Encode } from "@/lib/catalog";
 import { getProducts, type Product } from "@/lib/store";
+import { supabase } from "@/lib/supabase";
 import SiteHeader from "@/components/SiteHeader";
 import { useState, useEffect } from "react";
 
@@ -19,6 +20,17 @@ export default function CategoryPage() {
     getProducts().then((data) => {
       setDbProducts(data.filter((p) => p.category === slug && p.inStock !== false));
     });
+
+    const channel = supabase
+      .channel(`category-${slug}`)
+      .on("postgres_changes", { event: "*", schema: "public", table: "products" }, () => {
+        getProducts().then((data) => {
+          setDbProducts(data.filter((p) => p.category === slug && p.inStock !== false));
+        });
+      })
+      .subscribe();
+
+    return () => { supabase.removeChannel(channel); };
   }, [slug]);
 
   if (!page) {

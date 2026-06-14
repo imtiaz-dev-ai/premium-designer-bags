@@ -573,7 +573,6 @@ export const CATEGORY_BRANDS: Record<string, string[]> = {
   scarfs: ["Louis Vuitton", "Hermès", "Chanel", "Gucci", "Burberry", "Fendi"],
   sunglasses: ["Chanel", "Prada", "Dior", "Gucci", "Celine", "Saint Laurent"],
   belts: ["Louis Vuitton", "Hermès", "Gucci", "Prada", "Fendi", "Bottega Veneta"],
-  accessories: ["Louis Vuitton", "Gucci", "Hermès", "Prada", "Cartier"],
   collection: ["Louis Vuitton", "Chanel", "Hermès", "Gucci", "Prada", "Saint Laurent"],
 };
 
@@ -766,14 +765,7 @@ export const BELTS: CatalogProduct[] = [
   { title: "LV Monogram Canvas Belt 35mm", price: "$450", tag: "LV", img: lvBelt12 },
 ];
 
-export const ACCESSORIES: CatalogProduct[] = [
-  { title: "LV Initiales Belt — Monogram", price: "$480", tag: "LV", img: lvBelt1 },
-  { title: "Hermès Constance Belt 32mm — Black", price: "$690", tag: "Hermès", img: hermesBelt1 },
-  { title: "Chanel Round Sunglasses — Black", price: "$389", tag: "Chanel", img: chanelSun1 },
-  { title: "Prada Symbole Sunglasses — Black", price: "$329", tag: "Prada", img: pradaSun1 },
-  { title: "LV Monogram Silk Scarf", price: "$289", tag: "LV", img: lvScarf1 },
-  { title: "LV Monogram Bucket Hat", price: "$389", tag: "LV", img: lvHat1 },
-];
+export const ACCESSORIES: CatalogProduct[] = [];
 
 export const CATEGORY_PAGES = [
   { slug: "bags", title: "Bags", subtitle: "Iconic designer handbags & totes", description: "Shop our curated selection of luxury handbags from Louis Vuitton, Chanel, Hermès, Dior and more, sourced directly from Italy & Dubai.", products: BESTSELLERS },
@@ -781,7 +773,6 @@ export const CATEGORY_PAGES = [
   { slug: "jewelry", title: "Jewelry", subtitle: "Elegant fine jewelry and statement pieces", description: "Discover rings, bracelets, necklaces from Cartier, Bvlgari, Messika and more.", products: JEWELRY },
   { slug: "watches", title: "Watches", subtitle: "Luxury timepieces with modern style", description: "Explore premium Cartier watches with real authenticity assurance.", products: WATCHES },
   { slug: "clothes", title: "Clothes", subtitle: "High-end ready-to-wear pieces", description: "Shop elevated clothing essentials and statement outerwear from the world's leading fashion houses.", products: CLOTHES },
-  { slug: "accessories", title: "Accessories", subtitle: "Luxury finishing pieces and everyday staples", description: "Find premium belts, sunglasses, scarves and accessories to complete every look.", products: ACCESSORIES },
   { slug: "collection", title: "Collection", subtitle: "Selected new arrivals and seasonal highlights", description: "Browse our curated collection of bestsellers and new arrivals.", products: COLLECTION },
   { slug: "hats", title: "Hats", subtitle: "Designer hats & caps from top houses", description: "Shop luxury hats and caps from Louis Vuitton and more.", products: HATS },
   { slug: "scarfs", title: "Scarfs", subtitle: "Silk & cashmere scarves from elite brands", description: "Explore premium scarves and wraps from Louis Vuitton, Hermès and more.", products: SCARFS },
@@ -822,23 +813,20 @@ export const ALL_BRAND_PRODUCTS: BrandProduct[] = [
   bp("Louis Vuitton", "Shoes", "LV Stellar Mule", "$319", [lvShoe3, lvShoe4], "Slip-on mule with LV logo strap."),
   bp("Louis Vuitton", "Belts", "LV Initiales Belt 40mm", "$480", [lvBelt1, lvBelt2], "Classic monogram canvas belt with gold-tone buckle."),
   bp("Louis Vuitton", "Belts", "LV Pyramide Belt 40mm", "$520", [lvBelt3, lvBelt4], "Bold pyramid-stud belt in supple leather."),
-  bp("Louis Vuitton", "Accessories", "LV Monogram Silk Scarf", "$289", [lvScarf1, lvScarf2], "Luxurious silk scarf with all-over monogram print."),
-  bp("Louis Vuitton", "Accessories", "LV Monogram Bucket Hat", "$389", [lvHat1, lvHat2], "Casual bucket hat in signature monogram canvas."),
   // ── Chanel ──
   bp("Chanel", "Bags", "Chanel Classic Flap Medium", "$780", [chanelBag3, chanelBag1], "The iconic quilted lambskin flap bag with interlocking CC."),
   bp("Chanel", "Bags", "Chanel 19 Large Handbag", "$289", [chanelBag1, chanelBag2], "Relaxed yet luxurious multi-chain bag in lambskin."),
   bp("Chanel", "Bags", "Chanel Boy Bag", "$620", [chanelBag6, chanelBagMain], "Edgy structured flap with ruthenium hardware."),
   bp("Chanel", "Shoes", "Chanel Slingback Pump", "$329", [chanelShoe1, chanelShoe2], "Timeless cap-toe pump with CC logo."),
   bp("Chanel", "Shoes", "Chanel Cap-Toe Ballerina", "$279", [chanelShoe3, chanelShoe4], "Ballet flat with signature two-tone cap toe."),
-  bp("Chanel", "Accessories", "Chanel Round Sunglasses", "$389", [chanelSun1, chanelSun2], "Iconic CC-logo round frame sunglasses."),
-  bp("Chanel", "Accessories", "Chanel Oval Sunglasses", "$349", [chanelSun3, chanelSun4], "Elegant oval acetate frame with CC temples."),
+
   // ── Hermès ──
   bp("Hermès", "Shoes", "Hermès Oran Sandal", "$389", [hermesShoe1, hermesShoe2], "Minimalist H-strap flat sandal in Epsom leather."),
   bp("Hermès", "Shoes", "Hermès Izmir Sandal", "$359", [hermesShoe3, hermesShoe4], "Casual leather sandal with iconic Hermès H buckle."),
   bp("Hermès", "Belts", "Hermès Constance Belt 32mm", "$690", [hermesBelt1, hermesBelt2], "Refined belt with Constance H buckle in Epsom leather."),
   bp("Hermès", "Belts", "Hermès H Belt 42mm", "$620", [hermesBelt3, hermesBelt4], "Bold double-tour belt with signature H buckle."),
   bp("Hermès", "Belts", "Hermès Kelly Belt 18mm", "$720", [hermesBelt5, hermesBelt6], "Delicate belt with gold Kelly buckle, ideal for evenings."),
-  bp("Hermès", "Accessories", "Hermès Silk Carré Scarf", "$380", [scarf1, scarf2], "Hand-rolled 90cm silk twill scarf with artistic print."),
+
   // ── Gucci ──
   bp("Gucci", "Bags", "Gucci GG Marmont Bag", "$490", [gucciBag2, gucciBag1], "Quilted Chevron leather bag with Double G hardware."),
   bp("Gucci", "Bags", "Gucci Dionysus Mini", "$560", [gucciBag3, gucciBag4], "Compact shoulder bag with tiger-head closure."),
@@ -846,23 +834,22 @@ export const ALL_BRAND_PRODUCTS: BrandProduct[] = [
   bp("Gucci", "Shoes", "Gucci Horsebit Loafer", "$289", [gucciShoe1, gucciShoe2], "Iconic horsebit loafer in GG canvas."),
   bp("Gucci", "Shoes", "Gucci Ace Sneaker", "$279", [gucciShoe3, gucciShoe4], "Low-top leather sneaker with embroidered motif."),
   bp("Gucci", "Belts", "Gucci GG Canvas Belt", "$380", [beltBrandGucciImg, hermesBelt1], "Classic GG Supreme canvas belt with gold buckle."),
-  bp("Gucci", "Accessories", "Gucci GG Sunglasses", "$320", [sunBrandGucciImg, chanelSun1], "Oversized GG logo acetate sunglasses."),
+
   // ── Prada ──
   bp("Prada", "Bags", "Prada Galleria Bag", "$680", [pradaShoe1, pradaShoe2], "Structured Saffiano leather tote, a Prada icon."),
   bp("Prada", "Shoes", "Prada Monolith Boot", "$429", [pradaShoe1, pradaShoe2], "Lug-sole leather boot with Re-Nylon panel."),
   bp("Prada", "Shoes", "Prada Slingback Pump", "$389", [pradaShoe2, pradaShoe3], "Kitten heel pump with signature Prada plaque."),
   bp("Prada", "Belts", "Prada Saffiano Belt", "$390", [beltBrandPradaImg, hermesBelt2], "Slim Saffiano leather belt with enamel triangle logo."),
-  bp("Prada", "Accessories", "Prada Symbole Sunglasses", "$329", [pradaSun1, pradaSun2], "Geometric acetate frame with Prada logo plaque."),
-  bp("Prada", "Accessories", "Prada Minimal Baroque Sunglasses", "$349", [pradaSun3, pradaSun4], "Bold baroque-inspired frame in gradient lens."),
+
   // ── Saint Laurent ──
   bp("Saint Laurent", "Bags", "YSL Saddle Bag", "$258", [yslBag1, yslBag2], "Smooth calfskin saddle-shape bag with YSL hardware."),
   bp("Saint Laurent", "Bags", "YSL Lou Camera Bag", "$258", [yslBag3, yslBag4], "Quilted lambskin crossbody with YSL logo."),
   bp("Saint Laurent", "Bags", "YSL Niki Medium", "$340", [yslBag5, yslBag1], "Crinkled vintage leather shoulder bag."),
-  bp("Saint Laurent", "Accessories", "YSL Cat Eye Sunglasses", "$310", [sunBrandSaintLaurentImg, chanelSun5], "Sleek metal cat-eye frame with SL logo."),
+
   // ── Celine ──
   bp("Celine", "Bags", "Celine Triomphe Bag", "$689", [bagBrandCeline, chanelBag1], "Structured calfskin bag with gold Triomphe clasp."),
   bp("Celine", "Bags", "Celine Classic Box Bag", "$750", [bagBrandCeline, chanelBag2], "Timeless box bag in smooth polished calfskin."),
-  bp("Celine", "Accessories", "Celine Triomphe Sunglasses", "$380", [sunBrandCelineImg, chanelSun3], "Rectangular acetate frame with Triomphe hardware."),
+
   // ── Bottega Veneta ──
   bp("Bottega Veneta", "Bags", "BV Cassette Bag", "$560", [bagBrandBottega, chanelBag3], "Signature intrecciato woven leather crossbody."),
   bp("Bottega Veneta", "Shoes", "BV Stretch Flat Sandal", "$359", [shoeBrandBottega, pradaShoe1], "Stretch lambskin flat sandal with BV weave."),
@@ -874,16 +861,16 @@ export const ALL_BRAND_PRODUCTS: BrandProduct[] = [
   bp("Fendi", "Bags", "Fendi Baguette Bag", "$480", [bagBrandFendi, chanelBag3], "The iconic shoulder bag that defined 90s fashion."),
   bp("Fendi", "Shoes", "Fendi Baguette Sandal", "$309", [shoeBrandFendi, pradaShoe2], "FF Jacquard strap sandal inspired by the Baguette bag."),
   bp("Fendi", "Belts", "Fendi FF Belt", "$360", [beltBrandFendiImg, hermesBelt4], "Classic FF monogram belt with reversible strap."),
-  bp("Fendi", "Accessories", "Fendi FF Scarf", "$290", [scarfBrandFendiImg, lvScarf1], "Silk scarf with all-over FF logo print."),
+
   // ── Valentino ──
   bp("Valentino", "Bags", "Valentino Rockstud Bag", "$580", [bagBrandValentino, chanelBag1], "Signature rockstud-embellished leather tote."),
   bp("Valentino", "Shoes", "Valentino Rockstud Pump", "$389", [valentinoShoe1, valentinoShoe2], "Stiletto pump with signature pyramid rockstud trim."),
   bp("Valentino", "Shoes", "Valentino VLogo Sandal", "$349", [valentinoShoe2, valentinoShoe1], "Block heel sandal with gold VLogo buckle."),
-  bp("Valentino", "Accessories", "Valentino VLogo Scarf", "$310", [scarfBrandGucciImg, lvScarf2], "Wool-blend scarf with VLogo signature."),
+
   // ── Chloé ──
   bp("Chloé", "Bags", "Chloé Marcie Saddle Bag", "$480", [bagBrandChloe, chanelBag2], "Relaxed saddle bag in grained calfskin with stitching."),
   bp("Chloé", "Bags", "Chloé Woody Tote", "$390", [bagBrandChloe, chanelBag1], "Canvas and leather tote with Chloé name strap."),
-  bp("Chloé", "Accessories", "Chloé Frameé Sunglasses", "$340", [sunBrandCelineImg, pradaSun5], "Round gold-wire frame with Chloé C hinge detail."),
+
 ];
 
 export function getBrandProducts(brand: string): BrandProduct[] {
@@ -907,7 +894,13 @@ export function brandToSlug(brand: string): string {
 }
 
 export function slugToBrand(slug: string): string | undefined {
-  return FEATURED_BRANDS.find((b) => brandToSlug(b) === slug);
+  const allBrands = [
+    ...FEATURED_BRANDS,
+    ...Object.values(CATEGORY_BRANDS).flat(),
+    ...Object.keys(BRAND_PRODUCTS),
+  ];
+  const unique = Array.from(new Set(allBrands));
+  return unique.find((b) => brandToSlug(b) === slug);
 }
 
 export function utf8Base64Encode(value: string) {
