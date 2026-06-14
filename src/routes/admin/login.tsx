@@ -1,5 +1,5 @@
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { adminLogin, isAdminLoggedIn } from "@/lib/store";
 import { Lock } from "lucide-react";
 
@@ -12,9 +12,10 @@ function AdminLogin() {
   const [pw, setPw] = useState("");
   const [err, setErr] = useState(false);
 
-  useEffect(() => {
-    if (isAdminLoggedIn()) navigate({ to: "/admin" });
-  }, []);
+  if (isAdminLoggedIn()) {
+    navigate({ to: "/admin" });
+    return null;
+  }
 
   function handleSubmit(e: React.FormEvent) {
     e.preventDefault();

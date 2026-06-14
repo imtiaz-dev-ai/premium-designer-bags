@@ -68,13 +68,6 @@ export async function updateProduct(p: Product): Promise<boolean> {
   return true;
 }
 
-export async function bulkInsertProducts(products: Omit<Product, "id">[]): Promise<number> {
-  const existing = loadProducts();
-  const newProducts: Product[] = products.map((p) => ({ ...p, id: crypto.randomUUID() }));
-  saveProducts([...newProducts, ...existing]);
-  return newProducts.length;
-}
-
 export async function deleteProduct(id: string): Promise<boolean> {
   const products = loadProducts();
   saveProducts(products.filter((p) => p.id !== id));
@@ -132,7 +125,6 @@ export function isAdminLoggedIn(): boolean {
 }
 
 export function adminLogin(password: string): boolean {
-  if (!isBrowser) return false;
   if (password === getAdminPassword()) {
     sessionStorage.setItem("admin_auth", "true");
     return true;
