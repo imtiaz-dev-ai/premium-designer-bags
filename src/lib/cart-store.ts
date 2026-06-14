@@ -40,6 +40,7 @@ export function getCart(): CartItem[] {
 
 export function saveCart(items: CartItem[]) {
   localStorage.setItem(CART_KEY, JSON.stringify(items));
+  window.dispatchEvent(new Event("storage"));
 }
 
 export function addToCart(item: Omit<CartItem, "quantity"> & { quantity?: number }) {

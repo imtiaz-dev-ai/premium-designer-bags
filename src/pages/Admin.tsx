@@ -1,56 +1,104 @@
-import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useState, useMemo, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import {
   getProducts, addProduct, updateProduct, deleteProduct,
   getSettings, saveSettings, isAdminLoggedIn, adminLogout, changeCredentials,
+  getSiteBrands, saveSiteBrands,
   type Product, type SiteSettings,
 } from "@/lib/store";
+import { migrateCatalogToSupabase } from "@/lib/migrate";
+import {
+  BESTSELLERS, SHOES, JEWELRY, WATCHES, CLOTHES, HATS, SCARFS, SUNGLASSES, BELTS, ACCESSORIES, COLLECTION,
+} from "@/lib/catalog";
 import {
   ShoppingBag, Settings, Plus, Pencil, Trash2,
-  X, Check, Eye, Search, LogOut, KeyRound,
+  X, Check, Eye, Search, LogOut, KeyRound, Tag, Upload,
 } from "lucide-react";
 import logoImg from "@/assets/Logo.png";
 
-export const Route = createFileRoute("/admin/")({ component: AdminDashboard });
+const DEFAULT_BRANDS = [
+  "Louis Vuitton", "Chanel", "Hermès", "Gucci", "Prada", "Dior",
+  "Saint Laurent", "Celine", "Bottega Veneta", "Goyard", "Fendi",
+  "Valentino", "Chloé", "Cartier", "Bvlgari", "Messika", "Burberry",
+  "Loewe", "Rolex", "Omega",
+];
 
-const CATEGORIES = ["bags", "shoes", "jewelry", "watches", "clothes", "hats", "scarfs", "sunglasses", "belts", "accessories", "collection"];
-const BRANDS = ["Louis Vuitton", "Chanel", "Hermès", "Gucci", "Prada", "Dior", "Saint Laurent", "Celine", "Bottega Veneta", "Goyard", "Fendi", "Valentino", "Chloé", "Cartier", "Bvlgari", "Messika", "Burberry", "Loewe", "Rolex", "Omega"];
-type Tab = "products" | "settings" | "account";
+const CATEGORIES = [
+  "bags", "shoes", "jewelry", "watches", "clothes",
+  "hats", "scarfs", "sunglasses", "belts", "accessories", "collection",
+];
 
-function AdminDashboard() {
+type Tab = "products" | "brands" | "settings" | "account";
+
+export default function AdminPage() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (!isAdminLoggedIn()) navigate({ to: "/admin/login" });
+    if (!isAdminLoggedIn()) navigate("/admin/login");
   }, []);
 
-  function logout() { adminLogout(); navigate({ to: "/admin/login" }); }
+  function logout() { adminLogout(); navigate("/admin/login"); }
+
   const [tab, setTab] = useState<Tab>("products");
-  const [products, setProducts] = useState<Product[]>(() => getProducts());
+  const [products, setProducts] = useState<Product[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [brands, setBrands] = useState<string[]>(() => getSiteBrands() ?? DEFAULT_BRANDS);
   const [saved, setSaved] = useState(false);
   const [settings, setSettings] = useState<SiteSettings>(() => getSettings());
   const [showForm, setShowForm] = useState(false);
   const [editing, setEditing] = useState<Product | null>(null);
 
+  useEffect(() => {
+    getProducts().then((data) => { setProducts(data); setLoading(false); });
+  }, []);
+
   function flash() { setSaved(true); setTimeout(() => setSaved(false), 2000); }
 
-  function handleDelete(id: string) {
+  async function handleMigrate() {
+    if (!confirm("Migrate all catalog products to Supabase? This will add them to the database.")) return;
+    const allCatalog = [
+      ...BESTSELLERS.map((p) => ({ ...p, tag: p.tag ?? "", category: "bags", section: "bestsellers", description: "" })),
+      ...SHOES.map((p) => ({ ...p, tag: p.tag ?? "", category: "shoes", section: "shoes", description: "" })),
+      ...JEWELRY.map((p) => ({ ...p, tag: p.tag ?? "", category: "jewelry", section: "jewelry", description: "" })),
+      ...WATCHES.map((p) => ({ ...p, tag: p.tag ?? "", category: "watches", section: "watches", description: "" })),
+      ...CLOTHES.map((p) => ({ ...p, tag: p.tag ?? "", category: "clothes", section: "clothes", description: "" })),
+      ...HATS.map((p) => ({ ...p, tag: p.tag ?? "", category: "hats", section: "hats", description: "" })),
+      ...SCARFS.map((p) => ({ ...p, tag: p.tag ?? "", category: "scarfs", section: "scarfs", description: "" })),
+      ...SUNGLASSES.map((p) => ({ ...p, tag: p.tag ?? "", category: "sunglasses", section: "sunglasses", description: "" })),
+      ...BELTS.map((p) => ({ ...p, tag: p.tag ?? "", category: "belts", section: "belts", description: "" })),
+      ...ACCESSORIES.map((p) => ({ ...p, tag: p.tag ?? "", category: "accessories", section: "accessories", description: "" })),
+      ...COLLECTION.map((p) => ({ ...p, tag: p.tag ?? "", category: "collection", section: "collection", description: "" })),
+    ];
+    const { inserted, error } = await migrateCatalogToSupabase(allCatalog);
+    if (error) { alert("Migration failed: " + error); return; }
+    const fresh = await getProducts();
+    setProducts(fresh);
+    alert(`✅ ${inserted} products migrated to Supabase!`);
+  }
+
+  async function handleDelete(id: string) {
     if (!confirm("Delete this product?")) return;
-    deleteProduct(id);
+    await deleteProduct(id);
     setProducts((p) => p.filter((x) => x.id !== id));
     flash();
   }
 
-  function handleSave(p: Product) {
+  async function handleSave(p: Product) {
     if (editing) {
-      updateProduct(p);
+      await updateProduct(p);
       setProducts((prev) => prev.map((x) => (x.id === p.id ? p : x)));
     } else {
-      const created = addProduct(p);
-      setProducts((prev) => [created, ...prev]);
+      const created = await addProduct(p);
+      if (created) setProducts((prev) => [created, ...prev]);
     }
     setShowForm(false);
     setEditing(null);
+    flash();
+  }
+
+  function handleBrandsChange(newBrands: string[]) {
+    setBrands(newBrands);
+    saveSiteBrands(newBrands);
     flash();
   }
 
@@ -74,20 +122,25 @@ function AdminDashboard() {
             <a href="/" target="_blank" className="flex items-center gap-1.5 rounded-lg border border-border px-3 py-2 text-xs font-medium hover:border-burgundy">
               <Eye className="h-3.5 w-3.5" /> View Site
             </a>
+            <button onClick={handleMigrate} className="flex items-center gap-1.5 rounded-lg border border-gold/50 bg-gold/10 px-3 py-2 text-xs font-medium text-burgundy hover:bg-gold/20">
+              <Upload className="h-3.5 w-3.5" /> Migrate Catalog
+            </button>
             <button onClick={logout} className="flex items-center gap-1.5 rounded-lg border border-red-200 px-3 py-2 text-xs font-medium text-red-500 hover:bg-red-50">
               <LogOut className="h-3.5 w-3.5" /> Logout
             </button>
           </div>
         </div>
         <div className="mx-auto flex max-w-7xl gap-1 px-4">
-          {(["products", "settings", "account"] as Tab[]).map((t) => (
+          {(["products", "brands", "settings", "account"] as Tab[]).map((t) => (
             <button key={t} onClick={() => setTab(t)}
               className={`flex items-center gap-1.5 border-b-2 px-4 py-3 text-xs font-semibold uppercase tracking-widest transition ${tab === t ? "border-burgundy text-burgundy" : "border-transparent text-muted-foreground hover:text-foreground"}`}>
               {t === "products" && <ShoppingBag className="h-3.5 w-3.5" />}
+              {t === "brands" && <Tag className="h-3.5 w-3.5" />}
               {t === "settings" && <Settings className="h-3.5 w-3.5" />}
               {t === "account" && <KeyRound className="h-3.5 w-3.5" />}
               {t}
               {t === "products" && <span className="ml-1 rounded-full bg-burgundy/10 px-1.5 py-0.5 text-[10px] text-burgundy">{products.length}</span>}
+              {t === "brands" && <span className="ml-1 rounded-full bg-burgundy/10 px-1.5 py-0.5 text-[10px] text-burgundy">{brands.length}</span>}
             </button>
           ))}
         </div>
@@ -95,10 +148,17 @@ function AdminDashboard() {
 
       <main className="mx-auto max-w-7xl px-4 py-8">
         {tab === "products" && (
-          <ProductsTab products={products}
+          <ProductsTab
+            products={products}
+            loading={loading}
+            brands={brands}
             onAdd={() => { setEditing(null); setShowForm(true); }}
             onEdit={(p) => { setEditing(p); setShowForm(true); }}
-            onDelete={handleDelete} />
+            onDelete={handleDelete}
+          />
+        )}
+        {tab === "brands" && (
+          <BrandsTab brands={brands} onChange={handleBrandsChange} />
         )}
         {tab === "settings" && (
           <SettingsTab settings={settings} setSettings={setSettings} onSave={() => { saveSettings(settings); flash(); }} />
@@ -107,15 +167,22 @@ function AdminDashboard() {
       </main>
 
       {showForm && (
-        <ProductForm initial={editing} onSave={handleSave} onClose={() => { setShowForm(false); setEditing(null); }} />
+        <ProductForm
+          initial={editing}
+          brands={brands}
+          onSave={handleSave}
+          onClose={() => { setShowForm(false); setEditing(null); }}
+        />
       )}
     </div>
   );
 }
 
 /* ── Products Tab ── */
-function ProductsTab({ products, onAdd, onEdit, onDelete }: {
+function ProductsTab({ products, loading, brands, onAdd, onEdit, onDelete }: {
   products: Product[];
+  loading: boolean;
+  brands: string[];
   onAdd: () => void;
   onEdit: (p: Product) => void;
   onDelete: (id: string) => void;
@@ -154,7 +221,7 @@ function ProductsTab({ products, onAdd, onEdit, onDelete }: {
         <select value={filterBrand} onChange={(e) => { setFilterBrand(e.target.value); setPage(1); }}
           className="rounded-lg border border-border bg-background px-3 py-2.5 text-sm outline-none focus:border-burgundy">
           <option value="">All Brands</option>
-          {BRANDS.map((b) => <option key={b} value={b}>{b}</option>)}
+          {brands.map((b) => <option key={b} value={b}>{b}</option>)}
         </select>
         <button onClick={onAdd}
           className="flex items-center gap-2 rounded-lg px-5 py-2.5 text-xs font-semibold uppercase tracking-widest text-cream"
@@ -165,7 +232,9 @@ function ProductsTab({ products, onAdd, onEdit, onDelete }: {
 
       <div className="mb-3 text-xs text-muted-foreground">{filtered.length} products</div>
 
-      {filtered.length === 0 ? (
+      {loading ? (
+        <div className="py-20 text-center text-sm text-muted-foreground">Loading products...</div>
+      ) : filtered.length === 0 ? (
         <div className="rounded-2xl border border-dashed border-border py-20 text-center text-sm text-muted-foreground">
           No products found.
         </div>
@@ -203,9 +272,77 @@ function ProductsTab({ products, onAdd, onEdit, onDelete }: {
   );
 }
 
+/* ── Brands Tab ── */
+function BrandsTab({ brands, onChange }: { brands: string[]; onChange: (b: string[]) => void }) {
+  const [newBrand, setNewBrand] = useState("");
+  const [err, setErr] = useState("");
+
+  function add() {
+    const name = newBrand.trim();
+    if (!name) return;
+    if (brands.includes(name)) { setErr("Brand already exists."); return; }
+    onChange([...brands, name]);
+    setNewBrand("");
+    setErr("");
+  }
+
+  function remove(brand: string) {
+    if (!confirm(`Delete brand "${brand}"?`)) return;
+    onChange(brands.filter((b) => b !== brand));
+  }
+
+  function resetToDefault() {
+    if (!confirm("Reset brands to default list?")) return;
+    onChange(DEFAULT_BRANDS);
+  }
+
+  return (
+    <div className="max-w-2xl">
+      <div className="rounded-2xl border border-border bg-card p-6">
+        <div className="mb-5 flex items-center justify-between">
+          <h3 className="text-xs font-bold uppercase tracking-[0.3em] text-gold">Manage Brands</h3>
+          <button onClick={resetToDefault} className="text-xs text-muted-foreground underline hover:text-foreground">Reset to default</button>
+        </div>
+
+        <div className="mb-4 flex gap-2">
+          <input
+            value={newBrand}
+            onChange={(e) => { setNewBrand(e.target.value); setErr(""); }}
+            onKeyDown={(e) => e.key === "Enter" && add()}
+            placeholder="New brand name..."
+            className="flex-1 rounded-lg border border-border bg-background px-4 py-2.5 text-sm outline-none focus:border-burgundy"
+          />
+          <button onClick={add}
+            className="flex items-center gap-1.5 rounded-lg px-4 py-2.5 text-sm font-semibold text-cream"
+            style={{ background: "var(--gradient-luxe)" }}>
+            <Plus className="h-4 w-4" /> Add
+          </button>
+        </div>
+        {err && <p className="mb-3 text-xs text-red-500">{err}</p>}
+
+        <div className="grid gap-2 sm:grid-cols-2">
+          {brands.map((brand) => (
+            <div key={brand} className="flex items-center justify-between rounded-xl border border-border bg-background px-4 py-2.5">
+              <span className="text-sm font-medium text-ink">{brand}</span>
+              <button onClick={() => remove(brand)} className="ml-2 rounded-lg p-1 text-red-400 hover:bg-red-50 hover:text-red-600">
+                <Trash2 className="h-3.5 w-3.5" />
+              </button>
+            </div>
+          ))}
+        </div>
+
+        {brands.length === 0 && (
+          <p className="py-8 text-center text-sm text-muted-foreground">No brands. Add one above.</p>
+        )}
+      </div>
+    </div>
+  );
+}
+
 /* ── Product Form Modal ── */
-function ProductForm({ initial, onSave, onClose }: {
+function ProductForm({ initial, brands, onSave, onClose }: {
   initial: Product | null;
+  brands: string[];
   onSave: (p: Product) => void;
   onClose: () => void;
 }) {
@@ -247,7 +384,7 @@ function ProductForm({ initial, onSave, onClose }: {
               <select value={form.tag} onChange={(e) => set("tag", e.target.value)}
                 className="w-full rounded-lg border border-border bg-background px-3 py-2.5 text-sm outline-none focus:border-burgundy">
                 <option value="">Select Brand</option>
-                {BRANDS.map((b) => <option key={b} value={b}>{b}</option>)}
+                {brands.map((b) => <option key={b} value={b}>{b}</option>)}
               </select>
             </div>
             <div>
@@ -264,6 +401,22 @@ function ProductForm({ initial, onSave, onClose }: {
             <img src={form.img} alt="preview" className="h-32 w-full rounded-xl object-cover border border-border"
               onError={(e) => { (e.target as HTMLImageElement).style.display = "none"; }} />
           )}
+
+          <div>
+            <label className="mb-1.5 block text-[10px] font-semibold uppercase tracking-widest text-muted-foreground">Description</label>
+            <textarea
+              value={form.description}
+              onChange={(e) => set("description", e.target.value)}
+              placeholder="Product description..."
+              rows={3}
+              className="w-full rounded-lg border border-border bg-background px-4 py-2.5 text-sm outline-none focus:border-burgundy resize-none"
+            />
+          </div>
+
+          <div className="flex items-center gap-3 pt-1">
+            <input type="checkbox" id="inStock" checked={form.inStock} onChange={(e) => set("inStock", e.target.checked)} className="h-4 w-4 accent-burgundy" />
+            <label htmlFor="inStock" className="text-sm text-ink">In Stock</label>
+          </div>
 
           <div className="flex gap-3 pt-2">
             <button type="button" onClick={onClose} className="flex-1 rounded-lg border border-border py-2.5 text-sm font-medium hover:bg-secondary">Cancel</button>

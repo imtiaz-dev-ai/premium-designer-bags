@@ -1,25 +1,23 @@
-import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import { adminLogin, isAdminLoggedIn } from "@/lib/store";
 import { Lock, User } from "lucide-react";
 import logoImg from "@/assets/Logo.png";
 
-export const Route = createFileRoute("/admin/login")({ component: AdminLogin });
-
-function AdminLogin() {
+export default function AdminLogin() {
   const navigate = useNavigate();
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState(false);
 
   useEffect(() => {
-    if (isAdminLoggedIn()) navigate({ to: "/admin" });
+    if (isAdminLoggedIn()) navigate("/admin");
   }, []);
 
   function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
     if (adminLogin(username, password)) {
-      navigate({ to: "/admin" });
+      navigate("/admin");
     } else {
       setError(true);
       setTimeout(() => setError(false), 3000);

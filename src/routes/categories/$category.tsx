@@ -1,7 +1,7 @@
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
-import { MessageCircle, ChevronLeft, ShoppingBag, Menu, X, Search, ChevronDown, MapPin, Phone, Sparkles } from "lucide-react";
+import { MessageCircle, ShoppingBag, Menu, X, Search, ChevronDown, MapPin, Phone } from "lucide-react";
 import { useState } from "react";
-import { getCategoryBySlug, utf8Base64Encode, CATEGORY_BRANDS, BRAND_PRODUCTS, BRANDS, CATEGORY_BRAND_IMAGES, brandToSlug, FEATURED_BRANDS } from "@/lib/catalog";
+import { getCategoryBySlug, utf8Base64Encode, CATEGORY_BRANDS, BRANDS, CATEGORY_BRAND_IMAGES, brandToSlug, FEATURED_BRANDS } from "@/lib/catalog";
 import { getSettings } from "@/lib/store";
 import logoImg from "@/assets/Logo.png";
 
@@ -196,23 +196,30 @@ function CategoryPage() {
           </div>
         ) : (
           <>
-            {/* Text-only luxury brand grid */}
-            <div className="grid grid-cols-2 gap-px bg-border sm:grid-cols-3 md:grid-cols-4">
-              {categoryBrands.map((brand) => (
-                <a
-                  key={brand}
-                  href={`/brand/${brandToSlug(brand)}`}
-                  className="group flex flex-col items-center justify-center gap-3 bg-card px-4 py-10 text-center transition hover:bg-secondary"
-                >
-                  <span
-                    className="text-base font-medium tracking-wide text-ink transition group-hover:text-burgundy"
-                    style={{ fontFamily: "var(--font-display)", fontStyle: "italic" }}
+            <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-4">
+              {categoryBrands.map((brand) => {
+                const img = getBrandImage(brand);
+                return (
+                  <a
+                    key={brand}
+                    href={`/brand/${brandToSlug(brand)}`}
+                    className="group overflow-hidden rounded-2xl border border-border bg-card shadow-sm transition hover:-translate-y-1 hover:shadow-xl"
                   >
-                    {brand}
-                  </span>
-                  <span className="h-px w-6 bg-gold opacity-0 transition-all duration-300 group-hover:w-10 group-hover:opacity-100" />
-                </a>
-              ))}
+                    {img ? (
+                      <div className="relative overflow-hidden">
+                        <img src={img} alt={brand} className="h-48 w-full object-cover transition duration-500 group-hover:scale-105" />
+                        <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
+                        <span className="absolute bottom-3 left-0 right-0 text-center text-sm font-medium tracking-wide text-cream" style={{ fontFamily: "var(--font-display)", fontStyle: "italic" }}>{brand}</span>
+                      </div>
+                    ) : (
+                      <div className="flex h-48 flex-col items-center justify-center gap-2 px-4">
+                        <span className="text-base font-medium tracking-wide text-ink transition group-hover:text-burgundy" style={{ fontFamily: "var(--font-display)", fontStyle: "italic" }}>{brand}</span>
+                        <span className="h-px w-6 bg-gold opacity-0 transition-all duration-300 group-hover:w-10 group-hover:opacity-100" />
+                      </div>
+                    )}
+                  </a>
+                );
+              })}
             </div>
 
             <div className="mt-10 rounded-3xl border border-border bg-card px-8 py-8 text-center">
@@ -221,6 +228,45 @@ function CategoryPage() {
                 <MessageCircle className="h-4 w-4" /> WhatsApp
               </a>
             </div>
+
+            {/* Products grid */}
+            {page.products.length > 0 && (
+              <section className="mt-16">
+                <div className="mb-8 flex items-center gap-4">
+                  <div className="h-px flex-1 bg-border" />
+                  <h2 className="text-xs font-bold uppercase tracking-[0.45em] text-gold">Featured Products</h2>
+                  <div className="h-px flex-1 bg-border" />
+                </div>
+                <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4">
+                  {page.products.map((p, i) => {
+                    const id = utf8Base64Encode(JSON.stringify({ title: p.title, price: p.price, tag: p.tag ?? "Luxury", img: p.img }));
+                    return (
+                      <a key={i} href={`/products/${id}`} className="group overflow-hidden rounded-[1.5rem] border border-border bg-card shadow-sm transition hover:-translate-y-1 hover:shadow-2xl">
+                        <div className="relative overflow-hidden">
+                          <img src={p.img} alt={p.title} loading="lazy" className="h-56 w-full object-cover transition duration-700 group-hover:scale-105" />
+                          <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/75 to-transparent px-4 py-4">
+                            <div className="flex items-center justify-between text-[11px] font-semibold uppercase tracking-[0.22em] text-cream">
+                              <span>{p.tag ?? "Designer"}</span>
+                              <span>{p.price}</span>
+                            </div>
+                          </div>
+                          <span className="absolute left-4 top-4 rounded-full bg-gold px-3 py-1 text-[10px] font-bold uppercase tracking-[0.25em] text-ink shadow-sm">{p.tag ?? "Luxury"}</span>
+                        </div>
+                        <div className="px-4 pb-4 pt-3">
+                          <h3 className="text-sm font-semibold leading-snug text-ink">{p.title}</h3>
+                          <div className="mt-3 flex items-center justify-between">
+                            <span className="text-base font-bold text-burgundy">{p.price}</span>
+                            <a href={WHATSAPP_LINK} className="flex items-center gap-1.5 rounded-full border border-border px-3 py-1 text-xs font-semibold text-ink hover:border-burgundy hover:text-burgundy">
+                              <MessageCircle className="h-3 w-3" /> Order
+                            </a>
+                          </div>
+                        </div>
+                      </a>
+                    );
+                  })}
+                </div>
+              </section>
+            )}
           </>
         )}
       </main>

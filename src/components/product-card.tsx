@@ -1,7 +1,7 @@
 import { utf8Base64Encode, type CatalogProduct } from "@/lib/catalog";
 
 export function ProductCard({ p, index }: { p: CatalogProduct; index: number }) {
-  const id = utf8Base64Encode(JSON.stringify({ title: p.title, price: p.price, tag: p.tag ?? "Luxury", imgIndex: index }));
+  const id = utf8Base64Encode(JSON.stringify({ title: p.title, price: p.price, tag: p.tag ?? "Luxury", img: p.img, description: (p as any).description ?? "", imgIndex: index }));
 
   return (
     <a

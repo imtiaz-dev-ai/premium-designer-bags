@@ -1,3 +1,5 @@
+import { supabase } from "./supabase";
+
 export type Product = {
   id: string;
   title: string;
@@ -22,8 +24,9 @@ export type SiteSettings = {
 const isBrowser = typeof window !== "undefined";
 
 const SETTINGS_KEY = "admin_settings";
-const PASSWORD_KEY = "admin_password";
-const DEFAULT_PASSWORD = "diamond2024";
+const CREDENTIALS_KEY = "admin_credentials";
+const DEFAULT_USERNAME = "admin";
+const DEFAULT_PASSWORD = "designer2024";
 
 export const defaultSettings: SiteSettings = {
   whatsapp: "+39 351 543 9347",
@@ -34,44 +37,48 @@ export const defaultSettings: SiteSettings = {
   marqueeItems: ["Free Worldwide Shipping", "Master Quality", "WhatsApp Only Ordering", "Real Photos Before Dispatch", "Worldwide Delivery"],
 };
 
-// ── Products (localStorage) ───────────────────────────────────────────────────
-
-const PRODUCTS_KEY = "admin_products";
-
-function loadProducts(): Product[] {
-  if (!isBrowser) return [];
-  try {
-    const raw = localStorage.getItem(PRODUCTS_KEY);
-    return raw ? JSON.parse(raw) : [];
-  } catch { return []; }
-}
-
-function saveProducts(products: Product[]) {
-  if (!isBrowser) return;
-  localStorage.setItem(PRODUCTS_KEY, JSON.stringify(products));
-}
+// ── Products (Supabase) ───────────────────────────────────────────────────────
 
 export async function getProducts(): Promise<Product[]> {
-  return loadProducts();
+  const { data, error } = await supabase
+    .from("products")
+    .select("*")
+    .order("created_at", { ascending: false });
+  if (error) { console.error(error); return []; }
+  return (data ?? []).map((r) => ({
+    id: r.id,
+    title: r.title,
+    price: r.price,
+    tag: r.tag ?? "",
+    img: r.img ?? "",
+    category: r.category ?? "",
+    description: r.description ?? "",
+    inStock: r.in_stock ?? true,
+    section: r.section ?? "bestsellers",
+  }));
 }
 
 export async function addProduct(p: Omit<Product, "id">): Promise<Product | null> {
-  const products = loadProducts();
-  const newProduct: Product = { ...p, id: crypto.randomUUID() };
-  saveProducts([newProduct, ...products]);
-  return newProduct;
+  const { data, error } = await supabase
+    .from("products")
+    .insert([{ title: p.title, price: p.price, tag: p.tag, img: p.img, category: p.category, description: p.description, in_stock: p.inStock, section: p.section }])
+    .select()
+    .single();
+  if (error) { console.error(error); return null; }
+  return { ...p, id: data.id };
 }
 
-export async function updateProduct(p: Product): Promise<boolean> {
-  const products = loadProducts();
-  saveProducts(products.map((x) => (x.id === p.id ? p : x)));
-  return true;
+export async function updateProduct(p: Product): Promise<void> {
+  const { error } = await supabase
+    .from("products")
+    .update({ title: p.title, price: p.price, tag: p.tag, img: p.img, category: p.category, description: p.description, in_stock: p.inStock, section: p.section })
+    .eq("id", p.id);
+  if (error) console.error(error);
 }
 
-export async function deleteProduct(id: string): Promise<boolean> {
-  const products = loadProducts();
-  saveProducts(products.filter((p) => p.id !== id));
-  return true;
+export async function deleteProduct(id: string): Promise<void> {
+  const { error } = await supabase.from("products").delete().eq("id", id);
+  if (error) console.error(error);
 }
 
 // ── Settings (localStorage) ───────────────────────────────────────────────────
@@ -109,23 +116,16 @@ export function saveSiteBrands(brands: string[]) {
 
 // ── Auth ──────────────────────────────────────────────────────────────────────
 
-export function getAdminPassword(): string {
-  if (!isBrowser) return DEFAULT_PASSWORD;
-  return localStorage.getItem(PASSWORD_KEY) ?? DEFAULT_PASSWORD;
-}
-
-export function changeAdminPassword(newPassword: string) {
-  if (!isBrowser) return;
-  localStorage.setItem(PASSWORD_KEY, newPassword);
-}
-
 export function isAdminLoggedIn(): boolean {
   if (!isBrowser) return false;
   return sessionStorage.getItem("admin_auth") === "true";
 }
 
-export function adminLogin(password: string): boolean {
-  if (password === getAdminPassword()) {
+export function adminLogin(username: string, password: string): boolean {
+  if (!isBrowser) return false;
+  const stored = localStorage.getItem(CREDENTIALS_KEY);
+  const creds = stored ? JSON.parse(stored) : { username: DEFAULT_USERNAME, password: DEFAULT_PASSWORD };
+  if (username === creds.username && password === creds.password) {
     sessionStorage.setItem("admin_auth", "true");
     return true;
   }
@@ -135,4 +135,9 @@ export function adminLogin(password: string): boolean {
 export function adminLogout() {
   if (!isBrowser) return;
   sessionStorage.removeItem("admin_auth");
+}
+
+export function changeCredentials(username: string, password: string) {
+  if (!isBrowser) return;
+  localStorage.setItem(CREDENTIALS_KEY, JSON.stringify({ username, password }));
 }

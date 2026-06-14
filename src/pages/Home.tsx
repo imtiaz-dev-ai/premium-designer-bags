@@ -1,4 +1,3 @@
-import { createFileRoute } from "@tanstack/react-router";
 import { getSettings, defaultSettings, getSiteBrands } from "@/lib/store";
 import { CATEGORY_PAGES, BRANDS, FEATURED_BRANDS, brandToSlug } from "@/lib/catalog";
 import { useState, useEffect } from "react";
@@ -9,33 +8,6 @@ import zelleQr from "@/assets/zelle-qr.jpeg";
 import venmoQr from "@/assets/venmo-qr.jpeg";
 import heroBag from "@/assets/hero-bag.jpg";
 import logoImg from "@/assets/Logo.png";
-import lvBag1 from "@/assets/bags/lv/1.jpeg";
-import lvBag2 from "@/assets/bags/lv/2.jpeg";
-import lvBag3 from "@/assets/bags/lv/3.jpeg";
-import lvBag4 from "@/assets/bags/lv/4.jpeg";
-import lvBag5 from "@/assets/bags/lv/5.jpeg";
-import chanelBag1 from "@/assets/bags/Chanel/1.jpeg";
-import chanelBag2 from "@/assets/bags/Chanel/2.jpeg";
-import chanelBag3 from "@/assets/bags/Chanel/3.jpeg";
-import gucciBag1 from "@/assets/bags/Gucci/1.jpeg";
-import gucciBag2 from "@/assets/bags/Gucci/2.jpeg";
-import yslBag1 from "@/assets/bags/Ysl/1.jpeg";
-import yslBag2 from "@/assets/bags/Ysl/2.jpeg";
-import hermesShoe1 from "@/assets/shoes/Hermes/1.jpeg";
-import chanelShoe1 from "@/assets/shoes/Chanel/1.jpeg";
-import lvShoe1 from "@/assets/shoes/Lv/1.jpeg";
-import gucciShoe1 from "@/assets/shoes/Gucci/1.jpeg";
-import diorShoe1 from "@/assets/shoes/Dior/1.jpeg";
-import pradaShoe1 from "@/assets/shoes/Prada/1.jpeg";
-import chanelSun1 from "@/assets/sunglasses/Chanel sunglasses/1.jpeg";
-import pradaSun1 from "@/assets/sunglasses/Prada sunglasses/1.jpeg";
-import hermesBelt1 from "@/assets/belts/Hermes belts/1.jpeg";
-import lvBelt1 from "@/assets/belts/Lv belts/1.jpeg";
-import lvScarf1 from "@/assets/Scarfs/Lv scarves/1.jpeg";
-import lvHat1 from "@/assets/hats/Lv hats/1.jpeg";
-import cartierWatch1 from "@/assets/watchs/Cartier watches women/1.jpeg";
-import cartier1 from "@/assets/jewelry/Cartier/1.jpeg";
-import bvlgari1 from "@/assets/jewelry/Bvlgari jewelry/1.jpeg";
 import brandBottega from "@/assets/bags/brands/Bottega bag.jpeg";
 import brandShoes from "@/assets/brand/Shoes.jfif";
 import brandJewellery from "@/assets/brand/Jewellery.jpeg";
@@ -47,76 +19,62 @@ import brandScarf from "@/assets/brand/scarf.jpg";
 import brandHats from "@/assets/brand/hats.jfif";
 import collectionBanner from "@/assets/hero-model.jpg";
 
-export const Route = createFileRoute("/")({
-  head: () => ({
-    meta: [
-      { title: "Premium Designer Bags — Luxury Louis Vuitton, Chanel, Hermès from Italy & Dubai" },
-      { name: "description", content: "Shop authentic luxury designer bags, shoes, jewelry and accessories. Louis Vuitton, Chanel, Hermès, Dior sourced from Italy & Dubai. WhatsApp ordering, worldwide delivery." },
-      { name: "robots", content: "index, follow" },
-      { property: "og:title", content: "Premium Designer Bags — Luxury Fashion from Italy & Dubai" },
-      { property: "og:description", content: "Authentic luxury bags, shoes, jewelry from Italy & Dubai. WhatsApp ordering, worldwide delivery." },
-      { property: "og:url", content: "https://premiumdesignerbags.com" },
-      { property: "og:image", content: "https://premiumdesignerbags.com/og-image.jpg" },
-    ],
-  }),
-  component: Index,
-});
-
 const WHATSAPP_LINK = "https://wa.me/393515439347";
 
 type Product = { title: string; price: string; tag?: string; img: string };
 
-
-const SHOES: Product[] = [
-  { title: "Hermès Oran Sandal — Gold Epsom Leather", price: "$389", tag: "Hermès", img: hermesShoe1 },
-  { title: "Chanel Slingback Pump — Black & Beige Cap-Toe", price: "$329", tag: "Chanel", img: chanelShoe1 },
-  { title: "Louis Vuitton Archlight 2.0 Sneaker — White", price: "$349", tag: "LV", img: lvShoe1 },
-  { title: "Gucci Horsebit 1953 Loafer — Brown GG Canvas", price: "$289", tag: "Gucci", img: gucciShoe1 },
-  { title: "Dior J'Adior Slingback Pump — Black Mesh", price: "$319", tag: "Dior", img: diorShoe1 },
-  { title: "Prada Monolith Brushed Leather Boot — Black", price: "$429", tag: "Prada", img: pradaShoe1 },
-  { title: "Bottega Veneta Stretch Flat Sandal — Cream", price: "$359", tag: "BV", img: heroBag },
-  { title: "Celine Triomphe Ballet Flat — Tan Calfskin", price: "$279", tag: "Celine", img: heroBag },
-  { title: "Loewe Toy Puffy Mule — Ivory Nappa", price: "$299", tag: "Loewe", img: heroBag },
-  { title: "Fendi Baguette Sandal — FF Jacquard Strap", price: "$309", tag: "Fendi", img: heroBag },
-  { title: "Coach Lowline Low Top Sneaker — Signature", price: "$189", tag: "Coach", img: heroBag },
-  { title: "Goyard Artois Sneaker — White Goyardine", price: "$349", tag: "Goyard", img: heroBag },
+const NAV_LINKS = [
+  { href: "/categories/bags",       label: "Bags",       brands: ["Louis Vuitton", "Chanel", "Hermès", "Dior", "Gucci", "Prada", "Celine", "Saint Laurent", "Bottega Veneta", "Goyard"] },
+  { href: "/categories/shoes",      label: "Shoes",      brands: ["Hermès", "Chanel", "Louis Vuitton", "Fendi", "Gucci", "Dior", "Bottega Veneta", "Celine", "Loewe", "Prada"] },
+  { href: "/categories/jewelry",    label: "Jewelry",    brands: ["Cartier", "Tiffany & Co", "Van Cleef & Arpels", "Hermès", "Chanel", "Gucci"] },
+  { href: "/categories/watches",    label: "Watches",    brands: ["Cartier", "Hermès", "Rolex", "Omega", "Patek Philippe", "Tag Heuer"] },
+  { href: "/categories/clothes",    label: "Clothes",    brands: ["Loro Piana", "Gucci", "Prada", "Burberry", "Valentino", "Saint Laurent"] },
+  { href: "/categories/hats",       label: "Hats",       brands: ["Louis Vuitton", "Gucci", "Prada", "Burberry", "Fendi", "Chanel"] },
+  { href: "/categories/scarfs",     label: "Scarfs",     brands: ["Hermès", "Gucci", "Louis Vuitton", "Burberry", "Chanel", "Fendi"] },
+  { href: "/categories/sunglasses", label: "Sunglasses", brands: ["Chanel", "Dior", "Gucci", "Prada", "Celine", "Saint Laurent"] },
+  { href: "/categories/belts",      label: "Belts",      brands: ["Louis Vuitton", "Gucci", "Hermès", "Prada", "Fendi", "Bottega Veneta"] },
+  { href: "/about",                  label: "About",      brands: [] },
+  { href: "#contact",               label: "Contact",    brands: [] },
 ];
 
-const BESTSELLERS: Product[] = [
-  { title: "LV Neverfull MM Tote M27358", price: "$369", tag: "LV", img: lvBag1 },
-  { title: "Chanel 19 Large Handbag — Burgundy Lambskin", price: "$289", tag: "Chanel", img: chanelBag1 },
-  { title: "Hermès Birkin 30 — Chocolate Togo, Gold Hardware", price: "$849", tag: "Hermès", img: heroBag },
-  { title: "Gucci GG Marmont Bag — Beige", price: "$490", tag: "Gucci", img: gucciBag1 },
-  { title: "Chanel Maxi Flapbag AS6233 — Blush", price: "$539", tag: "Chanel", img: chanelBag2 },
-  { title: "Saint Laurent Saddle — Caramel Calfskin", price: "$258", tag: "YSL", img: yslBag1 },
-  { title: "Bottega Veneta Cream Bucket Bag", price: "$329", tag: "BV", img: heroBag },
-  { title: "LV Pochette Métis M27357", price: "$349", tag: "LV", img: lvBag4 },
+const PAYMENT_METHODS = [
+  { name: "PayPal", details: ["Email: romaboma242@gmail.com"] },
+  { name: "Credit Card", details: ["Secure card payment"] },
+  { name: "Zelle", details: ["Scan QR code using your bank app"], qrUrl: zelleQr },
+  { name: "Venmo", details: ["Scan QR code in Venmo app"], qrUrl: venmoQr },
+  { name: "Bank Transfer", details: ["Account: 20000043505429", "Holder: Haikou Weiyu Trading Co., Ltd.", "Bank: JPMorgan Chase Bank N.A.", "SWIFT: CHASUS33", "ACH: 028000024"] },
+  { name: "Cash App", details: ["Cash App: $romabomaye242"] },
 ];
 
-const COLLECTION: Product[] = [
-  { title: "LV Neverfull MM Tote M27358 — 47×28×14 cm", price: "$369", tag: "LV", img: lvBag1 },
-  { title: "LV OnTheGo PM M28181", price: "$369", tag: "LV", img: lvBag2 },
-  { title: "LV Speedy 30 Soft Celebration M28379", price: "$349", tag: "LV", img: lvBag3 },
-  { title: "LV Pochette Métis M27357", price: "$349", tag: "LV", img: lvBag4 },
-  { title: "LV Side Trunk PM M27436", price: "$349", tag: "LV", img: lvBag5 },
-  { title: "Chanel 19 Large Handbag — Burgundy Lambskin", price: "$289", tag: "Chanel", img: chanelBag1 },
-  { title: "Chanel Classic Flap Medium — Black Caviar", price: "$780", tag: "Chanel", img: chanelBag3 },
-  { title: "Gucci GG Marmont Bag — Beige", price: "$490", tag: "Gucci", img: gucciBag2 },
-  { title: "Gucci Blondie Top Handle Bag", price: "$620", tag: "Gucci", img: gucciBag1 },
-  { title: "Saint Laurent Saddle — Caramel Calfskin", price: "$258", tag: "YSL", img: yslBag1 },
-  { title: "Saint Laurent Lou Camera — Beige Quilted", price: "$258", tag: "YSL", img: yslBag2 },
-  { title: "Cartier Ballon Bleu 33mm — Steel", price: "$6,900", tag: "Cartier", img: cartierWatch1 },
-  { title: "Cartier Love Bracelet — Yellow Gold", price: "$6,200", tag: "Cartier", img: cartier1 },
-  { title: "Bvlgari B.zero1 Ring — White Gold", price: "$2,200", tag: "Bvlgari", img: bvlgari1 },
-  { title: "Chanel Round Sunglasses — Black", price: "$389", tag: "Chanel", img: chanelSun1 },
-  { title: "Prada Symbole Sunglasses — Black", price: "$329", tag: "Prada", img: pradaSun1 },
-  { title: "Hermès Constance Belt 32mm — Black", price: "$690", tag: "Hermès", img: hermesBelt1 },
-  { title: "LV Initiales Belt 40mm — Monogram", price: "$480", tag: "LV", img: lvBelt1 },
-  { title: "LV Monogram Silk Scarf", price: "$289", tag: "LV", img: lvScarf1 },
-  { title: "LV Monogram Bucket Hat", price: "$389", tag: "LV", img: lvHat1 },
+const REVIEWS = [
+  { name: "Sarah M.", location: "New York, USA", rating: 5, text: "Absolutely love my Chanel bag! Real photos were sent before shipping and it arrived perfectly packed. 10/10 service.", item: "Chanel Classic Flap" },
+  { name: "Fatima A.", location: "Dubai, UAE", rating: 5, text: "Fast response on WhatsApp, very professional. The Hermès Birkin I ordered is stunning. Will definitely order again.", item: "Hermès Birkin 30" },
+  { name: "Emma L.", location: "London, UK", rating: 5, text: "I was skeptical at first but they sent real product photos before dispatch. Package arrived in 10 days. Highly recommend!", item: "LV Neverfull MM" },
+  { name: "Priya K.", location: "Mumbai, India", rating: 5, text: "Best sourcing service I've used. Got my Dior bag at a great price with full photo confirmation. Super happy!", item: "Dior Lady D-Joy" },
+  { name: "Jessica R.", location: "Toronto, Canada", rating: 5, text: "Communication was perfect throughout. My Gucci loafers arrived beautifully wrapped. Will be ordering more!", item: "Gucci Horsebit Loafer" },
+  { name: "Nour H.", location: "Riyadh, KSA", rating: 5, text: "Trustworthy seller, quick replies and honest advice. My Saint Laurent bag is perfect. Couldn't be happier.", item: "Saint Laurent Lou Camera" },
 ];
 
-function Index() {
+const HOME_CATEGORIES = [
+  { slug: "bags",        title: "Bags",        img: brandBottega },
+  { slug: "shoes",       title: "Shoes",       img: brandShoes },
+  { slug: "jewelry",     title: "Jewelry",     img: brandJewellery },
+  { slug: "watches",     title: "Watches",     img: brandWatch },
+  { slug: "clothes",     title: "Clothes",     img: brandCloth },
+  { slug: "hats",        title: "Hats",        img: brandHats },
+  { slug: "scarfs",      title: "Scarfs",      img: brandScarf },
+  { slug: "sunglasses",  title: "Sunglasses",  img: brandSunglasses },
+  { slug: "belts",       title: "Belts",       img: brandBelt },
+];
+
+function utf8Base64Encode(value: string) {
+  const bytes = new TextEncoder().encode(value);
+  let binary = "";
+  for (const byte of bytes) binary += String.fromCharCode(byte);
+  return btoa(binary);
+}
+
+export default function HomePage() {
   const settings = getSettings();
   const wa = settings.whatsappLink || defaultSettings.whatsappLink;
   const activeBrands = getSiteBrands() ?? BRANDS;
@@ -130,6 +88,7 @@ function Index() {
       <FeaturesStrip wa={settings.whatsapp} />
       <CategoriesGrid />
       <BrandsStrip brands={activeBrands} />
+
       <ValueProps />
       <Reviews />
       <CTASection wa={settings.whatsapp} waLink={settings.whatsappLink} />
@@ -148,13 +107,9 @@ function TopBar({ settings }: { settings: ReturnType<typeof getSettings> }) {
           <span className="hidden items-center gap-1.5 sm:flex ml-4"><Sparkles className="h-3 w-3 text-gold" /> Curated designer sourcing, real photos before shipping</span>
         </div>
         <div className="flex items-center gap-4">
-          <a href={settings.instagram} target="_blank" rel="noopener noreferrer" aria-label="Instagram" className="flex items-center gap-1.5 hover:text-gold">
+          <a href={settings.instagram} target="_blank" rel="noopener noreferrer" className="flex items-center gap-1.5 hover:text-gold">
             <svg className="h-3 w-3" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
             <span className="hidden sm:inline">@the_diamond_lux</span>
-          </a>
-          <a href={settings.tiktok} target="_blank" rel="noopener noreferrer" aria-label="TikTok" className="flex items-center gap-1.5 hover:text-gold">
-            <svg className="h-3 w-3" viewBox="0 0 24 24" fill="currentColor"><path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-2.88 2.5 2.89 2.89 0 0 1-2.89-2.89 2.89 2.89 0 0 1 2.89-2.89c.28 0 .54.04.79.1V9.01a6.33 6.33 0 0 0-.79-.05 6.34 6.34 0 0 0-6.34 6.34 6.34 6.34 0 0 0 6.34 6.34 6.34 6.34 0 0 0 6.33-6.34V8.69a8.18 8.18 0 0 0 4.78 1.52V6.75a4.85 4.85 0 0 1-1.01-.06z"/></svg>
-            <span className="hidden sm:inline">@luxlovebags</span>
           </a>
           <a href={settings.whatsappLink} className="flex items-center gap-1.5 hover:text-gold">
             <Phone className="h-3 w-3 text-gold" /> {settings.whatsapp}
@@ -164,20 +119,6 @@ function TopBar({ settings }: { settings: ReturnType<typeof getSettings> }) {
     </div>
   );
 }
-
-const NAV_LINKS = [
-  { href: "/categories/bags",       label: "Bags",       brands: ["Louis Vuitton", "Chanel", "Herm\u00e8s", "Dior", "Gucci", "Prada", "Celine", "Saint Laurent", "Bottega Veneta", "Goyard"] },
-  { href: "/categories/shoes",      label: "Shoes",      brands: ["Herm\u00e8s", "Chanel", "Louis Vuitton", "Fendi", "Gucci", "Dior", "Bottega Veneta", "Celine", "Loewe", "Prada"] },
-  { href: "/categories/jewelry",    label: "Jewelry",    brands: ["Cartier", "Tiffany & Co", "Van Cleef & Arpels", "Herm\u00e8s", "Chanel", "Gucci"] },
-  { href: "/categories/watches",    label: "Watches",    brands: ["Cartier", "Herm\u00e8s", "Rolex", "Omega", "Patek Philippe", "Tag Heuer"] },
-  { href: "/categories/clothes",    label: "Clothes",    brands: ["Loro Piana", "Gucci", "Prada", "Burberry", "Valentino", "Saint Laurent"] },
-  { href: "/categories/hats",       label: "Hats",       brands: ["Louis Vuitton", "Gucci", "Prada", "Burberry", "Fendi", "Chanel"] },
-  { href: "/categories/scarfs",     label: "Scarfs",     brands: ["Herm\u00e8s", "Gucci", "Louis Vuitton", "Burberry", "Chanel", "Fendi"] },
-  { href: "/categories/sunglasses", label: "Sunglasses", brands: ["Chanel", "Dior", "Gucci", "Prada", "Celine", "Saint Laurent"] },
-  { href: "/categories/belts",      label: "Belts",      brands: ["Louis Vuitton", "Gucci", "Herm\u00e8s", "Prada", "Fendi", "Bottega Veneta"] },
-  { href: "/about",                  label: "About",      brands: [] },
-  { href: "#contact",               label: "Contact",    brands: [] },
-];
 
 function Header() {
   const [open, setOpen] = useState(false);
@@ -217,9 +158,7 @@ function Header() {
                     {l.brands.map((brand) => (
                       <a key={brand} href={`${l.href}?brand=${encodeURIComponent(brand)}`}
                         className="block px-4 py-2 text-xs text-muted-foreground hover:bg-secondary hover:text-burgundy"
-                      >
-                        {brand}
-                      </a>
+                      >{brand}</a>
                     ))}
                   </div>
                 )}
@@ -245,11 +184,11 @@ function Header() {
         <div className="border-t border-border bg-card lg:hidden">
           <div className="max-h-[70vh] overflow-y-auto px-4 py-4">
             <a href="/" className="block border-b border-border py-3 text-sm font-semibold text-burgundy">Home</a>
-            {NAV_LINKS.map((l, i) => (
+            {NAV_LINKS.map((l) => (
               l.brands.length === 0 ? (
                 <a key={l.href} href={l.href} className="block py-3 text-sm font-semibold text-muted-foreground">{l.label}</a>
               ) : (
-                <details key={l.href} className={`border-b border-border py-1${i === NAV_LINKS.length - 1 ? "" : ""}`}>
+                <details key={l.href} className="border-b border-border py-1">
                   <summary className="cursor-pointer py-2 text-sm font-semibold text-muted-foreground">{l.label}</summary>
                   <ul className="pl-4 pb-2 space-y-1">
                     {l.brands.map((brand) => (
@@ -271,10 +210,7 @@ function Header() {
 function Hero({ wa }: { wa: string }) {
   return (
     <section className="relative overflow-hidden border-b border-border">
-      <div
-        className="absolute inset-0 -z-10 opacity-60"
-        style={{ background: "radial-gradient(ellipse at top right, oklch(0.88 0.08 80 / 0.6), transparent 60%), radial-gradient(ellipse at bottom left, oklch(0.85 0.06 30 / 0.5), transparent 55%)" }}
-      />
+      <div className="absolute inset-0 -z-10 opacity-60" style={{ background: "radial-gradient(ellipse at top right, oklch(0.88 0.08 80 / 0.6), transparent 60%), radial-gradient(ellipse at bottom left, oklch(0.85 0.06 30 / 0.5), transparent 55%)" }} />
       <div className="mx-auto grid max-w-7xl gap-12 px-4 py-16 md:py-24 lg:grid-cols-[1.1fr_1fr] lg:items-center">
         <div>
           <p className="mb-6 inline-flex items-center gap-2 rounded-full border border-gold/50 bg-gold/10 px-4 py-1.5 text-[10px] font-semibold uppercase tracking-[0.3em] text-burgundy">
@@ -302,7 +238,7 @@ function Hero({ wa }: { wa: string }) {
         </div>
         <div className="relative">
           <div className="absolute -right-4 -top-4 hidden h-full w-full border-2 border-gold lg:block" />
-          <img src={heroModel} alt="Editorial fashion shot — woman holding burgundy designer handbag" width={1024} height={1280} className="relative aspect-[4/5] w-full object-cover shadow-2xl" style={{ boxShadow: "var(--shadow-luxe)" }} />
+          <img src={heroModel} alt="Editorial fashion shot — woman holding designer handbag" width={1024} height={1280} className="relative aspect-[4/5] w-full object-cover shadow-2xl" style={{ boxShadow: "var(--shadow-luxe)" }} />
           <div className="absolute -bottom-6 -left-6 hidden w-56 bg-card p-5 shadow-2xl md:block" style={{ boxShadow: "var(--shadow-luxe)" }}>
             <img src={heroBag} alt="Featured bag" width={1600} height={1200} loading="lazy" className="aspect-square w-full object-cover" />
             <div className="mt-3 flex items-center justify-between">
@@ -327,81 +263,6 @@ function Stat({ n, l }: { n: string; l: string }) {
     <div>
       <div className="text-4xl font-medium tracking-tight text-burgundy" style={{ fontFamily: "var(--font-display)" }}>{n}</div>
       <div className="mt-1 text-[10px] uppercase tracking-[0.2em] text-muted-foreground">{l}</div>
-    </div>
-  );
-}
-
-type PaymentMethod = {
-  name: string;
-  icon: React.ReactNode;
-  details?: string[];
-  qrUrl?: string;
-  isScreenshot?: boolean;
-};
-
-const PAYMENT_METHODS: PaymentMethod[] = [
-  {
-    name: "PayPal",
-    icon: <svg className="h-6 w-6" viewBox="0 0 24 24" fill="currentColor"><path d="M7.076 21.337H2.47a.641.641 0 0 1-.633-.74L4.944.901C5.026.382 5.474 0 5.998 0h7.46c2.57 0 4.578.543 5.69 1.81 1.01 1.15 1.304 2.42 1.012 4.287-.023.143-.047.288-.077.437-.983 5.05-4.349 6.797-8.647 6.797h-2.19c-.524 0-.968.382-1.05.9l-1.12 7.106zm14.146-14.42a3.35 3.35 0 0 0-.607-.541c-.013.076-.026.175-.041.254-.59 3.025-2.566 6.082-8.558 6.082H9.825l-1.48 9.354h3.53l.964-6.104h2.282c4.947 0 7.878-2.394 8.796-7.145a5.58 5.58 0 0 0-.695-1.9z"/></svg>,
-    details: ["Email: romaboma242@gmail.com"],
-  },
-  { name: "Credit Card", icon: <svg className="h-6 w-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.5}><rect x="1" y="4" width="22" height="16" rx="2"/><path d="M1 10h22"/></svg> },
-  {
-    name: "Zelle",
-    icon: <svg className="h-6 w-6" viewBox="0 0 24 24" fill="currentColor"><path d="M13.56 2H4.5L2 12.04h6.31L3.56 22H19.5l2.5-10.04h-6.31L20.44 2h-6.88z"/></svg>,
-    details: ["Scan the QR code below using your bank app"],
-    qrUrl: zelleQr,
-    isScreenshot: true,
-  },
-  {
-    name: "Venmo",
-    icon: <svg className="h-6 w-6" viewBox="0 0 24 24" fill="currentColor"><path d="M19.07 2c.8 1.32 1.16 2.68 1.16 4.4 0 5.48-4.68 12.6-8.48 17.6H4.93L2 2.96l6.32-.6 1.56 12.68C11.32 12.2 13.63 7.4 13.63 4c0-1.08-.16-1.92-.44-2.64L19.07 2z"/></svg>,
-    details: ["Scan the QR code below in Venmo app"],
-    qrUrl: venmoQr,
-    isScreenshot: true,
-  },
-  {
-    name: "Bank Transfer",
-    icon: <svg className="h-6 w-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.5}><path strokeLinecap="round" strokeLinejoin="round" d="M12 21v-8.25M15.75 21v-8.25M8.25 21v-8.25M3 9l9-6 9 6m-1.5 12V10.332A48.36 48.36 0 0 0 12 9.75c-2.551 0-5.056.2-7.5.582V21M3 21h18M12 6.75h.008v.008H12V6.75Z" /></svg>,
-    details: [
-      "Account: 20000043505429",
-      "Holder: Haikou Weiyu Trading Co., Ltd.",
-      "Bank: JPMorgan Chase Bank N.A. New York",
-      "Address: 270 Park Ave. New York, NY 10017",
-      "Account Type: Checking",
-      "SWIFT/BIC: CHASUS33",
-      "ACH Routing: 028000024",
-      "Wire Routing: 021000021",
-    ],
-  },
-  {
-    name: "Cash App",
-    icon: <svg className="h-6 w-6" viewBox="0 0 24 24" fill="currentColor"><path d="M14.25 2.84a9 9 0 1 0 0 18.32A9 9 0 0 0 14.25 2.84ZM12 4.5a7.5 7.5 0 1 1 0 15 7.5 7.5 0 0 1 0-15Zm.97 3.72-.3 1.06a3.17 3.17 0 0 1 1.96 1.03l-1.05.9a1.87 1.87 0 0 0-1.3-.56c-.48 0-.78.22-.78.55 0 .9 3.22.57 3.22 2.76 0 1.08-.8 1.87-2.05 2.06l-.3 1.08h-1.1l.3-1.1a3.6 3.6 0 0 1-2.24-1.2l1.07-.9c.4.5.96.82 1.6.82.56 0 .92-.25.92-.62 0-.94-3.22-.58-3.22-2.78 0-1.04.77-1.82 1.97-2.02l.3-1.08h1.0z"/></svg>,
-    details: ["Cash App: $romabomaye242"],
-  },
-];
-
-function CollectionToolbar() {
-  const [inStock, setInStock] = useState(true);
-  const [sort, setSort] = useState("Default");
-  const [show, setShow] = useState("20");
-  return (
-    <div className="flex flex-wrap items-center gap-3 text-xs">
-      <label className="flex cursor-pointer items-center gap-2 border border-border bg-card px-3 py-2 hover:border-gold">
-        <input type="checkbox" checked={inStock} onChange={(e) => setInStock(e.target.checked)} className="accent-burgundy" />
-        In stock only
-      </label>
-      <select value={sort} onChange={(e) => setSort(e.target.value)} className="border border-border bg-card px-3 py-2 text-xs font-medium text-foreground hover:border-gold focus:outline-none">
-        <option>Default</option>
-        <option>Price: Low to High</option>
-        <option>Price: High to Low</option>
-        <option>Newest</option>
-      </select>
-      <select value={show} onChange={(e) => setShow(e.target.value)} className="border border-border bg-card px-3 py-2 text-xs font-medium text-foreground hover:border-gold focus:outline-none">
-        <option>20</option>
-        <option>40</option>
-        <option>All</option>
-      </select>
     </div>
   );
 }
@@ -445,15 +306,6 @@ function FeaturesStrip({ wa }: { wa: string }) {
   );
 }
 
-function utf8Base64Encode(value: string) {
-  const bytes = new TextEncoder().encode(value);
-  let binary = "";
-  for (const byte of bytes) {
-    binary += String.fromCharCode(byte);
-  }
-  return btoa(binary);
-}
-
 function ProductCard({ p, index }: { p: Product; index: number }) {
   const id = utf8Base64Encode(JSON.stringify({ title: p.title, price: p.price, tag: p.tag ?? "Luxury", imgIndex: index }));
   return (
@@ -474,22 +326,19 @@ function ProductCard({ p, index }: { p: Product; index: number }) {
           <span>{p.tag ? `${p.tag} Piece` : "Premium"}</span>
           <span className="text-gold">WhatsApp</span>
         </div>
-        <p className="mt-3 text-sm leading-relaxed text-foreground/80">Tap to enquire and reserve this product directly via WhatsApp.</p>
+        <p className="mt-3 text-sm leading-relaxed text-foreground/80">Tap to enquire and reserve this product via WhatsApp.</p>
       </div>
     </a>
   );
 }
 
-function ProductSection({ id, title, subtitle, products, showToolbar }: { id: string; title: string; subtitle: string; products: Product[]; showToolbar?: boolean }) {
+function ProductSection({ id, title, subtitle, products }: { id: string; title: string; subtitle: string; products: Product[] }) {
   return (
     <section id={id} className="border-b border-border">
       <div className="mx-auto max-w-7xl px-4 py-16 md:py-20">
-        <div className="mb-10 flex flex-wrap items-end justify-between gap-4">
-          <div>
-            <p className="mb-2 text-[10px] font-semibold uppercase tracking-[0.35em] text-gold">— {title}</p>
-            <h2 className="text-4xl tracking-tight text-ink md:text-5xl" style={{ fontFamily: "var(--font-display)" }}>{subtitle}</h2>
-          </div>
-          {showToolbar && <CollectionToolbar />}
+        <div className="mb-10">
+          <p className="mb-2 text-[10px] font-semibold uppercase tracking-[0.35em] text-gold">— {title}</p>
+          <h2 className="text-4xl tracking-tight text-ink md:text-5xl" style={{ fontFamily: "var(--font-display)" }}>{subtitle}</h2>
         </div>
         <div className="grid grid-cols-1 gap-x-4 gap-y-8 sm:grid-cols-2 lg:grid-cols-4">
           {products.map((p, i) => <ProductCard key={i} p={p} index={i} />)}
@@ -499,18 +348,6 @@ function ProductSection({ id, title, subtitle, products, showToolbar }: { id: st
     </section>
   );
 }
-
-const HOME_CATEGORIES = [
-  { slug: "bags",        title: "Bags",        img: brandBottega },
-  { slug: "shoes",       title: "Shoes",       img: brandShoes },
-  { slug: "jewelry",     title: "Jewelry",     img: brandJewellery },
-  { slug: "watches",     title: "Watches",     img: brandWatch },
-  { slug: "clothes",     title: "Clothes",     img: brandCloth },
-  { slug: "hats",        title: "Hats",        img: brandHats },
-  { slug: "scarfs",      title: "Scarfs",      img: brandScarf },
-  { slug: "sunglasses",  title: "Sunglasses",  img: brandSunglasses },
-  { slug: "belts",       title: "Belts",       img: brandBelt },
-];
 
 function CategoriesGrid() {
   return (
@@ -536,34 +373,6 @@ function CategoriesGrid() {
   );
 }
 
-function brandLogoInitials(name: string) {
-  const known: Record<string, string> = {
-    "Louis Vuitton": "LV", "Bottega Veneta": "BV", "Saint Laurent": "SL",
-    "Van Cleef & Arpels": "VA", "Tiffany & Co": "TC", "Hermès": "H",
-    "Loro Piana": "LP", "The Row": "TR", "Balenciaga": "BB", "Patek Philippe": "PP",
-    "Tag Heuer": "TH",
-  };
-  if (known[name]) return known[name];
-  return name.split(/\s+/).filter(Boolean).map((w) => w[0]).join("").slice(0, 2).toUpperCase();
-}
-
-function brandLogoColor(name: string) {
-  const colors: Record<string, string> = {
-    "Louis Vuitton": "#3c2a1a", "Chanel": "#000000", "Hermès": "#e78a00",
-    "Dior": "#4f4f4f", "Gucci": "#18412f", "Prada": "#1c1f25",
-    "Celine": "#0b0b0b", "Saint Laurent": "#101010", "Bottega Veneta": "#2f2d28",
-    "Loewe": "#332d27", "Cartier": "#8b0000", "Bvlgari": "#1a1a6e",
-    "Rolex": "#155724", "Omega": "#003366", "Burberry": "#8b6914",
-    "Loro Piana": "#4a3728", "Fendi": "#8b7536", "Valentino": "#8b0000",
-  "Chloé": "#c4956a", "Goyard": "#2d5a27",
-    "Messika": "#b8860b", "Tiffany & Co": "#0abab5", "Van Cleef & Arpels": "#1a1a2e",
-    "Patek Philippe": "#1a2744", "Tag Heuer": "#cc0000",
-  };
-  if (colors[name]) return colors[name];
-  const hash = name.split("").reduce((acc, c) => acc + c.charCodeAt(0), 0);
-  return `hsl(${hash % 360} 40% 30%)`;
-}
-
 function BrandsStrip({ brands: _brands }: { brands: string[] }) {
   return (
     <section id="brands" className="border-b border-border" style={{ background: "linear-gradient(180deg, var(--secondary), var(--background))" }}>
@@ -575,17 +384,10 @@ function BrandsStrip({ brands: _brands }: { brands: string[] }) {
         </div>
         <div className="grid grid-cols-2 gap-px bg-border sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6">
           {FEATURED_BRANDS.map((brand) => (
-            <a
-              key={brand}
-              href={`/brand/${brandToSlug(brand)}`}
+            <a key={brand} href={`/brand/${brandToSlug(brand)}`}
               className="group flex flex-col items-center justify-center gap-3 bg-card px-4 py-8 text-center transition hover:bg-secondary"
             >
-              <span
-                className="text-base font-medium tracking-wide text-ink transition group-hover:text-burgundy"
-                style={{ fontFamily: "var(--font-display)", fontStyle: "italic" }}
-              >
-                {brand}
-              </span>
+              <span className="text-base font-medium tracking-wide text-ink transition group-hover:text-burgundy" style={{ fontFamily: "var(--font-display)", fontStyle: "italic" }}>{brand}</span>
               <span className="h-px w-8 bg-gold opacity-0 transition-all duration-300 group-hover:w-12 group-hover:opacity-100" />
             </a>
           ))}
@@ -627,53 +429,6 @@ function ValueProps() {
   );
 }
 
-function CTASection({ wa, waLink }: { wa: string; waLink: string }) {
-  return (
-    <section id="contact" className="border-b border-border bg-card">
-      <div className="mx-auto max-w-7xl px-4 py-24 text-center">
-        <p className="mb-3 text-[10px] font-semibold uppercase tracking-[0.35em] text-gold">— Ready to Order?</p>
-        <h2 className="mx-auto max-w-3xl text-5xl tracking-tight text-ink md:text-6xl" style={{ fontFamily: "var(--font-display)" }}>
-          Request your luxury item with <span className="italic text-burgundy">private WhatsApp support.</span>
-        </h2>
-        <p className="mx-auto mt-5 max-w-xl text-muted-foreground">
-          We accept orders exclusively via WhatsApp for the most personal, white-glove service.
-        </p>
-        <a href={waLink} className="mt-9 inline-flex items-center gap-2 px-10 py-4 text-xs font-semibold uppercase tracking-[0.25em] text-cream shadow-xl transition hover:translate-y-[-1px]" style={{ background: "var(--gradient-luxe)", boxShadow: "var(--shadow-luxe)" }}>
-          <MessageCircle className="h-4 w-4" /> Chat on WhatsApp — {wa}
-        </a>
-        <p className="mt-10 text-[10px] font-semibold uppercase tracking-[0.3em] text-muted-foreground">Accepted Payments</p>
-        <div className="mx-auto mt-4 grid max-w-4xl gap-6 lg:grid-cols-2">
-          {PAYMENT_METHODS.map((m) => (
-            <div key={m.name} className="rounded-3xl border border-border bg-background p-6 text-center shadow-sm transition hover:border-gold hover:shadow-lg">
-              <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-2xl bg-gold/10 text-burgundy">{m.icon}</div>
-              <div className="mt-4 text-sm font-semibold uppercase tracking-[0.25em] text-foreground">{m.name}</div>
-              {m.details && (
-                <div className="mt-3 space-y-1 text-[11px] leading-5 text-muted-foreground">
-                  {m.details.map((line) => (
-                    <div key={line}>{line}</div>
-                  ))}
-                </div>
-              )}
-              {m.qrUrl && (
-                <img src={m.qrUrl} alt={`${m.name} QR code`} className={`mx-auto mt-4 rounded-3xl border border-border object-cover ${m.isScreenshot ? "w-full max-w-xs" : "h-40 w-40"}`} />
-              )}
-            </div>
-          ))}
-        </div>
-      </div>
-    </section>
-  );
-}
-
-const REVIEWS = [
-  { name: "Sarah M.", location: "New York, USA", rating: 5, text: "Absolutely love my Chanel bag! Real photos were sent before shipping and it arrived perfectly packed. 10/10 service.", item: "Chanel Classic Flap" },
-  { name: "Fatima A.", location: "Dubai, UAE", rating: 5, text: "Fast response on WhatsApp, very professional. The Hermès Birkin I ordered is stunning. Will definitely order again.", item: "Hermès Birkin 30" },
-  { name: "Emma L.", location: "London, UK", rating: 5, text: "I was skeptical at first but they sent real product photos before dispatch. Package arrived in 10 days. Highly recommend!", item: "LV Neverfull MM" },
-  { name: "Priya K.", location: "Mumbai, India", rating: 5, text: "Best sourcing service I've used. Got my Dior bag at a great price with full photo confirmation. Super happy!", item: "Dior Lady D-Joy" },
-  { name: "Jessica R.", location: "Toronto, Canada", rating: 5, text: "Communication was perfect throughout. My Gucci loafers arrived beautifully wrapped. Will be ordering more!", item: "Gucci Horsebit Loafer" },
-  { name: "Nour H.", location: "Riyadh, KSA", rating: 5, text: "Trustworthy seller, quick replies and honest advice. My Saint Laurent bag is perfect. Couldn't be happier.", item: "Saint Laurent Lou Camera" },
-];
-
 function Reviews() {
   return (
     <section className="border-b border-border bg-card">
@@ -693,16 +448,12 @@ function Reviews() {
           {REVIEWS.map((r) => (
             <div key={r.name} className="rounded-2xl border border-border bg-background p-6 shadow-sm transition hover:border-gold hover:shadow-md">
               <div className="flex items-center justify-between mb-4">
-                <div className="flex">
-                  {[1,2,3,4,5].map((s) => <Star key={s} className="h-4 w-4 fill-gold text-gold" />)}
-                </div>
+                <div className="flex">{[1,2,3,4,5].map((s) => <Star key={s} className="h-4 w-4 fill-gold text-gold" />)}</div>
                 <span className="rounded-full bg-gold/10 px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wider text-gold">{r.item}</span>
               </div>
               <p className="text-sm leading-relaxed text-muted-foreground">&ldquo;{r.text}&rdquo;</p>
               <div className="mt-4 flex items-center gap-3 border-t border-border pt-4">
-                <div className="grid h-9 w-9 shrink-0 place-items-center rounded-full bg-burgundy text-xs font-bold text-cream">
-                  {r.name[0]}
-                </div>
+                <div className="grid h-9 w-9 shrink-0 place-items-center rounded-full bg-burgundy text-xs font-bold text-cream">{r.name[0]}</div>
                 <div>
                   <div className="text-sm font-semibold text-ink">{r.name}</div>
                   <div className="text-[11px] text-muted-foreground">{r.location}</div>
@@ -716,7 +467,40 @@ function Reviews() {
   );
 }
 
-function Footer({ settings, activeBrands }: { settings: ReturnType<typeof getSettings>; activeBrands: string[] }) {
+function CTASection({ wa, waLink }: { wa: string; waLink: string }) {
+  return (
+    <section id="contact" className="border-b border-border bg-card">
+      <div className="mx-auto max-w-7xl px-4 py-24 text-center">
+        <p className="mb-3 text-[10px] font-semibold uppercase tracking-[0.35em] text-gold">— Ready to Order?</p>
+        <h2 className="mx-auto max-w-3xl text-5xl tracking-tight text-ink md:text-6xl" style={{ fontFamily: "var(--font-display)" }}>
+          Request your luxury item with <span className="italic text-burgundy">private WhatsApp support.</span>
+        </h2>
+        <p className="mx-auto mt-5 max-w-xl text-muted-foreground">
+          We accept orders exclusively via WhatsApp for the most personal, white-glove service.
+        </p>
+        <a href={waLink} className="mt-9 inline-flex items-center gap-2 px-10 py-4 text-xs font-semibold uppercase tracking-[0.25em] text-cream shadow-xl transition hover:translate-y-[-1px]" style={{ background: "var(--gradient-luxe)", boxShadow: "var(--shadow-luxe)" }}>
+          <MessageCircle className="h-4 w-4" /> Chat on WhatsApp — {wa}
+        </a>
+        <p className="mt-10 text-[10px] font-semibold uppercase tracking-[0.3em] text-muted-foreground">Accepted Payments</p>
+        <div className="mx-auto mt-4 grid max-w-4xl gap-6 lg:grid-cols-3">
+          {PAYMENT_METHODS.map((m) => (
+            <div key={m.name} className="rounded-3xl border border-border bg-background p-6 text-center shadow-sm transition hover:border-gold hover:shadow-lg">
+              <div className="mt-2 text-sm font-semibold uppercase tracking-[0.25em] text-foreground">{m.name}</div>
+              <div className="mt-3 space-y-1 text-[11px] leading-5 text-muted-foreground">
+                {m.details.map((line) => <div key={line}>{line}</div>)}
+              </div>
+              {m.qrUrl && (
+                <img src={m.qrUrl} alt={`${m.name} QR`} className="mx-auto mt-4 w-full max-w-xs rounded-3xl border border-border object-cover" />
+              )}
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function Footer({ settings, activeBrands: _activeBrands }: { settings: ReturnType<typeof getSettings>; activeBrands: string[] }) {
   return (
     <footer className="text-cream" style={{ background: "var(--gradient-luxe)" }}>
       <div className="mx-auto max-w-7xl px-4 py-16">
@@ -725,18 +509,16 @@ function Footer({ settings, activeBrands }: { settings: ReturnType<typeof getSet
             <div className="flex items-center gap-3">
               <img src={logoImg} alt="Premium Designer Bags" className="h-10 w-10 rounded-full object-cover" />
             </div>
-            <p className="mt-4 text-sm leading-relaxed opacity-75">
-              Curated designer fashion with premium sourcing, worldwide delivery, and fast support.
-            </p>
+            <p className="mt-4 text-sm leading-relaxed opacity-75">Curated designer fashion with premium sourcing, worldwide delivery, and fast support.</p>
             <div className="mt-5 flex gap-3">
-              <a href={settings.instagram} target="_blank" rel="noopener noreferrer" aria-label="Instagram" className="border border-gold/40 p-2 transition hover:bg-gold hover:text-burgundy-deep">
+              <a href={settings.instagram} target="_blank" rel="noopener noreferrer" className="border border-gold/40 p-2 transition hover:bg-gold">
                 <svg className="h-4 w-4" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
               </a>
-              <a href={settings.tiktok} target="_blank" rel="noopener noreferrer" aria-label="TikTok" className="border border-gold/40 p-2 transition hover:bg-gold hover:text-burgundy-deep">
-                <svg className="h-4 w-4" viewBox="0 0 24 24" fill="currentColor"><path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-2.88 2.5 2.89 2.89 0 0 1-2.89-2.89 2.89 2.89 0 0 1 2.89-2.89c.28 0 .54.04.79.1V9.01a6.33 6.33 0 0 0-.79-.05 6.34 6.34 0 0 0-6.34 6.34 6.34 6.34 0 0 0 6.34 6.34 6.34 6.34 0 0 0 6.33-6.34V8.69a8.18 8.18 0 0 0 4.78 1.52V6.75a4.85 4.85 0 0 1-1.01-.06z"/></svg>
+              <a href={settings.whatsappLink} className="border border-gold/40 p-2 transition hover:bg-gold"><MessageCircle className="h-4 w-4" /></a>
+              <a href={settings.tiktok} target="_blank" rel="noopener noreferrer" className="border border-gold/40 p-2 transition hover:bg-gold">
+                <svg className="h-4 w-4" viewBox="0 0 24 24" fill="currentColor"><path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-2.88 2.5 2.89 2.89 0 0 1-2.89-2.89 2.89 2.89 0 0 1 2.89-2.89c.28 0 .54.04.79.1V9.01a6.33 6.33 0 0 0-.79-.05 6.34 6.34 0 0 0-6.34 6.34 6.34 6.34 0 0 0 6.34 6.34 6.34 6.34 0 0 0 6.33-6.34V8.69a8.18 8.18 0 0 0 4.78 1.52V6.74a4.85 4.85 0 0 1-1.01-.05z"/></svg>
               </a>
-              <a href={settings.whatsappLink} target="_blank" rel="noopener noreferrer" aria-label="WhatsApp" className="border border-gold/40 p-2 transition hover:bg-gold hover:text-burgundy-deep"><MessageCircle className="h-4 w-4" /></a>
-              <a href={`mailto:${settings.email}`} aria-label="Email" className="border border-gold/40 p-2 transition hover:bg-gold hover:text-burgundy-deep"><Mail className="h-4 w-4" /></a>
+              <a href={`mailto:${settings.email}`} className="border border-gold/40 p-2 transition hover:bg-gold"><Mail className="h-4 w-4" /></a>
             </div>
           </div>
           <div>
@@ -768,7 +550,6 @@ function Footer({ settings, activeBrands }: { settings: ReturnType<typeof getSet
               <li className="flex items-start gap-2"><MessageCircle className="mt-0.5 h-4 w-4 shrink-0 text-gold" /> WhatsApp only: {settings.whatsapp}</li>
               <li className="flex items-start gap-2"><Mail className="mt-0.5 h-4 w-4 shrink-0 text-gold" /> {settings.email}</li>
             </ul>
-            <p className="mt-4 text-xs uppercase tracking-[0.2em] opacity-70">Payments: PayPal · Credit Card · Zelle · Venmo · Bank · Cash App</p>
           </div>
         </div>
         <div className="mt-12 flex flex-col items-center justify-between gap-3 border-t border-gold/20 pt-6 text-xs opacity-70 sm:flex-row">
@@ -779,4 +560,3 @@ function Footer({ settings, activeBrands }: { settings: ReturnType<typeof getSet
     </footer>
   );
 }
-
