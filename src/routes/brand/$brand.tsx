@@ -127,20 +127,23 @@ function BrandPage() {
   useEffect(() => {
     const load = () =>
       getProducts().then((data) => {
-        // Find products whose tag slugifies to this brandSlug
         const matched = data.filter(
           (p) => p.inStock !== false && brandToSlug(p.tag) === brandSlug
         );
         setDbProducts(matched);
-        if (matched.length > 0 && !resolvedBrand) setDbBrandName(matched[0].tag);
+        if (matched.length > 0) setDbBrandName(matched[0].tag);
       });
     load();
+    window.addEventListener("focus", load);
     const channel = supabase
-      .channel(`brand-${brandSlug}`)
+      .channel(`brand-${brandSlug}-${Date.now()}`)
       .on("postgres_changes", { event: "*", schema: "public", table: "products" }, load)
       .subscribe();
-    return () => { supabase.removeChannel(channel); };
-  }, [brandSlug, resolvedBrand]);
+    return () => {
+      window.removeEventListener("focus", load);
+      supabase.removeChannel(channel);
+    };
+  }, [brandSlug]);
 
   const brand = resolvedBrand ?? dbBrandName;
 
@@ -151,16 +154,17 @@ function BrandPage() {
     return acc;
   }, {});
 
-  // Catalog static products grouped by category
-  const catalogByCategory = brand ? getBrandProductsByCategory(brand) : {};
+  // Only show DB products, no catalog fallback
+  const hasDbProducts = dbProducts.length > 0;
+  const catalogByCategory: Record<string, never[]> = {};
 
-  // Merge: DB products take priority; fill remaining from catalog for any category not covered by DB
+  const HIDDEN_SECTIONS = ["bestsellers"];
   const allCategories = Array.from(
     new Set([
       ...BRAND_CATEGORY_ORDER.filter((c) => catalogByCategory[c]?.length || dbByCategory[c]?.length),
       ...Object.keys(dbByCategory),
     ])
-  );
+  ).filter((c) => !HIDDEN_SECTIONS.includes(c.toLowerCase()));
 
   if (!brand) {
     return (

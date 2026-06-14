@@ -1,5 +1,5 @@
-import { getSettings, defaultSettings, getSiteBrands } from "@/lib/store";
-import { BESTSELLERS, SHOES, CATEGORY_PAGES, BRANDS, FEATURED_BRANDS, brandToSlug } from "@/lib/catalog";
+import { getSettings, defaultSettings, getSiteBrands, getProducts, type Product } from "@/lib/store";
+import { CATEGORY_PAGES, BRANDS, FEATURED_BRANDS, brandToSlug } from "@/lib/catalog";
 import { useState, useEffect } from "react";
 import { getCartCount } from "@/lib/cart-store";
 import { Menu, X, Search, ShoppingBag, MapPin, Phone, ChevronDown, Truck, ShieldCheck, MessageCircle, RotateCcw, Mail, Star, Sparkles } from "lucide-react";
@@ -78,6 +78,15 @@ export default function HomePage() {
   const settings = getSettings();
   const wa = settings.whatsappLink || defaultSettings.whatsappLink;
   const activeBrands = getSiteBrands() ?? BRANDS;
+  const [bestsellers, setBestsellers] = useState<Product[]>([]);
+  const [shoes, setShoes] = useState<Product[]>([]);
+
+  useEffect(() => {
+    getProducts().then((all) => {
+      setBestsellers(all.filter((p) => p.category === "bags" || p.category === "collection").slice(0, 8));
+      setShoes(all.filter((p) => p.category === "shoes").slice(0, 8));
+    });
+  }, []);
 
   return (
     <div className="min-h-screen bg-background text-foreground" style={{ fontFamily: "var(--font-sans)" }}>
@@ -88,8 +97,8 @@ export default function HomePage() {
       <FeaturesStrip wa={settings.whatsapp} />
       <CategoriesGrid />
       <BrandsStrip brands={activeBrands} />
-      <ProductSection id="bestsellers" title="Bestsellers" subtitle="Client Favourites" products={BESTSELLERS} />
-      <ProductSection id="shoes" title="Shoes" subtitle="Designer Footwear" products={SHOES.slice(0, 8)} />
+      <ProductSection id="bestsellers" title="Bestsellers" subtitle="Client Favourites" products={bestsellers} />
+      <ProductSection id="shoes" title="Shoes" subtitle="Designer Footwear" products={shoes} />
       <ValueProps />
       <Reviews />
       <CTASection wa={settings.whatsapp} waLink={settings.whatsappLink} />

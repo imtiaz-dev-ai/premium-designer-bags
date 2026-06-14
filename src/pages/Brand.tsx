@@ -1,6 +1,8 @@
 import { useParams, useNavigate } from "react-router-dom";
+import { useState, useEffect } from "react";
 import { MessageCircle, ChevronLeft } from "lucide-react";
-import { FEATURED_BRANDS, BRAND_CATEGORY_ORDER, getBrandProductsByCategory, slugToBrand, brandToSlug, utf8Base64Encode } from "@/lib/catalog";
+import { FEATURED_BRANDS, slugToBrand, brandToSlug, utf8Base64Encode } from "@/lib/catalog";
+import { getProducts, type Product } from "@/lib/store";
 import SiteHeader from "@/components/SiteHeader";
 
 const WHATSAPP_LINK = "https://wa.me/393515439347";
@@ -9,6 +11,11 @@ export default function BrandPage() {
   const { brand: brandSlug = "" } = useParams();
   const navigate = useNavigate();
   const brand = slugToBrand(decodeURIComponent(brandSlug));
+  const [products, setProducts] = useState<Product[]>([]);
+
+  useEffect(() => {
+    getProducts().then(setProducts);
+  }, []);
 
   if (!brand) {
     return (
@@ -24,8 +31,14 @@ export default function BrandPage() {
     );
   }
 
-  const byCategory = getBrandProductsByCategory(brand);
-  const categories = BRAND_CATEGORY_ORDER.filter((cat) => byCategory[cat]?.length);
+  const brandProducts = products.filter((p) => p.tag === brand);
+  const byCategory: Record<string, Product[]> = {};
+  for (const p of brandProducts) {
+    const cat = p.category || "Other";
+    if (!byCategory[cat]) byCategory[cat] = [];
+    byCategory[cat].push(p);
+  }
+  const categories = Object.keys(byCategory);
 
   return (
     <div className="min-h-screen bg-background text-foreground" style={{ fontFamily: "var(--font-sans)" }}>
@@ -77,19 +90,19 @@ export default function BrandPage() {
                 </div>
                 <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
                   {byCategory[cat].map((product) => {
-                    const productId = utf8Base64Encode(JSON.stringify({ title: product.name, price: product.price, tag: product.brand, img: product.images[0] }));
+                    const productId = utf8Base64Encode(JSON.stringify({ title: product.title, price: product.price, tag: product.tag, img: product.img }));
                     return (
                       <div key={product.id} className="group overflow-hidden rounded-[1.5rem] border border-border bg-card shadow-sm transition hover:-translate-y-1 hover:shadow-xl">
                         <a href={`/products/${productId}`}>
                           <div className="relative overflow-hidden">
-                            <img src={product.images[0]} alt={product.name} className="h-64 w-full object-cover transition duration-500 group-hover:scale-105" />
+                            <img src={product.img} alt={product.title} className="h-64 w-full object-cover transition duration-500 group-hover:scale-105" />
                             <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/60 to-transparent px-4 py-3">
                               <span className="text-[10px] font-semibold uppercase tracking-[0.3em] text-gold">{cat}</span>
                             </div>
                           </div>
                         </a>
                         <div className="p-5">
-                          <h3 className="text-sm font-semibold text-ink leading-snug" style={{ fontFamily: "var(--font-display)" }}>{product.name}</h3>
+                          <h3 className="text-sm font-semibold text-ink leading-snug" style={{ fontFamily: "var(--font-display)" }}>{product.title}</h3>
                           <p className="mt-1 text-xs text-muted-foreground line-clamp-2">{product.description}</p>
                           <div className="mt-4 flex items-center justify-between">
                             <span className="text-lg font-bold text-burgundy">{product.price}</span>

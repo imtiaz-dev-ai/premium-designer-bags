@@ -583,187 +583,25 @@ export const NAV_CATEGORIES = [
   { name: "Clothes", slug: "clothes", items: ["Shirts", "Pants/Shorts", "Coats/Jackets", "Loro Piana", "LV", "BV"] },
 ];
 
-export const BESTSELLERS: CatalogProduct[] = [
-  { title: "LV Neverfull MM Tote M27358", price: "$369", tag: "LV", img: lvBag1 },
-  { title: "Chanel 19 Large Handbag — Burgundy Lambskin", price: "$289", tag: "Chanel", img: chanelBag1 },
-  { title: "Gucci GG Marmont Bag — Beige", price: "$490", tag: "Gucci", img: gucciBag2 },
-  { title: "Chanel Maxi Flapbag AS6233 — Blush", price: "$539", tag: "Chanel", img: chanelBag2 },
-  { title: "Saint Laurent Saddle — Caramel Calfskin", price: "$258", tag: "YSL", img: yslBag1 },
-  { title: "LV Pochette Métis M27357", price: "$349", tag: "LV", img: lvBag4 },
-];
+export const BESTSELLERS: CatalogProduct[] = [];
 
-export const SHOES: CatalogProduct[] = [
-  { title: "Hermès Oran Sandal — Gold Epsom Leather", price: "$389", tag: "Hermès", img: hermesShoe1 },
-  { title: "Hermès Izmir Sandal — Noir", price: "$359", tag: "Hermès", img: hermesShoe2 },
-  { title: "Hermès Kelly Mule — Rose Gold", price: "$429", tag: "Hermès", img: hermesShoe3 },
-  { title: "Hermès Oran Flat Sandal — Beige", price: "$349", tag: "Hermès", img: hermesShoe4 },
-  { title: "Chanel Slingback Pump — Black & Beige Cap-Toe", price: "$329", tag: "Chanel", img: chanelShoe1 },
-  { title: "Chanel CC Logo Mule — White", price: "$299", tag: "Chanel", img: chanelShoe2 },
-  { title: "Chanel Cap-Toe Ballerina — Nude", price: "$279", tag: "Chanel", img: chanelShoe3 },
-  { title: "Chanel Quilted Sneaker — White", price: "$349", tag: "Chanel", img: chanelShoe4 },
-  { title: "Louis Vuitton Archlight 2.0 Sneaker — White", price: "$349", tag: "LV", img: lvShoe1 },
-  { title: "Louis Vuitton Stellar Mule — Beige", price: "$319", tag: "LV", img: lvShoe2 },
-  { title: "Louis Vuitton Bom Dia Flat Mule", price: "$289", tag: "LV", img: lvShoe3 },
-  { title: "Louis Vuitton Silhouette Ankle Boot", price: "$419", tag: "LV", img: lvShoe4 },
-  { title: "Gucci Horsebit 1953 Loafer — Brown", price: "$289", tag: "Gucci", img: gucciShoe1 },
-  { title: "Gucci Princetown Mule — Black GG", price: "$319", tag: "Gucci", img: gucciShoe2 },
-  { title: "Gucci Ace Sneaker — White", price: "$279", tag: "Gucci", img: gucciShoe3 },
-  { title: "Gucci GG Canvas Sneaker — Beige", price: "$299", tag: "Gucci", img: gucciShoe4 },
-  { title: "Gucci Horsebit Slide Sandal", price: "$259", tag: "Gucci", img: gucciShoe5 },
-  { title: "Gucci Interlocking G Sandal", price: "$269", tag: "Gucci", img: gucciShoe6 },
-  { title: "Gucci Platform Ankle Boot", price: "$389", tag: "Gucci", img: gucciShoe7 },
-  { title: "Gucci GG Mule — Beige", price: "$249", tag: "Gucci", img: gucciShoe8 },
-  { title: "Dior J'Adior Slingback Pump — Black Mesh", price: "$319", tag: "Dior", img: diorShoe1 },
-  { title: "Dior CD Mule — White Patent", price: "$289", tag: "Dior", img: diorShoe2 },
-  { title: "Dior Walk'n'Dior Sneaker — White", price: "$349", tag: "Dior", img: diorShoe3 },
-  { title: "Prada Monolith Brushed Boot — Black", price: "$429", tag: "Prada", img: pradaShoe1 },
-  { title: "Prada Slingback Pump — Nude", price: "$389", tag: "Prada", img: pradaShoe2 },
-  { title: "Prada Block Heel Mule — Black", price: "$349", tag: "Prada", img: pradaShoe3 },
-  { title: "Valentino Garavani Rockstud Pump — Nude", price: "$389", tag: "Valentino", img: valentinoShoe1 },
-  { title: "Valentino Garavani VLogo Sandal — Black", price: "$349", tag: "Valentino", img: valentinoShoe2 },
-];
+export const SHOES: CatalogProduct[] = [];
 
-export const COLLECTION: CatalogProduct[] = [
-  { title: "LV Neverfull MM Tote M27358 — 47×28×14 cm", price: "$369", tag: "LV", img: lvBag1 },
-  { title: "LV OnTheGo PM M28181", price: "$369", tag: "LV", img: lvBag2 },
-  { title: "LV Speedy 30 Soft Celebration M28379", price: "$349", tag: "LV", img: lvBag3 },
-  { title: "LV Pochette Métis M27357", price: "$349", tag: "LV", img: lvBag4 },
-  { title: "LV Side Trunk PM M27436", price: "$349", tag: "LV", img: lvBag5 },
-  { title: "Chanel 19 Large Handbag — Burgundy Lambskin", price: "$289", tag: "Chanel", img: chanelBag1 },
-  { title: "Chanel Classic Flap Medium — Black Caviar", price: "$780", tag: "Chanel", img: chanelBag3 },
-  { title: "Saint Laurent Saddle — Caramel Calfskin", price: "$258", tag: "YSL", img: yslBag1 },
-];
+export const COLLECTION: CatalogProduct[] = [];
 
-export const JEWELRY: CatalogProduct[] = [
-  { title: "Cartier Love Bracelet — Yellow Gold", price: "$6,200", tag: "Cartier", img: cartier1 },
-  { title: "Cartier Juste un Clou Bracelet", price: "$4,800", tag: "Cartier", img: cartier2 },
-  { title: "Cartier LOVE Ring — Rose Gold", price: "$2,150", tag: "Cartier", img: cartier3 },
-  { title: "Cartier Trinity Ring — Three Gold", price: "$1,950", tag: "Cartier", img: cartier4 },
-  { title: "Cartier Diamants Légers Necklace", price: "$3,100", tag: "Cartier", img: cartier5 },
-  { title: "Cartier Panthère Stud Earrings", price: "$2,400", tag: "Cartier", img: cartier6 },
-  { title: "Cartier Clash de Cartier Ring", price: "$1,800", tag: "Cartier", img: cartier7 },
-  { title: "Bvlgari B.zero1 Ring — White Gold", price: "$2,200", tag: "Bvlgari", img: bvlgari1 },
-  { title: "Bvlgari Serpenti Viper Bracelet", price: "$3,400", tag: "Bvlgari", img: bvlgari2 },
-  { title: "Bvlgari Divas Dream Necklace", price: "$4,100", tag: "Bvlgari", img: bvlgari3 },
-  { title: "Bvlgari Fiorever Ring — Rose Gold", price: "$1,900", tag: "Bvlgari", img: bvlgari4 },
-  { title: "Bvlgari Serpenti Earrings — Gold", price: "$2,700", tag: "Bvlgari", img: bvlgari5 },
-  { title: "Bvlgari Lucea Bracelet — Diamond", price: "$5,200", tag: "Bvlgari", img: bvlgari6 },
-  { title: "Messika Move Uno Diamond Ring", price: "$1,850", tag: "Messika", img: messika1 },
-  { title: "Messika My Twin Stud Earrings", price: "$2,100", tag: "Messika", img: messika2 },
-  { title: "Messika Move Classique Bracelet", price: "$3,200", tag: "Messika", img: messika3 },
-  { title: "Messika Gatsby Diamond Necklace", price: "$4,500", tag: "Messika", img: messika4 },
-  { title: "Messika Baby Move Pendant", price: "$1,650", tag: "Messika", img: messika5 },
-];
+export const JEWELRY: CatalogProduct[] = [];
 
-export const WATCHES: CatalogProduct[] = [
-  { title: "Cartier Ballon Bleu 33mm — Steel", price: "$6,900", tag: "Cartier", img: cartierWatch1 },
-  { title: "Cartier Panthère Watch — White Gold", price: "$8,500", tag: "Cartier", img: cartierWatch2 },
-  { title: "Cartier Tank Solo — Steel", price: "$3,200", tag: "Cartier", img: cartierWatch3 },
-  { title: "Cartier Clé de Cartier — Steel", price: "$5,400", tag: "Cartier", img: cartierWatch4 },
-  { title: "Cartier Watch 5", price: "$11,000", tag: "Cartier", img: cartierWatch5 },
-  { title: "Cartier Ronde Must — Steel", price: "$2,800", tag: "Cartier", img: cartierWatch6 },
-  { title: "Cartier Couple Watch Set", price: "$15,000", tag: "Cartier", img: cartierWatchCouple1 },
-  { title: "Cartier Couple Set II", price: "$14,500", tag: "Cartier", img: cartierWatchCouple2 },
-  { title: "Cartier Couple Set III", price: "$13,800", tag: "Cartier", img: cartierWatchCouple3 },
-  { title: "Cartier Couple Set IV", price: "$12,900", tag: "Cartier", img: cartierWatchCouple4 },
-];
+export const WATCHES: CatalogProduct[] = [];
 
-export const CLOTHES: CatalogProduct[] = [
-  { title: "Chanel Tweed Jacket — Ivory", price: "$1,890", tag: "Chanel", img: chanelCloth1 },
-  { title: "Chanel Bouclé Blazer — Black", price: "$2,150", tag: "Chanel", img: chanelCloth2 },
-  { title: "Chanel Silk Blouse — White", price: "$980", tag: "Chanel", img: chanelCloth3 },
-  { title: "Chanel CC Logo Dress — Beige", price: "$2,490", tag: "Chanel", img: chanelCloth4 },
-  { title: "Dior Bar Jacket — Powder Pink", price: "$2,350", tag: "Dior", img: diorCloth1 },
-  { title: "Dior Oblique Dress — Silk", price: "$1,980", tag: "Dior", img: diorCloth2 },
-  { title: "Dior CD Monogram Sweater — Cream", price: "$1,290", tag: "Dior", img: diorCloth3 },
-  { title: "Dior Tailored Trouser — Black", price: "$1,150", tag: "Dior", img: diorCloth4 },
-  { title: "Dior Toile de Jouy Blouse", price: "$1,450", tag: "Dior", img: diorCloth5 },
-  { title: "Dior Floral Midi Skirt", price: "$1,680", tag: "Dior", img: diorCloth6 },
-  { title: "Dior Wool Coat — Camel", price: "$3,200", tag: "Dior", img: diorCloth7 },
-  { title: "Dior Lady Dior Silk Shirt", price: "$1,390", tag: "Dior", img: diorCloth8 },
-];
+export const CLOTHES: CatalogProduct[] = [];
 
-export const HATS: CatalogProduct[] = [
-  { title: "LV Monogram Bucket Hat", price: "$389", tag: "LV", img: lvHat1 },
-  { title: "LV Damier Cap — Brown", price: "$349", tag: "LV", img: lvHat2 },
-  { title: "LV Signature Beanie — Cream", price: "$299", tag: "LV", img: lvHat3 },
-];
+export const HATS: CatalogProduct[] = [];
 
-export const SCARFS: CatalogProduct[] = [
-  { title: "LV Monogram Silk Scarf", price: "$289", tag: "LV", img: lvScarf1 },
-  { title: "LV Logomania Scarf — Blue", price: "$319", tag: "LV", img: lvScarf2 },
-  { title: "LV Silk Carré — Red", price: "$299", tag: "LV", img: lvScarf3 },
-  { title: "LV Silk Shawl — Cream", price: "$349", tag: "LV", img: lvScarf4 },
-  { title: "LV Monogram Stole — Ivory", price: "$379", tag: "LV", img: lvScarf5 },
-  { title: "LV Giant Scarf — Black", price: "$329", tag: "LV", img: lvScarf6 },
-  { title: "LV Silk Square — Multicolor", price: "$259", tag: "LV", img: lvScarf7 },
-  { title: "LV Long Silk Scarf — Brown", price: "$279", tag: "LV", img: lvScarf8 },
-  { title: "Luxury Silk Scarf — Floral", price: "$189", tag: "Silk", img: scarf1 },
-  { title: "Designer Scarf — Animal Print", price: "$219", tag: "Silk", img: scarf2 },
-  { title: "Cashmere Wrap — Camel", price: "$249", tag: "Cashmere", img: scarf3 },
-  { title: "Silk Bandana — Navy", price: "$159", tag: "Silk", img: scarf4 },
-  { title: "Wool Plaid Scarf — Grey", price: "$199", tag: "Wool", img: scarf5 },
-  { title: "Print Silk Scarf — Burgundy", price: "$229", tag: "Silk", img: scarf6 },
-  { title: "Oversized Silk Wrap — White", price: "$269", tag: "Silk", img: scarf7 },
-];
+export const SCARFS: CatalogProduct[] = [];
 
-export const SUNGLASSES: CatalogProduct[] = [
-  { title: "Chanel Round Sunglasses — Black", price: "$389", tag: "Chanel", img: chanelSun1 },
-  { title: "Chanel CC Logo Sunglasses — Tortoise", price: "$359", tag: "Chanel", img: chanelSun2 },
-  { title: "Chanel Oval Frame — Brown", price: "$349", tag: "Chanel", img: chanelSun3 },
-  { title: "Chanel Rectangle — Black", price: "$379", tag: "Chanel", img: chanelSun4 },
-  { title: "Chanel Cat Eye — Gold", price: "$369", tag: "Chanel", img: chanelSun5 },
-  { title: "Chanel Shield — White", price: "$399", tag: "Chanel", img: chanelSun6 },
-  { title: "Chanel Butterfly — Brown Gradient", price: "$359", tag: "Chanel", img: chanelSun7 },
-  { title: "Chanel Pearl Detail — Black", price: "$419", tag: "Chanel", img: chanelSun8 },
-  { title: "Chanel Square — Havana", price: "$349", tag: "Chanel", img: chanelSun9 },
-  { title: "Chanel Pilot — Gold", price: "$379", tag: "Chanel", img: chanelSun10 },
-  { title: "Chanel Rimless — Silver", price: "$429", tag: "Chanel", img: chanelSun11 },
-  { title: "Chanel Chain Detail — Black", price: "$449", tag: "Chanel", img: chanelSun12 },
-  { title: "Chanel Oversized Square — Black", price: "$389", tag: "Chanel", img: chanelSun13 },
-  { title: "Chanel Vintage Round — Gold", price: "$369", tag: "Chanel", img: chanelSun14 },
-  { title: "Chanel Geometric — Black", price: "$359", tag: "Chanel", img: chanelSun15 },
-  { title: "Chanel Wayfarer Style — Tortoise", price: "$349", tag: "Chanel", img: chanelSun16 },
-  { title: "Prada Symbole Sunglasses — Black", price: "$329", tag: "Prada", img: pradaSun1 },
-  { title: "Prada Minimal Baroque — White", price: "$349", tag: "Prada", img: pradaSun2 },
-  { title: "Prada Cat Eye — Brown Gradient", price: "$339", tag: "Prada", img: pradaSun3 },
-  { title: "Prada Oversized Square — Black", price: "$319", tag: "Prada", img: pradaSun4 },
-  { title: "Prada Oval — Tortoise", price: "$309", tag: "Prada", img: pradaSun5 },
-  { title: "Prada Shield — Silver Mirror", price: "$359", tag: "Prada", img: pradaSun6 },
-  { title: "Prada Geometric — Havana", price: "$329", tag: "Prada", img: pradaSun7 },
-  { title: "Prada Runway Rectangle — Black", price: "$349", tag: "Prada", img: pradaSun8 },
-  { title: "Prada Retro Round — Gold", price: "$319", tag: "Prada", img: pradaSun9 },
-  { title: "Prada Narrow Rectangle — Brown", price: "$299", tag: "Prada", img: pradaSun10 },
-  { title: "Prada Butterfly — Pink Gradient", price: "$339", tag: "Prada", img: pradaSun11 },
-  { title: "Prada Hexagonal — Blue Mirror", price: "$359", tag: "Prada", img: pradaSun12 },
-  { title: "Prada Wrap — Black", price: "$369", tag: "Prada", img: pradaSun13 },
-  { title: "Prada Aviator — Silver", price: "$329", tag: "Prada", img: pradaSun14 },
-];
+export const SUNGLASSES: CatalogProduct[] = [];
 
-export const BELTS: CatalogProduct[] = [
-  { title: "Hermès Constance Belt 32mm — Black Epsom", price: "$690", tag: "Hermès", img: hermesBelt1 },
-  { title: "Hermès H Belt Buckle 32mm — Gold", price: "$650", tag: "Hermès", img: hermesBelt2 },
-  { title: "Hermès Reversible Belt 38mm — Brown/Black", price: "$580", tag: "Hermès", img: hermesBelt3 },
-  { title: "Hermès Kelly Belt 18mm — Rose Gold", price: "$720", tag: "Hermès", img: hermesBelt4 },
-  { title: "Hermès Médor Belt 18mm — Noir Epsom", price: "$680", tag: "Hermès", img: hermesBelt5 },
-  { title: "Hermès H Belt 42mm — Havane", price: "$620", tag: "Hermès", img: hermesBelt6 },
-  { title: "Hermès Constance Slim 24mm — Etoupe", price: "$740", tag: "Hermès", img: hermesBelt7 },
-  { title: "Hermès In-the-Loop Belt — Tan", price: "$590", tag: "Hermès", img: hermesBelt8 },
-  { title: "Hermès Etrivière Belt 32mm — Gold", price: "$660", tag: "Hermès", img: hermesBelt9 },
-  { title: "Hermès Quizz Belt 32mm — Black", price: "$610", tag: "Hermès", img: hermesBelt10 },
-  { title: "LV Initiales Belt 40mm — Monogram", price: "$480", tag: "LV", img: lvBelt1 },
-  { title: "LV Initiales Belt 35mm — Damier", price: "$460", tag: "LV", img: lvBelt2 },
-  { title: "LV Pyramide Belt 40mm — Black", price: "$520", tag: "LV", img: lvBelt3 },
-  { title: "LV Circle Belt 35mm — Brown", price: "$490", tag: "LV", img: lvBelt4 },
-  { title: "LV Monogram Belt 30mm — Beige", price: "$440", tag: "LV", img: lvBelt5 },
-  { title: "LV Multiple Belt 35mm — Monogram", price: "$470", tag: "LV", img: lvBelt6 },
-  { title: "LV Reversible Belt 35mm — Black/Brown", price: "$510", tag: "LV", img: lvBelt7 },
-  { title: "LV Pont de Jour Belt 20mm — Nude", price: "$430", tag: "LV", img: lvBelt8 },
-  { title: "LV Essential Belt 40mm — Monogram", price: "$500", tag: "LV", img: lvBelt9 },
-  { title: "LV Ceinture Belt 30mm — Gold", price: "$460", tag: "LV", img: lvBelt10 },
-  { title: "LV Damier Graphite Belt 40mm", price: "$490", tag: "LV", img: lvBelt11 },
-  { title: "LV Monogram Canvas Belt 35mm", price: "$450", tag: "LV", img: lvBelt12 },
-];
+export const BELTS: CatalogProduct[] = [];
 
 export const ACCESSORIES: CatalogProduct[] = [];
 
@@ -804,93 +642,25 @@ function bp(brand: string, category: string, name: string, price: string, images
   return { id: `${brand}-${category}-${name}`.toLowerCase().replace(/[^a-z0-9]+/g, "-"), brand, category, name, price, images, description };
 }
 
-export const ALL_BRAND_PRODUCTS: BrandProduct[] = [
-  // ── Louis Vuitton ──
-  bp("Louis Vuitton", "Bags", "LV Neverfull MM", "$369", [lvBag1, lvBag2], "Iconic monogram canvas tote, spacious and versatile."),
-  bp("Louis Vuitton", "Bags", "LV OnTheGo PM", "$369", [lvBag3, lvBag4], "Structured tote with bold LV motif, perfect for everyday."),
-  bp("Louis Vuitton", "Bags", "LV Pochette Métis", "$349", [lvBag5, lvBag1], "Compact crossbody with vintage-inspired hardware."),
-  bp("Louis Vuitton", "Shoes", "LV Archlight Sneaker", "$349", [lvShoe1, lvShoe2], "Chunky sole sneaker with monogram canvas detail."),
-  bp("Louis Vuitton", "Shoes", "LV Stellar Mule", "$319", [lvShoe3, lvShoe4], "Slip-on mule with LV logo strap."),
-  bp("Louis Vuitton", "Belts", "LV Initiales Belt 40mm", "$480", [lvBelt1, lvBelt2], "Classic monogram canvas belt with gold-tone buckle."),
-  bp("Louis Vuitton", "Belts", "LV Pyramide Belt 40mm", "$520", [lvBelt3, lvBelt4], "Bold pyramid-stud belt in supple leather."),
-  // ── Chanel ──
-  bp("Chanel", "Bags", "Chanel Classic Flap Medium", "$780", [chanelBag3, chanelBag1], "The iconic quilted lambskin flap bag with interlocking CC."),
-  bp("Chanel", "Bags", "Chanel 19 Large Handbag", "$289", [chanelBag1, chanelBag2], "Relaxed yet luxurious multi-chain bag in lambskin."),
-  bp("Chanel", "Bags", "Chanel Boy Bag", "$620", [chanelBag6, chanelBagMain], "Edgy structured flap with ruthenium hardware."),
-  bp("Chanel", "Shoes", "Chanel Slingback Pump", "$329", [chanelShoe1, chanelShoe2], "Timeless cap-toe pump with CC logo."),
-  bp("Chanel", "Shoes", "Chanel Cap-Toe Ballerina", "$279", [chanelShoe3, chanelShoe4], "Ballet flat with signature two-tone cap toe."),
-
-  // ── Hermès ──
-  bp("Hermès", "Shoes", "Hermès Oran Sandal", "$389", [hermesShoe1, hermesShoe2], "Minimalist H-strap flat sandal in Epsom leather."),
-  bp("Hermès", "Shoes", "Hermès Izmir Sandal", "$359", [hermesShoe3, hermesShoe4], "Casual leather sandal with iconic Hermès H buckle."),
-  bp("Hermès", "Belts", "Hermès Constance Belt 32mm", "$690", [hermesBelt1, hermesBelt2], "Refined belt with Constance H buckle in Epsom leather."),
-  bp("Hermès", "Belts", "Hermès H Belt 42mm", "$620", [hermesBelt3, hermesBelt4], "Bold double-tour belt with signature H buckle."),
-  bp("Hermès", "Belts", "Hermès Kelly Belt 18mm", "$720", [hermesBelt5, hermesBelt6], "Delicate belt with gold Kelly buckle, ideal for evenings."),
-
-  // ── Gucci ──
-  bp("Gucci", "Bags", "Gucci GG Marmont Bag", "$490", [gucciBag2, gucciBag1], "Quilted Chevron leather bag with Double G hardware."),
-  bp("Gucci", "Bags", "Gucci Dionysus Mini", "$560", [gucciBag3, gucciBag4], "Compact shoulder bag with tiger-head closure."),
-  bp("Gucci", "Bags", "Gucci Blondie Top Handle", "$620", [gucciBag5, gucciBag1], "Structured bag with interlocking G logo."),
-  bp("Gucci", "Shoes", "Gucci Horsebit Loafer", "$289", [gucciShoe1, gucciShoe2], "Iconic horsebit loafer in GG canvas."),
-  bp("Gucci", "Shoes", "Gucci Ace Sneaker", "$279", [gucciShoe3, gucciShoe4], "Low-top leather sneaker with embroidered motif."),
-  bp("Gucci", "Belts", "Gucci GG Canvas Belt", "$380", [beltBrandGucciImg, hermesBelt1], "Classic GG Supreme canvas belt with gold buckle."),
-
-  // ── Prada ──
-  bp("Prada", "Bags", "Prada Galleria Bag", "$680", [pradaShoe1, pradaShoe2], "Structured Saffiano leather tote, a Prada icon."),
-  bp("Prada", "Shoes", "Prada Monolith Boot", "$429", [pradaShoe1, pradaShoe2], "Lug-sole leather boot with Re-Nylon panel."),
-  bp("Prada", "Shoes", "Prada Slingback Pump", "$389", [pradaShoe2, pradaShoe3], "Kitten heel pump with signature Prada plaque."),
-  bp("Prada", "Belts", "Prada Saffiano Belt", "$390", [beltBrandPradaImg, hermesBelt2], "Slim Saffiano leather belt with enamel triangle logo."),
-
-  // ── Saint Laurent ──
-  bp("Saint Laurent", "Bags", "YSL Saddle Bag", "$258", [yslBag1, yslBag2], "Smooth calfskin saddle-shape bag with YSL hardware."),
-  bp("Saint Laurent", "Bags", "YSL Lou Camera Bag", "$258", [yslBag3, yslBag4], "Quilted lambskin crossbody with YSL logo."),
-  bp("Saint Laurent", "Bags", "YSL Niki Medium", "$340", [yslBag5, yslBag1], "Crinkled vintage leather shoulder bag."),
-
-  // ── Celine ──
-  bp("Celine", "Bags", "Celine Triomphe Bag", "$689", [bagBrandCeline, chanelBag1], "Structured calfskin bag with gold Triomphe clasp."),
-  bp("Celine", "Bags", "Celine Classic Box Bag", "$750", [bagBrandCeline, chanelBag2], "Timeless box bag in smooth polished calfskin."),
-
-  // ── Bottega Veneta ──
-  bp("Bottega Veneta", "Bags", "BV Cassette Bag", "$560", [bagBrandBottega, chanelBag3], "Signature intrecciato woven leather crossbody."),
-  bp("Bottega Veneta", "Shoes", "BV Stretch Flat Sandal", "$359", [shoeBrandBottega, pradaShoe1], "Stretch lambskin flat sandal with BV weave."),
-  bp("Bottega Veneta", "Belts", "BV Intrecciato Belt", "$420", [beltBrandBottegaImg, hermesBelt3], "Woven Intrecciato leather belt in smooth calfskin."),
-  // ── Goyard ──
-  bp("Goyard", "Bags", "Goyard Saint Louis PM", "$680", [bagBrandGoyard, chanelBag1], "Classic open tote in signature Goyardine canvas."),
-  bp("Goyard", "Bags", "Goyard Belvedere Crossbody", "$590", [bagBrandGoyard, chanelBag2], "Structured crossbody bag in Goyardine canvas."),
-  // ── Fendi ──
-  bp("Fendi", "Bags", "Fendi Baguette Bag", "$480", [bagBrandFendi, chanelBag3], "The iconic shoulder bag that defined 90s fashion."),
-  bp("Fendi", "Shoes", "Fendi Baguette Sandal", "$309", [shoeBrandFendi, pradaShoe2], "FF Jacquard strap sandal inspired by the Baguette bag."),
-  bp("Fendi", "Belts", "Fendi FF Belt", "$360", [beltBrandFendiImg, hermesBelt4], "Classic FF monogram belt with reversible strap."),
-
-  // ── Valentino ──
-  bp("Valentino", "Bags", "Valentino Rockstud Bag", "$580", [bagBrandValentino, chanelBag1], "Signature rockstud-embellished leather tote."),
-  bp("Valentino", "Shoes", "Valentino Rockstud Pump", "$389", [valentinoShoe1, valentinoShoe2], "Stiletto pump with signature pyramid rockstud trim."),
-  bp("Valentino", "Shoes", "Valentino VLogo Sandal", "$349", [valentinoShoe2, valentinoShoe1], "Block heel sandal with gold VLogo buckle."),
-
-  // ── Chloé ──
-  bp("Chloé", "Bags", "Chloé Marcie Saddle Bag", "$480", [bagBrandChloe, chanelBag2], "Relaxed saddle bag in grained calfskin with stitching."),
-  bp("Chloé", "Bags", "Chloé Woody Tote", "$390", [bagBrandChloe, chanelBag1], "Canvas and leather tote with Chloé name strap."),
-
-];
+export const ALL_BRAND_PRODUCTS: BrandProduct[] = [];
 
 export function getBrandProducts(brand: string): BrandProduct[] {
   return ALL_BRAND_PRODUCTS.filter((p) => p.brand === brand);
 }
 
 export function getBrandProductsByCategory(brand: string): Record<string, BrandProduct[]> {
-  const products = getBrandProducts(brand);
-  const grouped: Record<string, BrandProduct[]> = {};
-  for (const p of products) {
-    if (!grouped[p.category]) grouped[p.category] = [];
-    grouped[p.category].push(p);
-  }
-  return grouped;
+  return {};
 }
 
-export const BRAND_CATEGORY_ORDER = ["Bags", "Shoes", "Wallets", "Belts", "Accessories"];
+export const BRAND_CATEGORY_ORDER = ["Bags", "Shoes", "Clothes", "Jewelry", "Watches", "Scarfs", "Collection", "Wallets", "Accessories"];
 
 export function brandToSlug(brand: string): string {
-  return brand.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/(^-|-$)/g, "");
+  return brand
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/(^-|-$)/g, "");
 }
 
 export function slugToBrand(slug: string): string | undefined {
@@ -898,6 +668,8 @@ export function slugToBrand(slug: string): string | undefined {
     ...FEATURED_BRANDS,
     ...Object.values(CATEGORY_BRANDS).flat(),
     ...Object.keys(BRAND_PRODUCTS),
+    "Dior", "Loro Piana", "Tiffany & Co", "Van Cleef & Arpels",
+    "Patek Philippe", "Tag Heuer", "Loewe", "Burberry",
   ];
   const unique = Array.from(new Set(allBrands));
   return unique.find((b) => brandToSlug(b) === slug);

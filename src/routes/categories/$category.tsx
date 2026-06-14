@@ -1,7 +1,7 @@
-import { createFileRoute, useNavigate } from "@tanstack/react-router";
+import { createFileRoute } from "@tanstack/react-router";
 import { MessageCircle, ShoppingBag, Menu, X, Search, ChevronDown, MapPin, Phone } from "lucide-react";
 import { useState, useEffect } from "react";
-import { getCategoryBySlug, CATEGORY_BRANDS, BRANDS, CATEGORY_BRAND_IMAGES, brandToSlug } from "@/lib/catalog";
+import { getCategoryBySlug, CATEGORY_BRAND_IMAGES, brandToSlug } from "@/lib/catalog";
 import { getSettings, getProducts, type Product } from "@/lib/store";
 import { supabase } from "@/lib/supabase";
 import logoImg from "@/assets/Logo.png";
@@ -124,30 +124,32 @@ function SiteHeader() {
 
 function CategoryPage() {
   const { category } = Route.useParams();
-  const navigate = useNavigate();
 
   const slug = decodeURIComponent(category);
   const page = getCategoryBySlug(slug);
-  const categoryBrands = CATEGORY_BRANDS[slug] ?? BRANDS.slice(0, 10);
   const [dbProducts, setDbProducts] = useState<Product[]>([]);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const load = () =>
       getProducts().then((data) => {
         setDbProducts(data.filter((p) => p.category === slug && p.inStock !== false));
+        setLoading(false);
       });
     load();
+    window.addEventListener("focus", load);
     const channel = supabase
-      .channel(`cat-route-${slug}`)
+      .channel(`cat-route-${slug}-${Date.now()}`)
       .on("postgres_changes", { event: "*", schema: "public", table: "products" }, load)
       .subscribe();
-    return () => { supabase.removeChannel(channel); };
+    return () => {
+      window.removeEventListener("focus", load);
+      supabase.removeChannel(channel);
+    };
   }, [slug]);
 
-  // brands that have DB products in this category
-  const dbBrandsInCategory = Array.from(new Set(dbProducts.map((p) => p.tag).filter(Boolean)));
-  // all brands to show = union of catalog brands + DB brands
-  const allBrands = Array.from(new Set([...categoryBrands, ...dbBrandsInCategory]));
+  // Only show brands that have DB products in this category
+  const allBrands = Array.from(new Set(dbProducts.map((p) => p.tag).filter(Boolean)));
 
   function getBrandImage(brand: string): string | null {
     return CATEGORY_BRAND_IMAGES[slug]?.[brand] ?? null;
@@ -159,9 +161,7 @@ function CategoryPage() {
         <SiteHeader />
         <main className="mx-auto max-w-7xl px-4 py-20 text-center text-muted-foreground">
           <p className="text-lg">Sorry, this category does not exist.</p>
-          <button onClick={() => navigate({ to: "/" })} className="mt-6 rounded-full border border-burgundy px-6 py-3 text-sm font-semibold text-burgundy hover:bg-burgundy/5">
-            Go Home
-          </button>
+          <a href="/" className="mt-6 inline-block rounded-full border border-burgundy px-6 py-3 text-sm font-semibold text-burgundy hover:bg-burgundy/5">Go Home</a>
         </main>
       </div>
     );
@@ -172,7 +172,6 @@ function CategoryPage() {
       <SiteHeader />
 
       <main className="mx-auto max-w-7xl px-4 py-10">
-        {/* Breadcrumb */}
         <div className="mb-6 flex items-center gap-2 text-sm text-muted-foreground">
           <a href="/" className="hover:text-burgundy">Home</a>
           <span>/</span>
@@ -185,7 +184,9 @@ function CategoryPage() {
           <p className="mx-auto mt-2 max-w-md text-sm text-muted-foreground">{page.description}</p>
         </div>
 
-        {allBrands.length === 0 ? (
+        {loading ? (
+          <div className="py-20 text-center text-sm text-muted-foreground">Loading...</div>
+        ) : allBrands.length === 0 ? (
           <div className="rounded-3xl border border-border bg-card p-10 text-center text-muted-foreground">
             <p className="text-base font-semibold text-ink">No brands available for this category yet.</p>
             <p className="mt-3 text-sm">Please contact us on WhatsApp for the latest products and stock updates.</p>

@@ -10,6 +10,7 @@ import { migrateCatalogToSupabase } from "@/lib/migrate";
 import {
   BESTSELLERS, SHOES, JEWELRY, WATCHES, CLOTHES, HATS, SCARFS, SUNGLASSES, BELTS, COLLECTION,
 } from "@/lib/catalog";
+import { supabase } from "@/lib/supabase";
 import {
   ShoppingBag, Settings, Plus, Pencil, Trash2,
   X, Check, Eye, Search, LogOut, KeyRound, Tag, Upload, Menu,
@@ -20,7 +21,8 @@ const DEFAULT_BRANDS = [
   "Louis Vuitton", "Chanel", "Hermès", "Gucci", "Prada", "Dior",
   "Saint Laurent", "Celine", "Bottega Veneta", "Goyard", "Fendi",
   "Valentino", "Chloé", "Cartier", "Bvlgari", "Messika", "Burberry",
-  "Loewe", "Rolex", "Omega",
+  "Loewe", "Rolex", "Omega", "Loro Piana", "Tiffany & Co",
+  "Van Cleef & Arpels", "Patek Philippe", "Tag Heuer",
 ];
 
 const CATEGORIES = [
@@ -54,6 +56,50 @@ export default function AdminPage() {
   }, []);
 
   function flash() { setSaved(true); setTimeout(() => setSaved(false), 2000); }
+
+  async function handleFixTags() {
+    const TAG_MAP: Record<string, string> = {
+      "LV": "Louis Vuitton",
+      "YSL": "Saint Laurent",
+      "BV": "Bottega Veneta",
+      "Tiffany": "Tiffany & Co",
+      "Patek": "Patek Philippe",
+      "VCA": "Van Cleef & Arpels",
+    };
+    const toFix = products.filter((p) => TAG_MAP[p.tag]);
+    if (toFix.length === 0) {
+      const uniqueTags = [...new Set(products.map((p) => p.tag).filter(Boolean))];
+      alert("No products need tag fixing.\n\nExisting tags:\n" + uniqueTags.join("\n"));
+      return;
+    }
+    if (!confirm(`Fix tags for ${toFix.length} products?`)) return;
+    let fixed = 0;
+    for (const p of toFix) {
+      const newTag = TAG_MAP[p.tag];
+      const { error } = await supabase.from("products").update({ tag: newTag }).eq("id", p.id);
+      if (!error) fixed++;
+    }
+    const fresh = await getProducts();
+    setProducts(fresh);
+    alert(`✅ ${fixed} products fixed!`);
+  }
+
+  async function handlePurgeOldCatalog() {
+    const oldTitles = [
+      ...BESTSELLERS, ...SHOES, ...JEWELRY, ...WATCHES, ...CLOTHES,
+      ...HATS, ...SCARFS, ...SUNGLASSES, ...BELTS, ...COLLECTION,
+    ].map((p) => p.title.trim());
+
+    const toDelete = products.filter((p) => oldTitles.includes(p.title.trim()));
+    if (toDelete.length === 0) { alert("No old catalog products found."); return; }
+    if (!confirm(`Delete ${toDelete.length} old catalog products?`)) return;
+
+    const ids = toDelete.map((p) => p.id);
+    const { error } = await supabase.from("products").delete().in("id", ids);
+    if (error) { alert("Error: " + error.message); return; }
+    setProducts((prev) => prev.filter((p) => !ids.includes(p.id)));
+    alert(`✅ ${toDelete.length} old catalog products deleted!`);
+  }
 
   async function handleMigrate() {
     if (!confirm("Migrate all catalog products to Supabase?")) return;
@@ -135,8 +181,14 @@ export default function AdminPage() {
               <a href="/" target="_blank" className="flex items-center gap-1.5 rounded-lg border border-border px-3 py-2 text-xs font-medium hover:border-burgundy">
                 <Eye className="h-3.5 w-3.5" /> View Site
               </a>
+              <button onClick={handleFixTags} className="flex items-center gap-1.5 rounded-lg border border-blue-200 bg-blue-50 px-3 py-2 text-xs font-medium text-blue-600 hover:bg-blue-100">
+                <Check className="h-3.5 w-3.5" /> Fix Tags
+              </button>
               <button onClick={handleMigrate} className="flex items-center gap-1.5 rounded-lg border border-gold/50 bg-gold/10 px-3 py-2 text-xs font-medium text-burgundy hover:bg-gold/20">
                 <Upload className="h-3.5 w-3.5" /> Migrate
+              </button>
+              <button onClick={handlePurgeOldCatalog} className="flex items-center gap-1.5 rounded-lg border border-red-200 bg-red-50 px-3 py-2 text-xs font-medium text-red-600 hover:bg-red-100">
+                <Trash2 className="h-3.5 w-3.5" /> Purge Old
               </button>
               <button onClick={logout} className="flex items-center gap-1.5 rounded-lg border border-red-200 px-3 py-2 text-xs font-medium text-red-500 hover:bg-red-50">
                 <LogOut className="h-3.5 w-3.5" /> Logout
@@ -155,8 +207,14 @@ export default function AdminPage() {
             <a href="/" target="_blank" className="flex items-center gap-2 rounded-lg border border-border px-3 py-2.5 text-sm font-medium">
               <Eye className="h-4 w-4" /> View Site
             </a>
+            <button onClick={handleFixTags} className="flex w-full items-center gap-2 rounded-lg border border-blue-200 bg-blue-50 px-3 py-2.5 text-sm font-medium text-blue-600">
+              <Check className="h-4 w-4" /> Fix Brand Tags
+            </button>
             <button onClick={handleMigrate} className="flex w-full items-center gap-2 rounded-lg border border-gold/50 bg-gold/10 px-3 py-2.5 text-sm font-medium text-burgundy">
               <Upload className="h-4 w-4" /> Migrate Catalog
+            </button>
+            <button onClick={handlePurgeOldCatalog} className="flex w-full items-center gap-2 rounded-lg border border-red-200 bg-red-50 px-3 py-2.5 text-sm font-medium text-red-600">
+              <Trash2 className="h-4 w-4" /> Purge Old Catalog
             </button>
             <button onClick={logout} className="flex w-full items-center gap-2 rounded-lg border border-red-200 px-3 py-2.5 text-sm font-medium text-red-500">
               <LogOut className="h-4 w-4" /> Logout

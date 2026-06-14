@@ -1,10 +1,7 @@
 import { useParams, useNavigate, Link } from "react-router-dom";
 import { MessageCircle } from "lucide-react";
-import { getCategoryBySlug, CATEGORY_BRANDS, BRANDS, brandToSlug, utf8Base64Encode } from "@/lib/catalog";
-import { getProducts, type Product } from "@/lib/store";
-import { supabase } from "@/lib/supabase";
+import { getCategoryBySlug, CATEGORY_BRANDS, BRANDS, brandToSlug } from "@/lib/catalog";
 import SiteHeader from "@/components/SiteHeader";
-import { useState, useEffect } from "react";
 
 const WHATSAPP_LINK = "https://wa.me/393515439347";
 
@@ -14,24 +11,6 @@ export default function CategoryPage() {
   const slug = decodeURIComponent(category);
   const page = getCategoryBySlug(slug);
   const categoryBrands = CATEGORY_BRANDS[slug] ?? BRANDS.slice(0, 10);
-  const [dbProducts, setDbProducts] = useState<Product[]>([]);
-
-  useEffect(() => {
-    getProducts().then((data) => {
-      setDbProducts(data.filter((p) => p.category === slug && p.inStock !== false));
-    });
-
-    const channel = supabase
-      .channel(`category-${slug}`)
-      .on("postgres_changes", { event: "*", schema: "public", table: "products" }, () => {
-        getProducts().then((data) => {
-          setDbProducts(data.filter((p) => p.category === slug && p.inStock !== false));
-        });
-      })
-      .subscribe();
-
-    return () => { supabase.removeChannel(channel); };
-  }, [slug]);
 
   if (!page) {
     return (
@@ -59,28 +38,6 @@ export default function CategoryPage() {
           <h2 className="mt-1 text-3xl tracking-tight text-ink" style={{ fontFamily: "var(--font-display)" }}>{page.title}</h2>
           <p className="mx-auto mt-2 max-w-md text-sm text-muted-foreground">{page.description}</p>
         </div>
-
-        {/* Admin-added products from Supabase */}
-        {dbProducts.length > 0 && (
-          <div className="mb-12">
-            <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-4">
-              {dbProducts.map((p) => {
-                const id = utf8Base64Encode(JSON.stringify({ title: p.title, price: p.price, tag: p.tag ?? "Luxury", img: p.img }));
-                return (
-                  <a key={p.id} href={`/products/${id}`} className="group block overflow-hidden rounded-2xl border border-border bg-card shadow-sm transition hover:-translate-y-1 hover:shadow-lg">
-                    <img src={p.img} alt={p.title} className="aspect-square w-full object-cover transition duration-500 group-hover:scale-105"
-                      onError={(e) => { (e.target as HTMLImageElement).src = "https://placehold.co/400x400?text=No+Image"; }} />
-                    <div className="p-3">
-                      <span className="mb-1 inline-block rounded-full bg-gold/15 px-2 py-0.5 text-[9px] font-semibold uppercase tracking-widest text-burgundy">{p.tag || "—"}</span>
-                      <p className="line-clamp-2 text-xs font-semibold text-ink leading-snug">{p.title}</p>
-                      <p className="mt-1 text-sm font-bold text-burgundy">{p.price}</p>
-                    </div>
-                  </a>
-                );
-              })}
-            </div>
-          </div>
-        )}
 
         {/* Brand grid — always show */}
         {categoryBrands.length === 0 ? (

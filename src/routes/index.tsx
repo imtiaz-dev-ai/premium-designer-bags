@@ -1,7 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { getSettings, defaultSettings, getSiteBrands } from "@/lib/store";
+import { getSettings, defaultSettings } from "@/lib/store";
 import { getProducts } from "@/lib/store";
-import { CATEGORY_PAGES, BRANDS, FEATURED_BRANDS, brandToSlug } from "@/lib/catalog";
+import { CATEGORY_PAGES, brandToSlug } from "@/lib/catalog";
 import { useState, useEffect } from "react";
 import { getCartCount } from "@/lib/cart-store";
 import { Menu, X, Search, ShoppingBag, MapPin, Phone, ChevronDown, Truck, ShieldCheck, MessageCircle, RotateCcw, Mail, Star, Sparkles } from "lucide-react";
@@ -10,33 +10,7 @@ import zelleQr from "@/assets/zelle-qr.jpeg";
 import venmoQr from "@/assets/venmo-qr.jpeg";
 import heroBag from "@/assets/hero-bag.jpg";
 import logoImg from "@/assets/Logo.png";
-import lvBag1 from "@/assets/bags/lv/1.jpeg";
-import lvBag2 from "@/assets/bags/lv/2.jpeg";
-import lvBag3 from "@/assets/bags/lv/3.jpeg";
-import lvBag4 from "@/assets/bags/lv/4.jpeg";
-import lvBag5 from "@/assets/bags/lv/5.jpeg";
-import chanelBag1 from "@/assets/bags/Chanel/1.jpeg";
-import chanelBag2 from "@/assets/bags/Chanel/2.jpeg";
-import chanelBag3 from "@/assets/bags/Chanel/3.jpeg";
-import gucciBag1 from "@/assets/bags/Gucci/1.jpeg";
-import gucciBag2 from "@/assets/bags/Gucci/2.jpeg";
-import yslBag1 from "@/assets/bags/Ysl/1.jpeg";
-import yslBag2 from "@/assets/bags/Ysl/2.jpeg";
-import hermesShoe1 from "@/assets/shoes/Hermes/1.jpeg";
-import chanelShoe1 from "@/assets/shoes/Chanel/1.jpeg";
-import lvShoe1 from "@/assets/shoes/Lv/1.jpeg";
-import gucciShoe1 from "@/assets/shoes/Gucci/1.jpeg";
-import diorShoe1 from "@/assets/shoes/Dior/1.jpeg";
-import pradaShoe1 from "@/assets/shoes/Prada/1.jpeg";
-import chanelSun1 from "@/assets/sunglasses/Chanel sunglasses/1.jpeg";
-import pradaSun1 from "@/assets/sunglasses/Prada sunglasses/1.jpeg";
-import hermesBelt1 from "@/assets/belts/Hermes belts/1.jpeg";
-import lvBelt1 from "@/assets/belts/Lv belts/1.jpeg";
-import lvScarf1 from "@/assets/Scarfs/Lv scarves/1.jpeg";
-import lvHat1 from "@/assets/hats/Lv hats/1.jpeg";
-import cartierWatch1 from "@/assets/watchs/Cartier watches women/1.jpeg";
-import cartier1 from "@/assets/jewelry/Cartier/1.jpeg";
-import bvlgari1 from "@/assets/jewelry/Bvlgari jewelry/1.jpeg";
+
 import brandBottega from "@/assets/bags/brands/Bottega bag.jpeg";
 import brandShoes from "@/assets/brand/Shoes.jfif";
 import brandJewellery from "@/assets/brand/Jewellery.jpeg";
@@ -68,66 +42,21 @@ const WHATSAPP_LINK = "https://wa.me/393515439347";
 type Product = { title: string; price: string; tag?: string; img: string };
 
 
-const SHOES: Product[] = [
-  { title: "Hermès Oran Sandal — Gold Epsom Leather", price: "$389", tag: "Hermès", img: hermesShoe1 },
-  { title: "Chanel Slingback Pump — Black & Beige Cap-Toe", price: "$329", tag: "Chanel", img: chanelShoe1 },
-  { title: "Louis Vuitton Archlight 2.0 Sneaker — White", price: "$349", tag: "LV", img: lvShoe1 },
-  { title: "Gucci Horsebit 1953 Loafer — Brown GG Canvas", price: "$289", tag: "Gucci", img: gucciShoe1 },
-  { title: "Dior J'Adior Slingback Pump — Black Mesh", price: "$319", tag: "Dior", img: diorShoe1 },
-  { title: "Prada Monolith Brushed Leather Boot — Black", price: "$429", tag: "Prada", img: pradaShoe1 },
-  { title: "Bottega Veneta Stretch Flat Sandal — Cream", price: "$359", tag: "BV", img: heroBag },
-  { title: "Celine Triomphe Ballet Flat — Tan Calfskin", price: "$279", tag: "Celine", img: heroBag },
-  { title: "Loewe Toy Puffy Mule — Ivory Nappa", price: "$299", tag: "Loewe", img: heroBag },
-  { title: "Fendi Baguette Sandal — FF Jacquard Strap", price: "$309", tag: "Fendi", img: heroBag },
-  { title: "Coach Lowline Low Top Sneaker — Signature", price: "$189", tag: "Coach", img: heroBag },
-  { title: "Goyard Artois Sneaker — White Goyardine", price: "$349", tag: "Goyard", img: heroBag },
-];
-
-const BESTSELLERS: Product[] = [
-  { title: "LV Neverfull MM Tote M27358", price: "$369", tag: "LV", img: lvBag1 },
-  { title: "Chanel 19 Large Handbag — Burgundy Lambskin", price: "$289", tag: "Chanel", img: chanelBag1 },
-  { title: "Hermès Birkin 30 — Chocolate Togo, Gold Hardware", price: "$849", tag: "Hermès", img: heroBag },
-  { title: "Gucci GG Marmont Bag — Beige", price: "$490", tag: "Gucci", img: gucciBag1 },
-  { title: "Chanel Maxi Flapbag AS6233 — Blush", price: "$539", tag: "Chanel", img: chanelBag2 },
-  { title: "Saint Laurent Saddle — Caramel Calfskin", price: "$258", tag: "YSL", img: yslBag1 },
-  { title: "Bottega Veneta Cream Bucket Bag", price: "$329", tag: "BV", img: heroBag },
-  { title: "LV Pochette Métis M27357", price: "$349", tag: "LV", img: lvBag4 },
-];
-
-const COLLECTION: Product[] = [
-  { title: "LV Neverfull MM Tote M27358 — 47×28×14 cm", price: "$369", tag: "LV", img: lvBag1 },
-  { title: "LV OnTheGo PM M28181", price: "$369", tag: "LV", img: lvBag2 },
-  { title: "LV Speedy 30 Soft Celebration M28379", price: "$349", tag: "LV", img: lvBag3 },
-  { title: "LV Pochette Métis M27357", price: "$349", tag: "LV", img: lvBag4 },
-  { title: "LV Side Trunk PM M27436", price: "$349", tag: "LV", img: lvBag5 },
-  { title: "Chanel 19 Large Handbag — Burgundy Lambskin", price: "$289", tag: "Chanel", img: chanelBag1 },
-  { title: "Chanel Classic Flap Medium — Black Caviar", price: "$780", tag: "Chanel", img: chanelBag3 },
-  { title: "Gucci GG Marmont Bag — Beige", price: "$490", tag: "Gucci", img: gucciBag2 },
-  { title: "Gucci Blondie Top Handle Bag", price: "$620", tag: "Gucci", img: gucciBag1 },
-  { title: "Saint Laurent Saddle — Caramel Calfskin", price: "$258", tag: "YSL", img: yslBag1 },
-  { title: "Saint Laurent Lou Camera — Beige Quilted", price: "$258", tag: "YSL", img: yslBag2 },
-  { title: "Cartier Ballon Bleu 33mm — Steel", price: "$6,900", tag: "Cartier", img: cartierWatch1 },
-  { title: "Cartier Love Bracelet — Yellow Gold", price: "$6,200", tag: "Cartier", img: cartier1 },
-  { title: "Bvlgari B.zero1 Ring — White Gold", price: "$2,200", tag: "Bvlgari", img: bvlgari1 },
-  { title: "Chanel Round Sunglasses — Black", price: "$389", tag: "Chanel", img: chanelSun1 },
-  { title: "Prada Symbole Sunglasses — Black", price: "$329", tag: "Prada", img: pradaSun1 },
-  { title: "Hermès Constance Belt 32mm — Black", price: "$690", tag: "Hermès", img: hermesBelt1 },
-  { title: "LV Initiales Belt 40mm — Monogram", price: "$480", tag: "LV", img: lvBelt1 },
-  { title: "LV Monogram Silk Scarf", price: "$289", tag: "LV", img: lvScarf1 },
-  { title: "LV Monogram Bucket Hat", price: "$389", tag: "LV", img: lvHat1 },
-];
-
 function Index() {
   const settings = getSettings();
   const wa = settings.whatsappLink || defaultSettings.whatsappLink;
-  const activeBrands = getSiteBrands() ?? BRANDS;
   const [dbProducts, setDbProducts] = useState<Product[]>([]);
+  const [dbBrands, setDbBrands] = useState<string[]>([]);
 
   useEffect(() => {
-    getProducts().then((data) => {
-      if (data.length > 0)
-        setDbProducts(data.map((p) => ({ title: p.title, price: p.price, tag: p.tag, img: p.img })));
+    const load = () => getProducts().then((data) => {
+      const active = data.filter((p) => p.inStock !== false);
+      setDbProducts(active.map((p) => ({ title: p.title, price: p.price, tag: p.tag, img: p.img })));
+      setDbBrands(Array.from(new Set(active.map((p) => p.tag).filter(Boolean))));
     });
+    load();
+    window.addEventListener("focus", load);
+    return () => window.removeEventListener("focus", load);
   }, []);
 
   return (
@@ -138,16 +67,12 @@ function Index() {
       <Marquee items={settings.marqueeItems} />
       <FeaturesStrip wa={settings.whatsapp} />
       <CategoriesGrid />
-      <BrandsStrip brands={activeBrands} />
-      {dbProducts.length > 0 && (
-        <ProductSection id="new-arrivals" title="New Arrivals" subtitle="Just Added" products={dbProducts} />
-      )}
-      <ProductSection id="bestsellers" title="Bestsellers" subtitle="Client Favourites" products={BESTSELLERS} />
-      <ProductSection id="shoes" title="Shoes" subtitle="Designer Footwear" products={SHOES} />
+      {dbBrands.length > 0 && <BrandsStrip brands={dbBrands} />}
+
       <ValueProps />
       <Reviews />
       <CTASection wa={settings.whatsapp} waLink={settings.whatsappLink} />
-      <Footer settings={settings} activeBrands={activeBrands} />
+      <Footer settings={settings} activeBrands={dbBrands} />
     </div>
   );
 }
@@ -395,31 +320,6 @@ const PAYMENT_METHODS: PaymentMethod[] = [
   },
 ];
 
-function CollectionToolbar() {
-  const [inStock, setInStock] = useState(true);
-  const [sort, setSort] = useState("Default");
-  const [show, setShow] = useState("20");
-  return (
-    <div className="flex flex-wrap items-center gap-3 text-xs">
-      <label className="flex cursor-pointer items-center gap-2 border border-border bg-card px-3 py-2 hover:border-gold">
-        <input type="checkbox" checked={inStock} onChange={(e) => setInStock(e.target.checked)} className="accent-burgundy" />
-        In stock only
-      </label>
-      <select value={sort} onChange={(e) => setSort(e.target.value)} className="border border-border bg-card px-3 py-2 text-xs font-medium text-foreground hover:border-gold focus:outline-none">
-        <option>Default</option>
-        <option>Price: Low to High</option>
-        <option>Price: High to Low</option>
-        <option>Newest</option>
-      </select>
-      <select value={show} onChange={(e) => setShow(e.target.value)} className="border border-border bg-card px-3 py-2 text-xs font-medium text-foreground hover:border-gold focus:outline-none">
-        <option>20</option>
-        <option>40</option>
-        <option>All</option>
-      </select>
-    </div>
-  );
-}
-
 function Marquee({ items }: { items: string[] }) {
   return (
     <div className="overflow-hidden border-y border-border py-3" style={{ background: "var(--gradient-luxe)", color: "var(--cream)" }}>
@@ -494,21 +394,17 @@ function ProductCard({ p, index }: { p: Product; index: number }) {
   );
 }
 
-function ProductSection({ id, title, subtitle, products, showToolbar }: { id: string; title: string; subtitle: string; products: Product[]; showToolbar?: boolean }) {
+function ProductSection({ id, title, subtitle, products }: { id: string; title: string; subtitle: string; products: Product[] }) {
   return (
     <section id={id} className="border-b border-border">
       <div className="mx-auto max-w-7xl px-4 py-16 md:py-20">
-        <div className="mb-10 flex flex-wrap items-end justify-between gap-4">
-          <div>
-            <p className="mb-2 text-[10px] font-semibold uppercase tracking-[0.35em] text-gold">— {title}</p>
-            <h2 className="text-4xl tracking-tight text-ink md:text-5xl" style={{ fontFamily: "var(--font-display)" }}>{subtitle}</h2>
-          </div>
-          {showToolbar && <CollectionToolbar />}
+        <div className="mb-10">
+          <p className="mb-2 text-[10px] font-semibold uppercase tracking-[0.35em] text-gold">— {title}</p>
+          <h2 className="text-4xl tracking-tight text-ink md:text-5xl" style={{ fontFamily: "var(--font-display)" }}>{subtitle}</h2>
         </div>
         <div className="grid grid-cols-1 gap-x-4 gap-y-8 sm:grid-cols-2 lg:grid-cols-4">
           {products.map((p, i) => <ProductCard key={i} p={p} index={i} />)}
         </div>
-        <p className="mt-12 text-center text-xs uppercase tracking-[0.35em] text-gold">✦ All products loaded ✦</p>
       </div>
     </section>
   );
@@ -550,35 +446,7 @@ function CategoriesGrid() {
   );
 }
 
-function brandLogoInitials(name: string) {
-  const known: Record<string, string> = {
-    "Louis Vuitton": "LV", "Bottega Veneta": "BV", "Saint Laurent": "SL",
-    "Van Cleef & Arpels": "VA", "Tiffany & Co": "TC", "Hermès": "H",
-    "Loro Piana": "LP", "The Row": "TR", "Balenciaga": "BB", "Patek Philippe": "PP",
-    "Tag Heuer": "TH",
-  };
-  if (known[name]) return known[name];
-  return name.split(/\s+/).filter(Boolean).map((w) => w[0]).join("").slice(0, 2).toUpperCase();
-}
-
-function brandLogoColor(name: string) {
-  const colors: Record<string, string> = {
-    "Louis Vuitton": "#3c2a1a", "Chanel": "#000000", "Hermès": "#e78a00",
-    "Dior": "#4f4f4f", "Gucci": "#18412f", "Prada": "#1c1f25",
-    "Celine": "#0b0b0b", "Saint Laurent": "#101010", "Bottega Veneta": "#2f2d28",
-    "Loewe": "#332d27", "Cartier": "#8b0000", "Bvlgari": "#1a1a6e",
-    "Rolex": "#155724", "Omega": "#003366", "Burberry": "#8b6914",
-    "Loro Piana": "#4a3728", "Fendi": "#8b7536", "Valentino": "#8b0000",
-  "Chloé": "#c4956a", "Goyard": "#2d5a27",
-    "Messika": "#b8860b", "Tiffany & Co": "#0abab5", "Van Cleef & Arpels": "#1a1a2e",
-    "Patek Philippe": "#1a2744", "Tag Heuer": "#cc0000",
-  };
-  if (colors[name]) return colors[name];
-  const hash = name.split("").reduce((acc, c) => acc + c.charCodeAt(0), 0);
-  return `hsl(${hash % 360} 40% 30%)`;
-}
-
-function BrandsStrip({ brands: _brands }: { brands: string[] }) {
+function BrandsStrip({ brands }: { brands: string[] }) {
   return (
     <section id="brands" className="border-b border-border" style={{ background: "linear-gradient(180deg, var(--secondary), var(--background))" }}>
       <div className="mx-auto max-w-7xl px-4 py-16">
@@ -588,16 +456,13 @@ function BrandsStrip({ brands: _brands }: { brands: string[] }) {
           <p className="mx-auto mt-3 max-w-md text-sm text-muted-foreground">Select a house to explore its full collection.</p>
         </div>
         <div className="grid grid-cols-2 gap-px bg-border sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6">
-          {FEATURED_BRANDS.map((brand) => (
+          {brands.map((brand) => (
             <a
               key={brand}
               href={`/brand/${brandToSlug(brand)}`}
               className="group flex flex-col items-center justify-center gap-3 bg-card px-4 py-8 text-center transition hover:bg-secondary"
             >
-              <span
-                className="text-base font-medium tracking-wide text-ink transition group-hover:text-burgundy"
-                style={{ fontFamily: "var(--font-display)", fontStyle: "italic" }}
-              >
+              <span className="text-base font-medium tracking-wide text-ink transition group-hover:text-burgundy" style={{ fontFamily: "var(--font-display)", fontStyle: "italic" }}>
                 {brand}
               </span>
               <span className="h-px w-8 bg-gold opacity-0 transition-all duration-300 group-hover:w-12 group-hover:opacity-100" />
@@ -764,7 +629,7 @@ function Footer({ settings, activeBrands }: { settings: ReturnType<typeof getSet
           <div>
             <h4 className="mb-4 text-xs font-bold uppercase tracking-[0.3em] text-gold">Top Brands</h4>
             <ul className="space-y-2 text-sm opacity-80">
-              {FEATURED_BRANDS.map((l) => (
+              {activeBrands.map((l) => (
                 <li key={l}><a href={`/brand/${brandToSlug(l)}`} className="hover:text-gold">{l}</a></li>
               ))}
             </ul>
