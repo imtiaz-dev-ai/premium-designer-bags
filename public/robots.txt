@@ -1,0 +1,10 @@
+User-agent: *
+Allow: /
+
+Disallow: /admin/
+Disallow: /admin/login
+Disallow: /cart
+Disallow: /checkout
+Disallow: /receipt
+
+Sitemap: https://premiumdesignerbags.com/sitemap.xml
