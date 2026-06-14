@@ -8,13 +8,11 @@ export const Route = createFileRoute("/products/$id")({
   component: ProductPage,
 });
 
-const SIZES = ["XS", "S", "M", "L", "XL", "One Size"];
 const WHATSAPP_LINK = "https://wa.me/393515439347";
 
 function ProductPage() {
   const { id } = Route.useParams();
   const navigate = useNavigate();
-  const [selectedSize, setSelectedSize] = useState("");
   const [qty, setQty] = useState(1);
   const [added, setAdded] = useState(false);
   const [cartCount, setCartCount] = useState(0);
@@ -52,17 +50,13 @@ function ProductPage() {
   } catch { /* use fallback */ }
 
   function handleAddToCart() {
-    if (!selectedSize) {
-      alert("Please select a size first");
-      return;
-    }
     addToCart({
       id,
       title: product.title,
       price: product.price,
       tag: product.tag,
       img: product.imgs[0],
-      size: selectedSize,
+      size: "",
       quantity: qty,
     });
     setAdded(true);
@@ -157,29 +151,6 @@ function ProductPage() {
             <div className="mt-2 flex items-center gap-2">
               <span className="h-2 w-2 rounded-full bg-green-500" />
               <span className="text-xs font-medium text-green-600">In Stock — Ships from Italy & Dubai</span>
-            </div>
-
-            {/* Size */}
-            <div className="mt-7">
-              <div className="mb-3 flex items-center justify-between">
-                <span className="text-sm font-semibold uppercase tracking-widest text-ink">Select Size</span>
-                <button className="text-xs text-burgundy underline">Size Guide</button>
-              </div>
-              <div className="flex flex-wrap gap-2">
-                {SIZES.map((s) => (
-                  <button
-                    key={s}
-                    onClick={() => setSelectedSize(s)}
-                    className={`rounded-lg border px-4 py-2 text-sm font-medium transition ${
-                      selectedSize === s
-                        ? "border-burgundy bg-burgundy text-cream"
-                        : "border-border hover:border-burgundy"
-                    }`}
-                  >
-                    {s}
-                  </button>
-                ))}
-              </div>
             </div>
 
             {/* Quantity */}
