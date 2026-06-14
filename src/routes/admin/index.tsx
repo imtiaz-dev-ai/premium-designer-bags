@@ -26,28 +26,33 @@ function AdminDashboard() {
 
   function logout() { adminLogout(); navigate({ to: "/admin/login" }); }
   const [tab, setTab] = useState<Tab>("products");
-  const [products, setProducts] = useState<Product[]>(() => getProducts());
+  const [products, setProducts] = useState<Product[]>([]);
+  const [loading, setLoading] = useState(true);
   const [saved, setSaved] = useState(false);
   const [settings, setSettings] = useState<SiteSettings>(() => getSettings());
   const [showForm, setShowForm] = useState(false);
   const [editing, setEditing] = useState<Product | null>(null);
 
+  useEffect(() => {
+    getProducts().then((data) => { setProducts(data); setLoading(false); });
+  }, []);
+
   function flash() { setSaved(true); setTimeout(() => setSaved(false), 2000); }
 
-  function handleDelete(id: string) {
+  async function handleDelete(id: string) {
     if (!confirm("Delete this product?")) return;
-    deleteProduct(id);
+    await deleteProduct(id);
     setProducts((p) => p.filter((x) => x.id !== id));
     flash();
   }
 
-  function handleSave(p: Product) {
+  async function handleSave(p: Product) {
     if (editing) {
-      updateProduct(p);
+      await updateProduct(p);
       setProducts((prev) => prev.map((x) => (x.id === p.id ? p : x)));
     } else {
-      const created = addProduct(p);
-      setProducts((prev) => [created, ...prev]);
+      const created = await addProduct(p);
+      if (created) setProducts((prev) => [created, ...prev]);
     }
     setShowForm(false);
     setEditing(null);
@@ -95,7 +100,7 @@ function AdminDashboard() {
 
       <main className="mx-auto max-w-7xl px-4 py-8">
         {tab === "products" && (
-          <ProductsTab products={products}
+          <ProductsTab products={products} loading={loading}
             onAdd={() => { setEditing(null); setShowForm(true); }}
             onEdit={(p) => { setEditing(p); setShowForm(true); }}
             onDelete={handleDelete} />
@@ -114,8 +119,9 @@ function AdminDashboard() {
 }
 
 /* ── Products Tab ── */
-function ProductsTab({ products, onAdd, onEdit, onDelete }: {
+function ProductsTab({ products, loading, onAdd, onEdit, onDelete }: {
   products: Product[];
+  loading: boolean;
   onAdd: () => void;
   onEdit: (p: Product) => void;
   onDelete: (id: string) => void;
@@ -165,7 +171,9 @@ function ProductsTab({ products, onAdd, onEdit, onDelete }: {
 
       <div className="mb-3 text-xs text-muted-foreground">{filtered.length} products</div>
 
-      {filtered.length === 0 ? (
+      {loading ? (
+        <div className="py-20 text-center text-sm text-muted-foreground">Loading products from database...</div>
+      ) : filtered.length === 0 ? (
         <div className="rounded-2xl border border-dashed border-border py-20 text-center text-sm text-muted-foreground">
           No products found.
         </div>

@@ -1,5 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { getSettings, defaultSettings, getSiteBrands } from "@/lib/store";
+import { getProducts } from "@/lib/store";
 import { CATEGORY_PAGES, BRANDS, FEATURED_BRANDS, brandToSlug } from "@/lib/catalog";
 import { useState, useEffect } from "react";
 import { getCartCount } from "@/lib/cart-store";
@@ -120,6 +121,14 @@ function Index() {
   const settings = getSettings();
   const wa = settings.whatsappLink || defaultSettings.whatsappLink;
   const activeBrands = getSiteBrands() ?? BRANDS;
+  const [dbProducts, setDbProducts] = useState<Product[]>([]);
+
+  useEffect(() => {
+    getProducts().then((data) => {
+      if (data.length > 0)
+        setDbProducts(data.map((p) => ({ title: p.title, price: p.price, tag: p.tag, img: p.img })));
+    });
+  }, []);
 
   return (
     <div className="min-h-screen bg-background text-foreground" style={{ fontFamily: "var(--font-sans)" }}>
@@ -130,6 +139,11 @@ function Index() {
       <FeaturesStrip wa={settings.whatsapp} />
       <CategoriesGrid />
       <BrandsStrip brands={activeBrands} />
+      {dbProducts.length > 0 && (
+        <ProductSection id="new-arrivals" title="New Arrivals" subtitle="Just Added" products={dbProducts} />
+      )}
+      <ProductSection id="bestsellers" title="Bestsellers" subtitle="Client Favourites" products={BESTSELLERS} />
+      <ProductSection id="shoes" title="Shoes" subtitle="Designer Footwear" products={SHOES} />
       <ValueProps />
       <Reviews />
       <CTASection wa={settings.whatsapp} waLink={settings.whatsappLink} />

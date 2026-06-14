@@ -462,7 +462,7 @@ function ProductForm({ initial, brands, onSave, onClose }: {
                   : <Upload className="h-8 w-8 text-muted-foreground" />
                 }
                 <span className="text-muted-foreground">{uploading ? "Uploading..." : form.img ? "Tap to change image" : "Tap to upload image"}</span>
-                <input type="file" accept="image/*" capture="environment" className="hidden" onChange={handleImageUpload} disabled={uploading} />
+                <input type="file" accept="image/*" className="hidden" onChange={handleImageUpload} disabled={uploading} />
               </label>
               <input value={form.img} onChange={(e) => set("img", e.target.value)}
                 placeholder="Or paste image URL..."

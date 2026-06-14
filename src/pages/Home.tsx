@@ -1,5 +1,5 @@
 import { getSettings, defaultSettings, getSiteBrands } from "@/lib/store";
-import { CATEGORY_PAGES, BRANDS, FEATURED_BRANDS, brandToSlug } from "@/lib/catalog";
+import { BESTSELLERS, SHOES, CATEGORY_PAGES, BRANDS, FEATURED_BRANDS, brandToSlug } from "@/lib/catalog";
 import { useState, useEffect } from "react";
 import { getCartCount } from "@/lib/cart-store";
 import { Menu, X, Search, ShoppingBag, MapPin, Phone, ChevronDown, Truck, ShieldCheck, MessageCircle, RotateCcw, Mail, Star, Sparkles } from "lucide-react";
@@ -88,7 +88,8 @@ export default function HomePage() {
       <FeaturesStrip wa={settings.whatsapp} />
       <CategoriesGrid />
       <BrandsStrip brands={activeBrands} />
-
+      <ProductSection id="bestsellers" title="Bestsellers" subtitle="Client Favourites" products={BESTSELLERS} />
+      <ProductSection id="shoes" title="Shoes" subtitle="Designer Footwear" products={SHOES.slice(0, 8)} />
       <ValueProps />
       <Reviews />
       <CTASection wa={settings.whatsapp} waLink={settings.whatsappLink} />
