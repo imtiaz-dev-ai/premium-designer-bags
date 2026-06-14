@@ -12,7 +12,7 @@ import {
 } from "@/lib/catalog";
 import {
   ShoppingBag, Settings, Plus, Pencil, Trash2,
-  X, Check, Eye, Search, LogOut, KeyRound, Tag, Upload,
+  X, Check, Eye, Search, LogOut, KeyRound, Tag, Upload, Menu,
 } from "lucide-react";
 import logoImg from "@/assets/Logo.png";
 
@@ -40,6 +40,7 @@ export default function AdminPage() {
   function logout() { adminLogout(); navigate("/admin/login"); }
 
   const [tab, setTab] = useState<Tab>("products");
+  const [menuOpen, setMenuOpen] = useState(false);
   const [products, setProducts] = useState<Product[]>([]);
   const [loading, setLoading] = useState(true);
   const [brands, setBrands] = useState<string[]>(() => getSiteBrands() ?? DEFAULT_BRANDS);
@@ -55,7 +56,7 @@ export default function AdminPage() {
   function flash() { setSaved(true); setTimeout(() => setSaved(false), 2000); }
 
   async function handleMigrate() {
-    if (!confirm("Migrate all catalog products to Supabase? This will add them to the database.")) return;
+    if (!confirm("Migrate all catalog products to Supabase?")) return;
     const allCatalog = [
       ...BESTSELLERS.map((p) => ({ ...p, tag: p.tag ?? "", category: "bags", section: "bestsellers", description: "" })),
       ...SHOES.map((p) => ({ ...p, tag: p.tag ?? "", category: "shoes", section: "shoes", description: "" })),
@@ -73,7 +74,7 @@ export default function AdminPage() {
     if (error) { alert("Migration failed: " + error); return; }
     const fresh = await getProducts();
     setProducts(fresh);
-    alert(`✅ ${inserted} products migrated to Supabase!`);
+    alert(`✅ ${inserted} products migrated!`);
   }
 
   async function handleDelete(id: string) {
@@ -102,51 +103,83 @@ export default function AdminPage() {
     flash();
   }
 
+  function switchTab(t: Tab) { setTab(t); setMenuOpen(false); }
+
+  const TAB_ICONS = {
+    products: <ShoppingBag className="h-4 w-4" />,
+    brands: <Tag className="h-4 w-4" />,
+    settings: <Settings className="h-4 w-4" />,
+    account: <KeyRound className="h-4 w-4" />,
+  };
+
   return (
     <div className="min-h-screen bg-background">
+      {/* ── Header ── */}
       <header className="sticky top-0 z-50 border-b border-border bg-card shadow-sm">
-        <div className="mx-auto flex max-w-7xl items-center justify-between px-4 py-3">
-          <div className="flex items-center gap-3">
-            <img src={logoImg} alt="Logo" className="h-9 w-9 rounded-full object-cover" />
+        <div className="flex items-center justify-between px-4 py-3">
+          <div className="flex items-center gap-2.5">
+            <img src={logoImg} alt="Logo" className="h-8 w-8 rounded-full object-cover" />
             <div>
-              <div className="text-sm font-semibold text-ink">Admin Panel</div>
+              <div className="text-sm font-semibold text-ink leading-none">Admin</div>
               <div className="text-[10px] uppercase tracking-widest text-muted-foreground">Premium Designer</div>
             </div>
           </div>
+
           <div className="flex items-center gap-2">
             {saved && (
-              <span className="flex items-center gap-1 rounded-full bg-green-100 px-3 py-1 text-xs font-semibold text-green-700">
+              <span className="flex items-center gap-1 rounded-full bg-green-100 px-2.5 py-1 text-xs font-semibold text-green-700">
                 <Check className="h-3 w-3" /> Saved
               </span>
             )}
-            <a href="/" target="_blank" className="flex items-center gap-1.5 rounded-lg border border-border px-3 py-2 text-xs font-medium hover:border-burgundy">
-              <Eye className="h-3.5 w-3.5" /> View Site
-            </a>
-            <button onClick={handleMigrate} className="flex items-center gap-1.5 rounded-lg border border-gold/50 bg-gold/10 px-3 py-2 text-xs font-medium text-burgundy hover:bg-gold/20">
-              <Upload className="h-3.5 w-3.5" /> Migrate Catalog
-            </button>
-            <button onClick={logout} className="flex items-center gap-1.5 rounded-lg border border-red-200 px-3 py-2 text-xs font-medium text-red-500 hover:bg-red-50">
-              <LogOut className="h-3.5 w-3.5" /> Logout
+            {/* Desktop actions */}
+            <div className="hidden sm:flex items-center gap-2">
+              <a href="/" target="_blank" className="flex items-center gap-1.5 rounded-lg border border-border px-3 py-2 text-xs font-medium hover:border-burgundy">
+                <Eye className="h-3.5 w-3.5" /> View Site
+              </a>
+              <button onClick={handleMigrate} className="flex items-center gap-1.5 rounded-lg border border-gold/50 bg-gold/10 px-3 py-2 text-xs font-medium text-burgundy hover:bg-gold/20">
+                <Upload className="h-3.5 w-3.5" /> Migrate
+              </button>
+              <button onClick={logout} className="flex items-center gap-1.5 rounded-lg border border-red-200 px-3 py-2 text-xs font-medium text-red-500 hover:bg-red-50">
+                <LogOut className="h-3.5 w-3.5" /> Logout
+              </button>
+            </div>
+            {/* Mobile menu button */}
+            <button onClick={() => setMenuOpen(!menuOpen)} className="rounded-lg border border-border p-2 sm:hidden">
+              {menuOpen ? <X className="h-4 w-4" /> : <Menu className="h-4 w-4" />}
             </button>
           </div>
         </div>
-        <div className="mx-auto flex max-w-7xl gap-1 px-4">
+
+        {/* Mobile dropdown menu */}
+        {menuOpen && (
+          <div className="border-t border-border bg-card px-4 py-3 space-y-2 sm:hidden">
+            <a href="/" target="_blank" className="flex items-center gap-2 rounded-lg border border-border px-3 py-2.5 text-sm font-medium">
+              <Eye className="h-4 w-4" /> View Site
+            </a>
+            <button onClick={handleMigrate} className="flex w-full items-center gap-2 rounded-lg border border-gold/50 bg-gold/10 px-3 py-2.5 text-sm font-medium text-burgundy">
+              <Upload className="h-4 w-4" /> Migrate Catalog
+            </button>
+            <button onClick={logout} className="flex w-full items-center gap-2 rounded-lg border border-red-200 px-3 py-2.5 text-sm font-medium text-red-500">
+              <LogOut className="h-4 w-4" /> Logout
+            </button>
+          </div>
+        )}
+
+        {/* Tab bar */}
+        <div className="flex border-t border-border">
           {(["products", "brands", "settings", "account"] as Tab[]).map((t) => (
-            <button key={t} onClick={() => setTab(t)}
-              className={`flex items-center gap-1.5 border-b-2 px-4 py-3 text-xs font-semibold uppercase tracking-widest transition ${tab === t ? "border-burgundy text-burgundy" : "border-transparent text-muted-foreground hover:text-foreground"}`}>
-              {t === "products" && <ShoppingBag className="h-3.5 w-3.5" />}
-              {t === "brands" && <Tag className="h-3.5 w-3.5" />}
-              {t === "settings" && <Settings className="h-3.5 w-3.5" />}
-              {t === "account" && <KeyRound className="h-3.5 w-3.5" />}
-              {t}
-              {t === "products" && <span className="ml-1 rounded-full bg-burgundy/10 px-1.5 py-0.5 text-[10px] text-burgundy">{products.length}</span>}
-              {t === "brands" && <span className="ml-1 rounded-full bg-burgundy/10 px-1.5 py-0.5 text-[10px] text-burgundy">{brands.length}</span>}
+            <button key={t} onClick={() => switchTab(t)}
+              className={`flex flex-1 flex-col items-center gap-1 py-2.5 text-[10px] font-semibold uppercase tracking-widest transition sm:flex-row sm:justify-center sm:gap-1.5 sm:py-3 sm:text-xs ${tab === t ? "border-b-2 border-burgundy text-burgundy" : "border-b-2 border-transparent text-muted-foreground"}`}>
+              {TAB_ICONS[t]}
+              <span className="hidden xs:inline sm:inline">{t}</span>
+              {t === "products" && <span className="rounded-full bg-burgundy/10 px-1 py-0.5 text-[9px] text-burgundy">{products.length}</span>}
+              {t === "brands" && <span className="rounded-full bg-burgundy/10 px-1 py-0.5 text-[9px] text-burgundy">{brands.length}</span>}
             </button>
           ))}
         </div>
       </header>
 
-      <main className="mx-auto max-w-7xl px-4 py-8">
+      <main className="px-3 py-4 sm:px-6 sm:py-8 max-w-7xl mx-auto">
         {tab === "products" && (
           <ProductsTab
             products={products}
@@ -157,9 +190,7 @@ export default function AdminPage() {
             onDelete={handleDelete}
           />
         )}
-        {tab === "brands" && (
-          <BrandsTab brands={brands} onChange={handleBrandsChange} />
-        )}
+        {tab === "brands" && <BrandsTab brands={brands} onChange={handleBrandsChange} />}
         {tab === "settings" && (
           <SettingsTab settings={settings} setSettings={setSettings} onSave={() => { saveSettings(settings); flash(); }} />
         )}
@@ -206,31 +237,37 @@ function ProductsTab({ products, loading, brands, onAdd, onEdit, onDelete }: {
 
   return (
     <div>
-      <div className="mb-5 flex flex-wrap items-center gap-3">
-        <div className="relative flex-1 min-w-[180px]">
+      {/* Search + filters */}
+      <div className="mb-4 space-y-2">
+        <div className="relative">
           <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
           <input value={search} onChange={(e) => { setSearch(e.target.value); setPage(1); }}
-            placeholder="Search by title or brand..."
-            className="w-full rounded-lg border border-border bg-background pl-9 pr-4 py-2.5 text-sm outline-none focus:border-burgundy" />
+            placeholder="Search products..."
+            className="w-full rounded-xl border border-border bg-background pl-9 pr-4 py-3 text-sm outline-none focus:border-burgundy" />
         </div>
-        <select value={filterCat} onChange={(e) => { setFilterCat(e.target.value); setPage(1); }}
-          className="rounded-lg border border-border bg-background px-3 py-2.5 text-sm outline-none focus:border-burgundy">
-          <option value="">All Categories</option>
-          {CATEGORIES.map((c) => <option key={c} value={c}>{c}</option>)}
-        </select>
-        <select value={filterBrand} onChange={(e) => { setFilterBrand(e.target.value); setPage(1); }}
-          className="rounded-lg border border-border bg-background px-3 py-2.5 text-sm outline-none focus:border-burgundy">
-          <option value="">All Brands</option>
-          {brands.map((b) => <option key={b} value={b}>{b}</option>)}
-        </select>
+        <div className="flex gap-2">
+          <select value={filterCat} onChange={(e) => { setFilterCat(e.target.value); setPage(1); }}
+            className="flex-1 rounded-xl border border-border bg-background px-3 py-2.5 text-sm outline-none focus:border-burgundy">
+            <option value="">All Categories</option>
+            {CATEGORIES.map((c) => <option key={c} value={c}>{c}</option>)}
+          </select>
+          <select value={filterBrand} onChange={(e) => { setFilterBrand(e.target.value); setPage(1); }}
+            className="flex-1 rounded-xl border border-border bg-background px-3 py-2.5 text-sm outline-none focus:border-burgundy">
+            <option value="">All Brands</option>
+            {brands.map((b) => <option key={b} value={b}>{b}</option>)}
+          </select>
+        </div>
+      </div>
+
+      {/* Add button + count */}
+      <div className="mb-4 flex items-center justify-between">
+        <span className="text-xs text-muted-foreground">{filtered.length} products</span>
         <button onClick={onAdd}
-          className="flex items-center gap-2 rounded-lg px-5 py-2.5 text-xs font-semibold uppercase tracking-widest text-cream"
+          className="flex items-center gap-2 rounded-xl px-5 py-3 text-sm font-semibold text-cream shadow-lg active:scale-95 transition-transform"
           style={{ background: "var(--gradient-luxe)" }}>
           <Plus className="h-4 w-4" /> Add Product
         </button>
       </div>
-
-      <div className="mb-3 text-xs text-muted-foreground">{filtered.length} products</div>
 
       {loading ? (
         <div className="py-20 text-center text-sm text-muted-foreground">Loading products...</div>
@@ -240,20 +277,28 @@ function ProductsTab({ products, loading, brands, onAdd, onEdit, onDelete }: {
         </div>
       ) : (
         <>
-          <div className="grid gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">
+          {/* 2-col on mobile, up to 5-col on desktop */}
+          <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5">
             {paginated.map((p) => (
-              <div key={p.id} className="group relative overflow-hidden rounded-2xl border border-border bg-card shadow-sm">
-                <img src={p.img} alt={p.title} className="h-44 w-full object-cover" loading="lazy"
+              <div key={p.id} className="relative overflow-hidden rounded-2xl border border-border bg-card shadow-sm">
+                <img src={p.img} alt={p.title} className="aspect-square w-full object-cover"
                   onError={(e) => { (e.target as HTMLImageElement).src = "https://placehold.co/400x400?text=No+Image"; }} />
-                <div className="p-3">
-                  <span className="mb-1 inline-block rounded-full bg-gold/15 px-2 py-0.5 text-[9px] font-semibold uppercase tracking-widest text-burgundy">{p.tag || "—"}</span>
-                  <p className="line-clamp-2 text-xs font-semibold text-ink leading-snug">{p.title}</p>
-                  <p className="mt-1 text-sm font-bold text-burgundy">{p.price}</p>
-                  <p className="text-[10px] text-muted-foreground capitalize">{p.category}</p>
+                {/* Always-visible action buttons on mobile */}
+                <div className="absolute right-1.5 top-1.5 flex gap-1">
+                  <button onClick={() => onEdit(p)}
+                    className="rounded-lg bg-white/95 p-2 shadow-md active:scale-95 transition-transform">
+                    <Pencil className="h-3.5 w-3.5 text-ink" />
+                  </button>
+                  <button onClick={() => onDelete(p.id)}
+                    className="rounded-lg bg-white/95 p-2 shadow-md active:scale-95 transition-transform">
+                    <Trash2 className="h-3.5 w-3.5 text-red-500" />
+                  </button>
                 </div>
-                <div className="absolute right-2 top-2 flex gap-1 opacity-0 transition group-hover:opacity-100">
-                  <button onClick={() => onEdit(p)} className="rounded-lg bg-white/90 p-1.5 shadow hover:bg-gold/20"><Pencil className="h-3.5 w-3.5" /></button>
-                  <button onClick={() => onDelete(p.id)} className="rounded-lg bg-white/90 p-1.5 shadow hover:bg-red-100 text-red-500"><Trash2 className="h-3.5 w-3.5" /></button>
+                <div className="p-2">
+                  <span className="mb-0.5 inline-block rounded-full bg-gold/15 px-1.5 py-0.5 text-[8px] font-semibold uppercase tracking-widest text-burgundy">{p.tag || "—"}</span>
+                  <p className="line-clamp-2 text-[11px] font-semibold text-ink leading-snug">{p.title}</p>
+                  <p className="mt-0.5 text-xs font-bold text-burgundy">{p.price}</p>
+                  <p className="text-[9px] text-muted-foreground capitalize">{p.category}</p>
                 </div>
               </div>
             ))}
@@ -261,7 +306,7 @@ function ProductsTab({ products, loading, brands, onAdd, onEdit, onDelete }: {
           {filtered.length > page * PAGE && (
             <div className="mt-6 text-center">
               <button onClick={() => setPage((p) => p + 1)}
-                className="rounded-lg border border-border px-6 py-2.5 text-sm font-medium hover:border-burgundy">
+                className="rounded-xl border border-border px-6 py-3 text-sm font-medium active:scale-95 transition-transform">
                 Load More ({filtered.length - page * PAGE} remaining)
               </button>
             </div>
@@ -287,53 +332,41 @@ function BrandsTab({ brands, onChange }: { brands: string[]; onChange: (b: strin
   }
 
   function remove(brand: string) {
-    if (!confirm(`Delete brand "${brand}"?`)) return;
+    if (!confirm(`Delete "${brand}"?`)) return;
     onChange(brands.filter((b) => b !== brand));
   }
 
-  function resetToDefault() {
-    if (!confirm("Reset brands to default list?")) return;
-    onChange(DEFAULT_BRANDS);
-  }
-
   return (
-    <div className="max-w-2xl">
-      <div className="rounded-2xl border border-border bg-card p-6">
-        <div className="mb-5 flex items-center justify-between">
+    <div>
+      <div className="rounded-2xl border border-border bg-card p-4 sm:p-6">
+        <div className="mb-4 flex items-center justify-between">
           <h3 className="text-xs font-bold uppercase tracking-[0.3em] text-gold">Manage Brands</h3>
-          <button onClick={resetToDefault} className="text-xs text-muted-foreground underline hover:text-foreground">Reset to default</button>
+          <button onClick={() => { if (confirm("Reset to default?")) onChange(DEFAULT_BRANDS); }}
+            className="text-xs text-muted-foreground underline">Reset</button>
         </div>
-
-        <div className="mb-4 flex gap-2">
-          <input
-            value={newBrand}
-            onChange={(e) => { setNewBrand(e.target.value); setErr(""); }}
+        <div className="mb-3 flex gap-2">
+          <input value={newBrand} onChange={(e) => { setNewBrand(e.target.value); setErr(""); }}
             onKeyDown={(e) => e.key === "Enter" && add()}
             placeholder="New brand name..."
-            className="flex-1 rounded-lg border border-border bg-background px-4 py-2.5 text-sm outline-none focus:border-burgundy"
-          />
+            className="flex-1 rounded-xl border border-border bg-background px-4 py-3 text-sm outline-none focus:border-burgundy" />
           <button onClick={add}
-            className="flex items-center gap-1.5 rounded-lg px-4 py-2.5 text-sm font-semibold text-cream"
+            className="flex items-center gap-1.5 rounded-xl px-4 py-3 text-sm font-semibold text-cream active:scale-95 transition-transform"
             style={{ background: "var(--gradient-luxe)" }}>
-            <Plus className="h-4 w-4" /> Add
+            <Plus className="h-4 w-4" />
           </button>
         </div>
         {err && <p className="mb-3 text-xs text-red-500">{err}</p>}
-
-        <div className="grid gap-2 sm:grid-cols-2">
+        <div className="grid grid-cols-1 gap-2 sm:grid-cols-2">
           {brands.map((brand) => (
-            <div key={brand} className="flex items-center justify-between rounded-xl border border-border bg-background px-4 py-2.5">
+            <div key={brand} className="flex items-center justify-between rounded-xl border border-border bg-background px-4 py-3">
               <span className="text-sm font-medium text-ink">{brand}</span>
-              <button onClick={() => remove(brand)} className="ml-2 rounded-lg p-1 text-red-400 hover:bg-red-50 hover:text-red-600">
-                <Trash2 className="h-3.5 w-3.5" />
+              <button onClick={() => remove(brand)} className="ml-2 rounded-lg p-2 text-red-400 active:scale-95 transition-transform hover:bg-red-50">
+                <Trash2 className="h-4 w-4" />
               </button>
             </div>
           ))}
         </div>
-
-        {brands.length === 0 && (
-          <p className="py-8 text-center text-sm text-muted-foreground">No brands. Add one above.</p>
-        )}
+        {brands.length === 0 && <p className="py-8 text-center text-sm text-muted-foreground">No brands.</p>}
       </div>
     </div>
   );
@@ -381,77 +414,86 @@ function ProductForm({ initial, brands, onSave, onClose }: {
   }
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4 backdrop-blur-sm" onClick={onClose}>
-      <div className="w-full max-w-md rounded-3xl border border-border bg-card p-8 shadow-2xl max-h-[90vh] overflow-y-auto" onClick={(e) => e.stopPropagation()}>
-        <div className="mb-6 flex items-center justify-between">
-          <h2 className="text-xl font-semibold text-ink" style={{ fontFamily: "var(--font-display)" }}>
-            {initial ? "Edit Product" : "Add Product"}
-          </h2>
-          <button onClick={onClose} className="rounded-full p-1 hover:bg-secondary"><X className="h-5 w-5" /></button>
+    <div className="fixed inset-0 z-50 flex items-end justify-center bg-black/60 backdrop-blur-sm sm:items-center" onClick={onClose}>
+      <div
+        className="w-full rounded-t-3xl border border-border bg-card shadow-2xl sm:max-w-md sm:rounded-3xl"
+        style={{ maxHeight: "92dvh", overflowY: "auto" }}
+        onClick={(e) => e.stopPropagation()}
+      >
+        {/* Handle bar for mobile */}
+        <div className="flex justify-center pt-3 pb-1 sm:hidden">
+          <div className="h-1 w-10 rounded-full bg-border" />
         </div>
-        <form onSubmit={submit} className="space-y-4">
-          <Field label="Title *" value={form.title} onChange={(v) => set("title", v)} placeholder="e.g. LV Neverfull MM" />
-          <Field label="Price *" value={form.price} onChange={(v) => set("price", v)} placeholder="e.g. $369" />
 
-          <div className="grid grid-cols-2 gap-3">
-            <div>
-              <label className="mb-1.5 block text-[10px] font-semibold uppercase tracking-widest text-muted-foreground">Brand</label>
-              <select value={form.tag} onChange={(e) => set("tag", e.target.value)}
-                className="w-full rounded-lg border border-border bg-background px-3 py-2.5 text-sm outline-none focus:border-burgundy">
-                <option value="">Select Brand</option>
-                {brands.map((b) => <option key={b} value={b}>{b}</option>)}
-              </select>
-            </div>
-            <div>
-              <label className="mb-1.5 block text-[10px] font-semibold uppercase tracking-widest text-muted-foreground">Category</label>
-              <select value={form.category} onChange={(e) => set("category", e.target.value)}
-                className="w-full rounded-lg border border-border bg-background px-3 py-2.5 text-sm outline-none focus:border-burgundy">
-                {CATEGORIES.map((c) => <option key={c} value={c}>{c}</option>)}
-              </select>
-            </div>
+        <div className="px-5 pb-6 pt-4 sm:p-8">
+          <div className="mb-5 flex items-center justify-between">
+            <h2 className="text-lg font-semibold text-ink">{initial ? "Edit Product" : "Add Product"}</h2>
+            <button onClick={onClose} className="rounded-full p-1.5 hover:bg-secondary"><X className="h-5 w-5" /></button>
           </div>
 
-          <div>
-            <label className="mb-1.5 block text-[10px] font-semibold uppercase tracking-widest text-muted-foreground">Image</label>
-            <div className="space-y-2">
-              <label className={`flex cursor-pointer items-center justify-center gap-2 rounded-lg border-2 border-dashed border-border py-4 text-sm text-muted-foreground transition hover:border-burgundy hover:text-burgundy ${uploading ? "opacity-50 pointer-events-none" : ""}`}>
-                <Upload className="h-4 w-4" />
-                {uploading ? "Uploading..." : "Click to upload image"}
-                <input type="file" accept="image/*" className="hidden" onChange={handleImageUpload} disabled={uploading} />
+          <form onSubmit={submit} className="space-y-4">
+            <Field label="Title *" value={form.title} onChange={(v) => set("title", v)} placeholder="e.g. LV Neverfull MM" />
+            <Field label="Price *" value={form.price} onChange={(v) => set("price", v)} placeholder="e.g. $369" />
+
+            <div className="grid grid-cols-2 gap-3">
+              <div>
+                <label className="mb-1.5 block text-[10px] font-semibold uppercase tracking-widest text-muted-foreground">Brand</label>
+                <select value={form.tag} onChange={(e) => set("tag", e.target.value)}
+                  className="w-full rounded-xl border border-border bg-background px-3 py-3 text-sm outline-none focus:border-burgundy">
+                  <option value="">Brand</option>
+                  {brands.map((b) => <option key={b} value={b}>{b}</option>)}
+                </select>
+              </div>
+              <div>
+                <label className="mb-1.5 block text-[10px] font-semibold uppercase tracking-widest text-muted-foreground">Category</label>
+                <select value={form.category} onChange={(e) => set("category", e.target.value)}
+                  className="w-full rounded-xl border border-border bg-background px-3 py-3 text-sm outline-none focus:border-burgundy">
+                  {CATEGORIES.map((c) => <option key={c} value={c}>{c}</option>)}
+                </select>
+              </div>
+            </div>
+
+            {/* Image upload — big tap target on mobile */}
+            <div>
+              <label className="mb-1.5 block text-[10px] font-semibold uppercase tracking-widest text-muted-foreground">Image</label>
+              <label className={`flex cursor-pointer flex-col items-center justify-center gap-2 rounded-xl border-2 border-dashed py-6 text-sm transition ${uploading ? "border-burgundy/50 opacity-60 pointer-events-none" : "border-border hover:border-burgundy"}`}>
+                {form.img
+                  ? <img src={form.img} alt="preview" className="h-28 w-full rounded-lg object-cover" onError={(e) => { (e.target as HTMLImageElement).style.display = "none"; }} />
+                  : <Upload className="h-8 w-8 text-muted-foreground" />
+                }
+                <span className="text-muted-foreground">{uploading ? "Uploading..." : form.img ? "Tap to change image" : "Tap to upload image"}</span>
+                <input type="file" accept="image/*" capture="environment" className="hidden" onChange={handleImageUpload} disabled={uploading} />
               </label>
-              <Field label="Or paste image URL" value={form.img} onChange={(v) => set("img", v)} placeholder="https://..." />
+              <input value={form.img} onChange={(e) => set("img", e.target.value)}
+                placeholder="Or paste image URL..."
+                className="mt-2 w-full rounded-xl border border-border bg-background px-4 py-2.5 text-sm outline-none focus:border-burgundy" />
             </div>
-          </div>
-          {form.img && (
-            <img src={form.img} alt="preview" className="h-32 w-full rounded-xl object-cover border border-border"
-              onError={(e) => { (e.target as HTMLImageElement).style.display = "none"; }} />
-          )}
 
-          <div>
-            <label className="mb-1.5 block text-[10px] font-semibold uppercase tracking-widest text-muted-foreground">Description</label>
-            <textarea
-              value={form.description}
-              onChange={(e) => set("description", e.target.value)}
-              placeholder="Product description..."
-              rows={3}
-              className="w-full rounded-lg border border-border bg-background px-4 py-2.5 text-sm outline-none focus:border-burgundy resize-none"
-            />
-          </div>
+            <div>
+              <label className="mb-1.5 block text-[10px] font-semibold uppercase tracking-widest text-muted-foreground">Description</label>
+              <textarea value={form.description} onChange={(e) => set("description", e.target.value)}
+                placeholder="Product description..." rows={3}
+                className="w-full rounded-xl border border-border bg-background px-4 py-3 text-sm outline-none focus:border-burgundy resize-none" />
+            </div>
 
-          <div className="flex items-center gap-3 pt-1">
-            <input type="checkbox" id="inStock" checked={form.inStock} onChange={(e) => set("inStock", e.target.checked)} className="h-4 w-4 accent-burgundy" />
-            <label htmlFor="inStock" className="text-sm text-ink">In Stock</label>
-          </div>
+            <div className="flex items-center gap-3">
+              <input type="checkbox" id="inStock" checked={form.inStock} onChange={(e) => set("inStock", e.target.checked)} className="h-5 w-5 accent-burgundy" />
+              <label htmlFor="inStock" className="text-sm text-ink">In Stock</label>
+            </div>
 
-          <div className="flex gap-3 pt-2">
-            <button type="button" onClick={onClose} className="flex-1 rounded-lg border border-border py-2.5 text-sm font-medium hover:bg-secondary">Cancel</button>
-            <button type="submit"
-              className="flex-1 flex items-center justify-center gap-2 rounded-lg py-2.5 text-sm font-semibold text-cream"
-              style={{ background: "var(--gradient-luxe)" }}>
-              {initial ? "Update" : "Add Product"}
-            </button>
-          </div>
-        </form>
+            <div className="flex gap-3 pt-1">
+              <button type="button" onClick={onClose}
+                className="flex-1 rounded-xl border border-border py-3.5 text-sm font-medium active:scale-95 transition-transform">
+                Cancel
+              </button>
+              <button type="submit"
+                className="flex-1 flex items-center justify-center gap-2 rounded-xl py-3.5 text-sm font-semibold text-cream active:scale-95 transition-transform"
+                style={{ background: "var(--gradient-luxe)" }}>
+                {initial ? "Update" : "Add Product"}
+              </button>
+            </div>
+          </form>
+        </div>
       </div>
     </div>
   );
@@ -462,7 +504,7 @@ function Field({ label, value, onChange, placeholder }: { label: string; value: 
     <div>
       <label className="mb-1.5 block text-[10px] font-semibold uppercase tracking-widest text-muted-foreground">{label}</label>
       <input value={value} onChange={(e) => onChange(e.target.value)} placeholder={placeholder}
-        className="w-full rounded-lg border border-border bg-background px-4 py-2.5 text-sm outline-none focus:border-burgundy" />
+        className="w-full rounded-xl border border-border bg-background px-4 py-3 text-sm outline-none focus:border-burgundy" />
     </div>
   );
 }
@@ -485,14 +527,14 @@ function AccountTab({ onFlash }: { onFlash: () => void }) {
 
   return (
     <div className="max-w-sm">
-      <div className="rounded-2xl border border-border bg-card p-6">
+      <div className="rounded-2xl border border-border bg-card p-5 sm:p-6">
         <h3 className="mb-4 text-xs font-bold uppercase tracking-[0.3em] text-gold">Change Credentials</h3>
         <form onSubmit={save} className="space-y-4">
           <Field label="New Username" value={username} onChange={setUsername} placeholder="e.g. admin" />
           <Field label="New Password" value={password} onChange={setPassword} placeholder="Min 6 characters" />
           <Field label="Confirm Password" value={confirm} onChange={setConfirm} placeholder="Repeat password" />
           {err && <p className="text-xs text-red-500">{err}</p>}
-          <button type="submit" className="w-full rounded-lg py-2.5 text-sm font-semibold text-cream" style={{ background: "var(--gradient-luxe)" }}>
+          <button type="submit" className="w-full rounded-xl py-3.5 text-sm font-semibold text-cream active:scale-95 transition-transform" style={{ background: "var(--gradient-luxe)" }}>
             Update Credentials
           </button>
         </form>
@@ -507,8 +549,8 @@ function SettingsTab({ settings, setSettings, onSave }: { settings: SiteSettings
   const set = (k: keyof SiteSettings, v: string) => setSettings({ ...settings, [k]: v });
 
   return (
-    <div className="max-w-2xl space-y-5">
-      <div className="rounded-2xl border border-border bg-card p-6 space-y-4">
+    <div className="space-y-4">
+      <div className="rounded-2xl border border-border bg-card p-4 sm:p-6 space-y-4">
         <h3 className="text-xs font-bold uppercase tracking-[0.3em] text-gold">Contact & Social</h3>
         <Field label="WhatsApp Number" value={settings.whatsapp} onChange={(v) => set("whatsapp", v)} />
         <Field label="WhatsApp Link" value={settings.whatsappLink} onChange={(v) => set("whatsappLink", v)} />
@@ -517,14 +559,14 @@ function SettingsTab({ settings, setSettings, onSave }: { settings: SiteSettings
         <Field label="Email" value={settings.email} onChange={(v) => set("email", v)} />
       </div>
 
-      <div className="rounded-2xl border border-border bg-card p-6 space-y-3">
+      <div className="rounded-2xl border border-border bg-card p-4 sm:p-6 space-y-3">
         <h3 className="text-xs font-bold uppercase tracking-[0.3em] text-gold">Marquee Text</h3>
         <div className="flex flex-wrap gap-2">
           {settings.marqueeItems.map((item, i) => (
-            <span key={i} className="flex items-center gap-1.5 rounded-full border border-border bg-background px-3 py-1 text-xs">
+            <span key={i} className="flex items-center gap-1.5 rounded-full border border-border bg-background px-3 py-1.5 text-xs">
               {item}
               <button onClick={() => setSettings({ ...settings, marqueeItems: settings.marqueeItems.filter((_, j) => j !== i) })}
-                className="text-red-400 hover:text-red-600"><X className="h-3 w-3" /></button>
+                className="text-red-400"><X className="h-3 w-3" /></button>
             </span>
           ))}
         </div>
@@ -532,15 +574,16 @@ function SettingsTab({ settings, setSettings, onSave }: { settings: SiteSettings
           <input value={newItem} onChange={(e) => setNewItem(e.target.value)}
             onKeyDown={(e) => { if (e.key === "Enter" && newItem.trim()) { e.preventDefault(); setSettings({ ...settings, marqueeItems: [...settings.marqueeItems, newItem.trim()] }); setNewItem(""); } }}
             placeholder="Add marquee item..."
-            className="flex-1 rounded-lg border border-border bg-background px-4 py-2 text-sm outline-none focus:border-burgundy" />
+            className="flex-1 rounded-xl border border-border bg-background px-4 py-3 text-sm outline-none focus:border-burgundy" />
           <button onClick={() => { if (newItem.trim()) { setSettings({ ...settings, marqueeItems: [...settings.marqueeItems, newItem.trim()] }); setNewItem(""); } }}
-            className="rounded-lg px-4 py-2 text-cream" style={{ background: "var(--gradient-luxe)" }}>
+            className="rounded-xl px-4 py-3 text-cream active:scale-95 transition-transform" style={{ background: "var(--gradient-luxe)" }}>
             <Plus className="h-4 w-4" />
           </button>
         </div>
       </div>
 
-      <button onClick={onSave} className="rounded-lg px-8 py-3 text-sm font-semibold uppercase tracking-widest text-cream shadow"
+      <button onClick={onSave}
+        className="w-full rounded-xl py-4 text-sm font-semibold uppercase tracking-widest text-cream shadow active:scale-95 transition-transform sm:w-auto sm:px-10"
         style={{ background: "var(--gradient-luxe)" }}>
         Save Settings
       </button>

@@ -211,36 +211,36 @@ function Hero({ wa }: { wa: string }) {
   return (
     <section className="relative overflow-hidden border-b border-border">
       <div className="absolute inset-0 -z-10 opacity-60" style={{ background: "radial-gradient(ellipse at top right, oklch(0.88 0.08 80 / 0.6), transparent 60%), radial-gradient(ellipse at bottom left, oklch(0.85 0.06 30 / 0.5), transparent 55%)" }} />
-      <div className="mx-auto grid max-w-7xl gap-12 px-4 py-16 md:py-24 lg:grid-cols-[1.1fr_1fr] lg:items-center">
-        <div>
-          <p className="mb-6 inline-flex items-center gap-2 rounded-full border border-gold/50 bg-gold/10 px-4 py-1.5 text-[10px] font-semibold uppercase tracking-[0.3em] text-burgundy">
+      <div className="mx-auto grid max-w-7xl gap-8 px-4 py-10 md:py-16 lg:grid-cols-[1.1fr_1fr] lg:items-center lg:gap-12 lg:py-24">
+        <div className="order-2 lg:order-1">
+          <p className="mb-4 inline-flex items-center gap-2 rounded-full border border-gold/50 bg-gold/10 px-3 py-1.5 text-[10px] font-semibold uppercase tracking-[0.3em] text-burgundy">
             <Sparkles className="h-3 w-3" /> Italy & Dubai · Est. 2024
           </p>
-          <h1 className="text-5xl font-medium tracking-tight text-ink md:text-6xl lg:text-7xl" style={{ fontFamily: "var(--font-display)" }}>
+          <h1 className="text-3xl font-medium tracking-tight text-ink sm:text-5xl md:text-6xl lg:text-7xl" style={{ fontFamily: "var(--font-display)" }}>
             Premium Designer Bags
           </h1>
-          <p className="mt-7 max-w-md text-base leading-relaxed text-muted-foreground">
+          <p className="mt-4 text-sm leading-relaxed text-muted-foreground md:mt-7 md:text-base">
             A curated house of premium designer fashion — Louis Vuitton, Chanel, Hermès, Dior and more — hand-shipped from Italy & Dubai with real-photo confirmation.
           </p>
-          <div className="mt-9 flex flex-wrap gap-3">
-            <a href="/categories/bags" className="inline-flex items-center gap-2 px-8 py-4 text-xs font-semibold uppercase tracking-[0.2em] text-cream transition hover:opacity-90" style={{ background: "var(--gradient-luxe)" }}>
+          <div className="mt-6 flex flex-wrap gap-3 md:mt-9">
+            <a href="/categories/bags" className="inline-flex items-center gap-2 px-6 py-3.5 text-xs font-semibold uppercase tracking-[0.2em] text-cream transition hover:opacity-90 md:px-8 md:py-4" style={{ background: "var(--gradient-luxe)" }}>
               Shop Collection
             </a>
-            <a href={wa} className="inline-flex items-center gap-2 border-2 border-burgundy px-8 py-4 text-xs font-semibold uppercase tracking-[0.2em] text-burgundy transition hover:bg-burgundy hover:text-cream">
+            <a href={wa} className="inline-flex items-center gap-2 border-2 border-burgundy px-6 py-3.5 text-xs font-semibold uppercase tracking-[0.2em] text-burgundy transition hover:bg-burgundy hover:text-cream md:px-8 md:py-4">
               <MessageCircle className="h-4 w-4" /> WhatsApp Us
             </a>
           </div>
-          <div className="mt-14 grid grid-cols-3 gap-6 border-t border-border pt-8">
+          <div className="mt-8 grid grid-cols-3 gap-4 border-t border-border pt-6 md:mt-14 md:gap-6 md:pt-8">
             <Stat n="15K+" l="Happy Clients" />
             <Stat n="50+" l="Designer Brands" />
             <Stat n="98%" l="Satisfaction" />
           </div>
         </div>
-        <div className="relative">
+        <div className="relative order-1 lg:order-2">
           <div className="absolute -right-4 -top-4 hidden h-full w-full border-2 border-gold lg:block" />
-          <img src={heroModel} alt="Editorial fashion shot — woman holding designer handbag" width={1024} height={1280} className="relative aspect-[4/5] w-full object-cover shadow-2xl" style={{ boxShadow: "var(--shadow-luxe)" }} />
-          <div className="absolute -bottom-6 -left-6 hidden w-56 bg-card p-5 shadow-2xl md:block" style={{ boxShadow: "var(--shadow-luxe)" }}>
-            <img src={heroBag} alt="Featured bag" width={1600} height={1200} loading="lazy" className="aspect-square w-full object-cover" />
+          <img src={heroModel} alt="Editorial fashion shot" width={1024} height={1280} className="relative aspect-[4/5] w-full object-cover shadow-2xl" style={{ boxShadow: "var(--shadow-luxe)" }} />
+          <div className="absolute -bottom-6 -left-6 hidden w-48 bg-card p-4 shadow-2xl md:block" style={{ boxShadow: "var(--shadow-luxe)" }}>
+            <img src={heroBag} alt="Featured bag" loading="lazy" className="aspect-square w-full object-cover" />
             <div className="mt-3 flex items-center justify-between">
               <div>
                 <p className="text-[10px] uppercase tracking-widest text-gold">Featured</p>
@@ -249,7 +249,7 @@ function Hero({ wa }: { wa: string }) {
               <span className="text-sm font-bold text-burgundy">$369</span>
             </div>
           </div>
-          <div className="absolute right-4 top-4 flex items-center gap-1 bg-cream/95 px-3 py-1.5 text-[10px] font-semibold uppercase tracking-wider text-burgundy backdrop-blur">
+          <div className="absolute right-3 top-3 flex items-center gap-1 bg-cream/95 px-2.5 py-1.5 text-[10px] font-semibold uppercase tracking-wider text-burgundy backdrop-blur">
             <Star className="h-3 w-3 fill-gold text-gold" /> Master Quality
           </div>
         </div>
@@ -282,22 +282,22 @@ function Marquee({ items }: { items: string[] }) {
 
 function FeaturesStrip({ wa }: { wa: string }) {
   const items = [
-    { icon: Truck, t: "Worldwide Delivery", d: "Fast shipping from Italy & Dubai" },
-    { icon: ShieldCheck, t: "Authenticity Promise", d: "All products verified by our team" },
-    { icon: MessageCircle, t: "WhatsApp Support", d: wa },
-    { icon: RotateCcw, t: "Hassle-Free Service", d: "Personalized sourcing and follow-up" },
+    { icon: Truck, t: "Worldwide Delivery", d: "Italy & Dubai" },
+    { icon: ShieldCheck, t: "Authentic", d: "Verified products" },
+    { icon: MessageCircle, t: "WhatsApp", d: wa },
+    { icon: RotateCcw, t: "Easy Returns", d: "Hassle-free" },
   ];
   return (
     <section className="border-b border-border bg-card">
-      <div className="mx-auto grid max-w-7xl grid-cols-2 divide-x divide-border md:grid-cols-4">
+      <div className="mx-auto grid max-w-7xl grid-cols-2 divide-x divide-y divide-border md:grid-cols-4 md:divide-y-0">
         {items.map((it) => (
-          <div key={it.t} className="flex items-center gap-4 px-5 py-7 transition hover:bg-secondary/40">
-            <div className="grid h-12 w-12 shrink-0 place-items-center rounded-full bg-gold/15 text-burgundy">
-              <it.icon className="h-5 w-5" />
+          <div key={it.t} className="flex items-center gap-3 px-4 py-5 transition hover:bg-secondary/40 md:gap-4 md:px-5 md:py-7">
+            <div className="grid h-9 w-9 shrink-0 place-items-center rounded-full bg-gold/15 text-burgundy md:h-12 md:w-12">
+              <it.icon className="h-4 w-4 md:h-5 md:w-5" />
             </div>
             <div className="min-w-0">
-              <div className="text-sm font-semibold text-ink">{it.t}</div>
-              <div className="truncate text-xs text-muted-foreground">{it.d}</div>
+              <div className="text-xs font-semibold text-ink md:text-sm">{it.t}</div>
+              <div className="truncate text-[10px] text-muted-foreground md:text-xs">{it.d}</div>
             </div>
           </div>
         ))}
@@ -352,19 +352,19 @@ function ProductSection({ id, title, subtitle, products }: { id: string; title: 
 function CategoriesGrid() {
   return (
     <section className="relative border-b border-border" style={{ background: "linear-gradient(180deg, var(--secondary), var(--background))" }}>
-      <div className="mx-auto max-w-7xl px-4 py-16 md:py-20">
-        <div className="mb-10 text-center">
+      <div className="mx-auto max-w-7xl px-4 py-12 md:py-20">
+        <div className="mb-8 text-center md:mb-10">
           <p className="mb-2 text-[10px] font-semibold uppercase tracking-[0.35em] text-gold">— Shop By</p>
-          <h2 className="text-4xl tracking-tight text-ink md:text-5xl" style={{ fontFamily: "var(--font-display)" }}>Categories</h2>
+          <h2 className="text-3xl tracking-tight text-ink md:text-5xl" style={{ fontFamily: "var(--font-display)" }}>Categories</h2>
         </div>
-        <div className="flex flex-wrap justify-center gap-8 md:gap-16">
+        <div className="grid grid-cols-3 gap-4 sm:flex sm:flex-wrap sm:justify-center sm:gap-8 md:gap-16">
           {HOME_CATEGORIES.map((cat) => (
-            <a key={cat.slug} href={`/categories/${cat.slug}`} className="group flex flex-col items-center gap-3">
-              <div className="relative h-28 w-28 overflow-hidden rounded-full border-4 border-border shadow-lg transition duration-300 group-hover:border-gold group-hover:shadow-2xl md:h-36 md:w-36">
+            <a key={cat.slug} href={`/categories/${cat.slug}`} className="group flex flex-col items-center gap-2 md:gap-3">
+              <div className="relative h-20 w-20 overflow-hidden rounded-full border-4 border-border shadow-lg transition duration-300 group-hover:border-gold group-hover:shadow-2xl sm:h-28 sm:w-28 md:h-36 md:w-36">
                 <img src={cat.img} alt={cat.title} className="h-full w-full object-cover transition duration-500 group-hover:scale-110" />
                 <div className="absolute inset-0 rounded-full bg-black/25 transition group-hover:bg-black/5" />
               </div>
-              <span className="text-xs font-semibold uppercase tracking-[0.25em] text-ink transition group-hover:text-burgundy">{cat.title}</span>
+              <span className="text-[10px] font-semibold uppercase tracking-[0.2em] text-ink transition group-hover:text-burgundy md:text-xs md:tracking-[0.25em]">{cat.title}</span>
             </a>
           ))}
         </div>
@@ -376,19 +376,19 @@ function CategoriesGrid() {
 function BrandsStrip({ brands: _brands }: { brands: string[] }) {
   return (
     <section id="brands" className="border-b border-border" style={{ background: "linear-gradient(180deg, var(--secondary), var(--background))" }}>
-      <div className="mx-auto max-w-7xl px-4 py-16">
-        <div className="mb-12 text-center">
+      <div className="mx-auto max-w-7xl px-4 py-12 md:py-16">
+        <div className="mb-8 text-center md:mb-12">
           <p className="mb-2 text-[10px] font-semibold uppercase tracking-[0.35em] text-gold">— Shop By Brand</p>
-          <h2 className="text-4xl tracking-tight text-ink md:text-5xl" style={{ fontFamily: "var(--font-display)" }}>Our Brands</h2>
-          <p className="mx-auto mt-3 max-w-md text-sm text-muted-foreground">Select a house to explore its full collection.</p>
+          <h2 className="text-3xl tracking-tight text-ink md:text-5xl" style={{ fontFamily: "var(--font-display)" }}>Our Brands</h2>
+          <p className="mx-auto mt-2 max-w-md text-sm text-muted-foreground">Select a house to explore its full collection.</p>
         </div>
         <div className="grid grid-cols-2 gap-px bg-border sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6">
           {FEATURED_BRANDS.map((brand) => (
             <a key={brand} href={`/brand/${brandToSlug(brand)}`}
-              className="group flex flex-col items-center justify-center gap-3 bg-card px-4 py-8 text-center transition hover:bg-secondary"
+              className="group flex flex-col items-center justify-center gap-2 bg-card px-3 py-6 text-center transition hover:bg-secondary md:gap-3 md:px-4 md:py-8"
             >
-              <span className="text-base font-medium tracking-wide text-ink transition group-hover:text-burgundy" style={{ fontFamily: "var(--font-display)", fontStyle: "italic" }}>{brand}</span>
-              <span className="h-px w-8 bg-gold opacity-0 transition-all duration-300 group-hover:w-12 group-hover:opacity-100" />
+              <span className="text-sm font-medium tracking-wide text-ink transition group-hover:text-burgundy md:text-base" style={{ fontFamily: "var(--font-display)", fontStyle: "italic" }}>{brand}</span>
+              <span className="h-px w-6 bg-gold opacity-0 transition-all duration-300 group-hover:w-10 group-hover:opacity-100" />
             </a>
           ))}
         </div>
@@ -406,20 +406,20 @@ function ValueProps() {
   ];
   return (
     <section id="about" className="relative overflow-hidden border-b border-border text-cream">
-      <img src={collectionBanner} alt="" width={1600} height={900} loading="lazy" className="absolute inset-0 h-full w-full object-cover" />
+      <img src={collectionBanner} alt="" loading="lazy" className="absolute inset-0 h-full w-full object-cover" />
       <div className="absolute inset-0" style={{ background: "linear-gradient(135deg, oklch(0.22 0.09 20 / 0.92), oklch(0.18 0.018 35 / 0.88))" }} />
-      <div className="relative mx-auto max-w-7xl px-4 py-24">
-        <div className="mb-12 max-w-2xl">
+      <div className="relative mx-auto max-w-7xl px-4 py-14 md:py-24">
+        <div className="mb-8 max-w-2xl md:mb-12">
           <p className="mb-3 text-[10px] font-semibold uppercase tracking-[0.35em] text-gold">— Why Premium Designer Fashion</p>
-          <h2 className="text-4xl tracking-tight md:text-5xl" style={{ fontFamily: "var(--font-display)" }}>
+          <h2 className="text-3xl tracking-tight md:text-5xl" style={{ fontFamily: "var(--font-display)" }}>
             A house built on <span className="italic text-gold">trust</span>, craft, and discretion.
           </h2>
         </div>
-        <div className="grid gap-px bg-cream/10 md:grid-cols-2 lg:grid-cols-4">
+        <div className="grid grid-cols-1 gap-px bg-cream/10 sm:grid-cols-2 lg:grid-cols-4">
           {props.map((p, i) => (
-            <div key={p.t} className="group p-8 backdrop-blur-sm transition hover:bg-gold/10" style={{ background: "oklch(0.18 0.018 35 / 0.6)" }}>
-              <div className="mb-5 text-3xl font-medium text-gold" style={{ fontFamily: "var(--font-display)" }}>0{i + 1}</div>
-              <h3 className="mb-3 text-xl" style={{ fontFamily: "var(--font-display)" }}>{p.t}</h3>
+            <div key={p.t} className="group p-6 backdrop-blur-sm transition hover:bg-gold/10 md:p-8" style={{ background: "oklch(0.18 0.018 35 / 0.6)" }}>
+              <div className="mb-4 text-2xl font-medium text-gold md:mb-5 md:text-3xl" style={{ fontFamily: "var(--font-display)" }}>0{i + 1}</div>
+              <h3 className="mb-2 text-lg md:mb-3 md:text-xl" style={{ fontFamily: "var(--font-display)" }}>{p.t}</h3>
               <p className="text-sm leading-relaxed opacity-75">{p.d}</p>
             </div>
           ))}
@@ -470,27 +470,27 @@ function Reviews() {
 function CTASection({ wa, waLink }: { wa: string; waLink: string }) {
   return (
     <section id="contact" className="border-b border-border bg-card">
-      <div className="mx-auto max-w-7xl px-4 py-24 text-center">
+      <div className="mx-auto max-w-7xl px-4 py-14 text-center md:py-24">
         <p className="mb-3 text-[10px] font-semibold uppercase tracking-[0.35em] text-gold">— Ready to Order?</p>
-        <h2 className="mx-auto max-w-3xl text-5xl tracking-tight text-ink md:text-6xl" style={{ fontFamily: "var(--font-display)" }}>
+        <h2 className="mx-auto max-w-3xl text-3xl tracking-tight text-ink sm:text-4xl md:text-6xl" style={{ fontFamily: "var(--font-display)" }}>
           Request your luxury item with <span className="italic text-burgundy">private WhatsApp support.</span>
         </h2>
-        <p className="mx-auto mt-5 max-w-xl text-muted-foreground">
+        <p className="mx-auto mt-4 max-w-xl text-sm text-muted-foreground md:mt-5">
           We accept orders exclusively via WhatsApp for the most personal, white-glove service.
         </p>
-        <a href={waLink} className="mt-9 inline-flex items-center gap-2 px-10 py-4 text-xs font-semibold uppercase tracking-[0.25em] text-cream shadow-xl transition hover:translate-y-[-1px]" style={{ background: "var(--gradient-luxe)", boxShadow: "var(--shadow-luxe)" }}>
-          <MessageCircle className="h-4 w-4" /> Chat on WhatsApp — {wa}
+        <a href={waLink} className="mt-7 inline-flex items-center gap-2 px-7 py-4 text-xs font-semibold uppercase tracking-[0.25em] text-cream shadow-xl transition hover:translate-y-[-1px] md:mt-9 md:px-10" style={{ background: "var(--gradient-luxe)", boxShadow: "var(--shadow-luxe)" }}>
+          <MessageCircle className="h-4 w-4" /> Chat on WhatsApp
         </a>
         <p className="mt-10 text-[10px] font-semibold uppercase tracking-[0.3em] text-muted-foreground">Accepted Payments</p>
-        <div className="mx-auto mt-4 grid max-w-4xl gap-6 lg:grid-cols-3">
+        <div className="mx-auto mt-4 grid max-w-4xl grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
           {PAYMENT_METHODS.map((m) => (
-            <div key={m.name} className="rounded-3xl border border-border bg-background p-6 text-center shadow-sm transition hover:border-gold hover:shadow-lg">
+            <div key={m.name} className="rounded-2xl border border-border bg-background p-5 text-center shadow-sm transition hover:border-gold hover:shadow-lg">
               <div className="mt-2 text-sm font-semibold uppercase tracking-[0.25em] text-foreground">{m.name}</div>
               <div className="mt-3 space-y-1 text-[11px] leading-5 text-muted-foreground">
                 {m.details.map((line) => <div key={line}>{line}</div>)}
               </div>
               {m.qrUrl && (
-                <img src={m.qrUrl} alt={`${m.name} QR`} className="mx-auto mt-4 w-full max-w-xs rounded-3xl border border-border object-cover" />
+                <img src={m.qrUrl} alt={`${m.name} QR`} className="mx-auto mt-4 w-full max-w-xs rounded-2xl border border-border object-cover" />
               )}
             </div>
           ))}
@@ -504,7 +504,7 @@ function Footer({ settings, activeBrands: _activeBrands }: { settings: ReturnTyp
   return (
     <footer className="text-cream" style={{ background: "var(--gradient-luxe)" }}>
       <div className="mx-auto max-w-7xl px-4 py-16">
-        <div className="grid gap-10 md:grid-cols-2 lg:grid-cols-4">
+        <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-4">
           <div>
             <div className="flex items-center gap-3">
               <img src={logoImg} alt="Premium Designer Bags" className="h-10 w-10 rounded-full object-cover" />

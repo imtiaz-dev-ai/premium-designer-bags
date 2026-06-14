@@ -68,39 +68,41 @@ export default function ProductPage() {
         </div>
       </header>
 
-      <main className="mx-auto max-w-7xl px-4 py-10">
-        <nav className="mb-6 text-xs text-muted-foreground">
+      <main className="mx-auto max-w-7xl px-4 py-6 md:py-10">
+        <nav className="mb-4 text-xs text-muted-foreground md:mb-6">
           <Link to="/" className="hover:text-burgundy">Home</Link>
           <span className="mx-2">/</span>
-          <span className="text-foreground">{product.title}</span>
+          <span className="text-foreground line-clamp-1">{product.title}</span>
         </nav>
 
-        <div className="grid gap-12 lg:grid-cols-2">
-          <div className="space-y-4">
-            <div className="relative overflow-hidden rounded-3xl border border-border bg-card">
+        <div className="grid gap-6 lg:grid-cols-2 lg:gap-12">
+          {/* Images */}
+          <div className="space-y-3">
+            <div className="relative overflow-hidden rounded-2xl border border-border bg-card">
               <img src={product.imgs[activeImg]} alt={product.title} className="aspect-square w-full object-cover" />
-              <button onClick={() => setWishlist(!wishlist)} className="absolute right-4 top-4 rounded-full bg-white/90 p-2.5 shadow-md transition hover:scale-110">
+              <button onClick={() => setWishlist(!wishlist)} className="absolute right-3 top-3 rounded-full bg-white/90 p-2 shadow-md transition hover:scale-110">
                 <Heart className={`h-5 w-5 ${wishlist ? "fill-red-500 text-red-500" : "text-gray-400"}`} />
               </button>
             </div>
-            <div className="grid grid-cols-4 gap-3">
+            <div className="grid grid-cols-4 gap-2">
               {product.imgs.map((img, i) => (
-                <button key={i} onClick={() => setActiveImg(i)} className={`overflow-hidden rounded-2xl border-2 transition ${activeImg === i ? "border-burgundy" : "border-border hover:border-gold"}`}>
+                <button key={i} onClick={() => setActiveImg(i)} className={`overflow-hidden rounded-xl border-2 transition ${activeImg === i ? "border-burgundy" : "border-border hover:border-gold"}`}>
                   <img src={img} alt="" className="aspect-square w-full object-cover" />
                 </button>
               ))}
             </div>
           </div>
 
+          {/* Info */}
           <div className="flex flex-col">
-            <span className="mb-3 inline-block w-fit rounded-full bg-gold/15 px-3 py-1 text-[10px] font-bold uppercase tracking-widest text-burgundy">{product.tag}</span>
-            <h1 className="text-3xl font-semibold leading-tight text-ink md:text-4xl" style={{ fontFamily: "var(--font-display)" }}>{product.title}</h1>
-            <div className="mt-3 flex items-center gap-2">
+            <span className="mb-2 inline-block w-fit rounded-full bg-gold/15 px-3 py-1 text-[10px] font-bold uppercase tracking-widest text-burgundy">{product.tag}</span>
+            <h1 className="text-2xl font-semibold leading-tight text-ink sm:text-3xl md:text-4xl" style={{ fontFamily: "var(--font-display)" }}>{product.title}</h1>
+            <div className="mt-2 flex items-center gap-2">
               <div className="flex">{[1,2,3,4,5].map((s) => <Star key={s} className="h-4 w-4 fill-gold text-gold" />)}</div>
               <span className="text-sm text-muted-foreground">4.9 · 226 reviews</span>
             </div>
-            <div className="mt-5 flex items-baseline gap-3">
-              <span className="text-4xl font-bold text-burgundy" style={{ fontFamily: "var(--font-display)" }}>{product.price}</span>
+            <div className="mt-4 flex items-baseline gap-3">
+              <span className="text-3xl font-bold text-burgundy md:text-4xl" style={{ fontFamily: "var(--font-display)" }}>{product.price}</span>
               <span className="rounded-full bg-green-100 px-2 py-0.5 text-xs font-semibold text-green-700">Save 20%</span>
             </div>
             <div className="mt-2 flex items-center gap-2">
@@ -108,31 +110,29 @@ export default function ProductPage() {
               <span className="text-xs font-medium text-green-600">In Stock — Ships from Italy & Dubai</span>
             </div>
 
-            <div className="mt-7">
+            <div className="mt-5">
               <span className="mb-3 block text-sm font-semibold uppercase tracking-widest text-ink">Select Size</span>
               <div className="flex flex-wrap gap-2">
                 {SIZES.map((s) => (
-                  <button key={s} onClick={() => setSelectedSize(s)} className={`rounded-lg border px-4 py-2 text-sm font-medium transition ${selectedSize === s ? "border-burgundy bg-burgundy text-cream" : "border-border hover:border-burgundy"}`}>{s}</button>
+                  <button key={s} onClick={() => setSelectedSize(s)} className={`rounded-lg border px-4 py-2.5 text-sm font-medium transition active:scale-95 ${selectedSize === s ? "border-burgundy bg-burgundy text-cream" : "border-border hover:border-burgundy"}`}>{s}</button>
                 ))}
               </div>
             </div>
 
-            <div className="mt-6">
+            <div className="mt-5">
               <span className="mb-3 block text-sm font-semibold uppercase tracking-widest text-ink">Quantity</span>
-              <div className="flex items-center gap-4">
-                <div className="flex items-center gap-3 rounded-xl border border-border px-4 py-2">
-                  <button onClick={() => setQty(Math.max(1, qty - 1))} className="text-muted-foreground hover:text-ink"><Minus className="h-4 w-4" /></button>
-                  <span className="w-6 text-center text-sm font-semibold">{qty}</span>
-                  <button onClick={() => setQty(qty + 1)} className="text-muted-foreground hover:text-ink"><Plus className="h-4 w-4" /></button>
-                </div>
+              <div className="inline-flex items-center gap-4 rounded-xl border border-border px-4 py-2.5">
+                <button onClick={() => setQty(Math.max(1, qty - 1))} className="text-muted-foreground hover:text-ink active:scale-95"><Minus className="h-4 w-4" /></button>
+                <span className="w-6 text-center text-sm font-semibold">{qty}</span>
+                <button onClick={() => setQty(qty + 1)} className="text-muted-foreground hover:text-ink active:scale-95"><Plus className="h-4 w-4" /></button>
               </div>
             </div>
 
-            <div className="mt-8 flex flex-col gap-3 sm:flex-row">
-              <button onClick={handleAddToCart} className={`flex flex-1 items-center justify-center gap-2 rounded-xl py-4 text-sm font-semibold uppercase tracking-widest transition ${added ? "bg-green-600 text-white" : "border-2 border-burgundy text-burgundy hover:bg-burgundy hover:text-cream"}`}>
+            <div className="mt-6 flex flex-col gap-3">
+              <button onClick={handleAddToCart} className={`flex w-full items-center justify-center gap-2 rounded-xl py-4 text-sm font-semibold uppercase tracking-widest transition active:scale-95 ${added ? "bg-green-600 text-white" : "border-2 border-burgundy text-burgundy hover:bg-burgundy hover:text-cream"}`}>
                 <ShoppingBag className="h-4 w-4" /> {added ? "Added to Cart!" : "Add to Cart"}
               </button>
-              <a href={WHATSAPP_LINK} className="flex flex-1 items-center justify-center gap-2 rounded-xl py-4 text-sm font-semibold uppercase tracking-widest text-cream transition hover:opacity-90" style={{ background: "var(--gradient-luxe)" }}>
+              <a href={WHATSAPP_LINK} className="flex w-full items-center justify-center gap-2 rounded-xl py-4 text-sm font-semibold uppercase tracking-widest text-cream transition hover:opacity-90 active:scale-95" style={{ background: "var(--gradient-luxe)" }}>
                 <MessageCircle className="h-4 w-4" /> Order via WhatsApp
               </a>
             </div>
@@ -145,18 +145,18 @@ export default function ProductPage() {
             )}
 
             {product.description && (
-              <div className="mt-8 border-t border-border pt-8">
+              <div className="mt-6 border-t border-border pt-6">
                 <h3 className="mb-3 text-sm font-semibold uppercase tracking-widest text-ink">Description</h3>
                 <p className="text-sm leading-relaxed text-muted-foreground whitespace-pre-line">{product.description}</p>
               </div>
             )}
 
-            <div className="mt-8 grid grid-cols-3 gap-3 border-t border-border pt-8">
-              {[{ icon: Truck, t: "Free Shipping", d: "Italy & Dubai" }, { icon: ShieldCheck, t: "Authentic", d: "Verified product" }, { icon: RotateCcw, t: "Easy Returns", d: "14-day policy" }].map((f) => (
-                <div key={f.t} className="flex flex-col items-center rounded-2xl border border-border bg-card p-4 text-center">
-                  <f.icon className="h-5 w-5 text-burgundy" />
-                  <div className="mt-2 text-xs font-semibold text-ink">{f.t}</div>
-                  <div className="text-[10px] text-muted-foreground">{f.d}</div>
+            <div className="mt-6 grid grid-cols-3 gap-2 border-t border-border pt-6">
+              {[{ icon: Truck, t: "Free Shipping", d: "Italy & Dubai" }, { icon: ShieldCheck, t: "Authentic", d: "Verified" }, { icon: RotateCcw, t: "Returns", d: "14-day policy" }].map((f) => (
+                <div key={f.t} className="flex flex-col items-center rounded-xl border border-border bg-card p-3 text-center">
+                  <f.icon className="h-4 w-4 text-burgundy" />
+                  <div className="mt-1.5 text-[10px] font-semibold text-ink">{f.t}</div>
+                  <div className="text-[9px] text-muted-foreground">{f.d}</div>
                 </div>
               ))}
             </div>
