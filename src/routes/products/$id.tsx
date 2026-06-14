@@ -1,31 +1,20 @@
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useState, useEffect } from "react";
-import { ShoppingBag, MessageCircle, ChevronLeft, Star, Truck, ShieldCheck, RotateCcw, Plus, Minus, Heart, Share2 } from "lucide-react";
+import { ShoppingBag, MessageCircle, ChevronLeft, Star, Truck, ShieldCheck, RotateCcw, Plus, Minus, Heart } from "lucide-react";
 import { addToCart, getCartCount } from "@/lib/cart-store";
 import heroBag from "@/assets/hero-bag.jpg";
 import logoImg from "@/assets/Logo.png";
-
-const bag1 = heroBag;
-const bag2 = heroBag;
-const bag3 = heroBag;
-const bag4 = heroBag;
-const bag5 = heroBag;
-const bag6 = heroBag;
-const bag7 = heroBag;
-const bag8 = heroBag;
 
 export const Route = createFileRoute("/products/$id")({
   component: ProductPage,
 });
 
-const IMGS = [bag1, bag2, bag3, bag4, bag5, bag6, bag7, bag8];
 const SIZES = ["XS", "S", "M", "L", "XL", "One Size"];
 const WHATSAPP_LINK = "https://wa.me/393515439347";
 
 function ProductPage() {
   const { id } = Route.useParams();
   const navigate = useNavigate();
-  const [activeImg, setActiveImg] = useState(0);
   const [selectedSize, setSelectedSize] = useState("");
   const [qty, setQty] = useState(1);
   const [added, setAdded] = useState(false);
@@ -46,15 +35,21 @@ function ProductPage() {
   }
 
   // Decode product info from id (base64 encoded json)
-  let product = { title: "Designer Bag", price: "$299", tag: "Luxury", imgs: IMGS.slice(0, 4) };
+  let product = { title: "Designer Bag", price: "$299", tag: "Luxury", imgs: [heroBag], description: "" };
   try {
     const decoded = JSON.parse(utf8Base64Decode(id));
-    const imgIndex = decoded.imgIndex ?? 0;
+    // Support both single img and imgs array
+    const imgs: string[] = decoded.imgs?.length
+      ? decoded.imgs
+      : decoded.img
+      ? [decoded.img]
+      : [heroBag];
     product = {
       title: decoded.title,
       price: decoded.price,
       tag: decoded.tag ?? "Luxury",
-      imgs: [IMGS[imgIndex % 8], IMGS[(imgIndex + 1) % 8], IMGS[(imgIndex + 2) % 8], IMGS[(imgIndex + 3) % 8]],
+      imgs,
+      description: decoded.description ?? "",
     };
   } catch {
     // If decoding fails, keep fallback product
@@ -116,35 +111,20 @@ function ProductPage() {
         </nav>
 
         <div className="grid gap-12 lg:grid-cols-2">
-          {/* Image Gallery */}
-          <div className="space-y-4">
-            <div className="relative overflow-hidden rounded-3xl border border-border bg-card">
-              <img
-                src={product.imgs[activeImg]}
-                alt={product.title}
-                className="aspect-square w-full object-cover"
-              />
-              <button
-                onClick={() => setWishlist(!wishlist)}
-                className="absolute right-4 top-4 rounded-full bg-white/90 p-2.5 shadow-md transition hover:scale-110"
-              >
-                <Heart className={`h-5 w-5 ${wishlist ? "fill-red-500 text-red-500" : "text-gray-400"}`} />
-              </button>
-              <button className="absolute left-4 top-4 rounded-full bg-white/90 p-2.5 shadow-md transition hover:scale-110">
-                <Share2 className="h-4 w-4 text-gray-500" />
-              </button>
-            </div>
-            <div className="grid grid-cols-4 gap-3">
-              {product.imgs.map((img, i) => (
-                <button
-                  key={i}
-                  onClick={() => setActiveImg(i)}
-                  className={`overflow-hidden rounded-2xl border-2 transition ${activeImg === i ? "border-burgundy" : "border-border hover:border-gold"}`}
-                >
-                  <img src={img} alt="" className="aspect-square w-full object-cover" />
-                </button>
-              ))}
-            </div>
+          {/* Image */}
+          <div className="relative overflow-hidden rounded-3xl border border-border bg-card">
+            <img
+              src={product.imgs[0]}
+              alt={product.title}
+              className="aspect-square w-full object-cover"
+              onError={(e) => { (e.target as HTMLImageElement).src = "https://placehold.co/600x600?text=No+Image"; }}
+            />
+            <button
+              onClick={() => setWishlist(!wishlist)}
+              className="absolute right-4 top-4 rounded-full bg-white/90 p-2.5 shadow-md transition hover:scale-110"
+            >
+              <Heart className={`h-5 w-5 ${wishlist ? "fill-red-500 text-red-500" : "text-gray-400"}`} />
+            </button>
           </div>
 
           {/* Product Info */}

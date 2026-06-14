@@ -308,7 +308,7 @@ function FeaturesStrip({ wa }: { wa: string }) {
 }
 
 function ProductCard({ p, index }: { p: Product; index: number }) {
-  const id = utf8Base64Encode(JSON.stringify({ title: p.title, price: p.price, tag: p.tag ?? "Luxury", imgIndex: index }));
+  const id = utf8Base64Encode(JSON.stringify({ title: p.title, price: p.price, tag: p.tag ?? "Luxury", img: p.img }));
   return (
     <a href={`/products/${id}`} className="group block overflow-hidden rounded-[1.5rem] border border-border bg-card shadow-sm transition duration-300 hover:-translate-y-1 hover:shadow-2xl">
       <div className="relative overflow-hidden rounded-t-[1.5rem] bg-card">

@@ -65,7 +65,7 @@ export default function CategoryPage() {
           <div className="mb-12">
             <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-4">
               {dbProducts.map((p) => {
-                const id = utf8Base64Encode(JSON.stringify({ title: p.title, price: p.price, tag: p.tag ?? "Luxury", imgIndex: 0 }));
+                const id = utf8Base64Encode(JSON.stringify({ title: p.title, price: p.price, tag: p.tag ?? "Luxury", img: p.img }));
                 return (
                   <a key={p.id} href={`/products/${id}`} className="group block overflow-hidden rounded-2xl border border-border bg-card shadow-sm transition hover:-translate-y-1 hover:shadow-lg">
                     <img src={p.img} alt={p.title} className="aspect-square w-full object-cover transition duration-500 group-hover:scale-105"

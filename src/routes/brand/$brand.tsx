@@ -241,7 +241,7 @@ function BrandPage() {
                   <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
                     {/* DB products for this brand+category */}
                     {dbItems.map((p) => {
-                      const productId = utf8Base64Encode(JSON.stringify({ title: p.title, price: p.price, tag: p.tag, img: p.img }));
+                      const productId = utf8Base64Encode(JSON.stringify({ title: p.title, price: p.price, tag: p.tag, img: p.img, description: p.description ?? "" }));
                       return (
                         <div key={p.id} className="group overflow-hidden rounded-[1.5rem] border border-border bg-card shadow-sm transition hover:-translate-y-1 hover:shadow-xl">
                           <a href={`/products/${productId}`}>
@@ -268,7 +268,7 @@ function BrandPage() {
                     })}
                     {/* Catalog fallback products */}
                     {catalogItems.map((product) => {
-                      const productId = utf8Base64Encode(JSON.stringify({ title: product.name, price: product.price, tag: product.brand, img: product.images[0] }));
+                      const productId = utf8Base64Encode(JSON.stringify({ title: product.name, price: product.price, tag: product.brand, imgs: product.images, description: product.description }));
                       return (
                         <div key={product.id} className="group overflow-hidden rounded-[1.5rem] border border-border bg-card shadow-sm transition hover:-translate-y-1 hover:shadow-xl">
                           <a href={`/products/${productId}`}>
