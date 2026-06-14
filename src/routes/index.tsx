@@ -552,7 +552,7 @@ function brandLogoColor(name: string) {
     "Loro Piana": "#4a3728", "Fendi": "#8b7536", "Valentino": "#8b0000",
     "Chloé": "#c4956a", "Goyard": "#2d5a27", "Loewe": "#332d27",
     "Messika": "#b8860b", "Tiffany & Co": "#0abab5", "Van Cleef & Arpels": "#1a1a2e",
-    "Patek Philippe": "#1a2744", "Tag Heuer": "#cc0000",
+    "Patek Philippe": "#1a2744", "Tag Heuer": "#cc0000", "Dior": "#4f4f4f",
   };
   if (colors[name]) return colors[name];
   const hash = name.split("").reduce((acc, c) => acc + c.charCodeAt(0), 0);
