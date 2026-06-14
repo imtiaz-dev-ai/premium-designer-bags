@@ -2,18 +2,13 @@ import { useState, useEffect } from "react";
 import { useParams, useNavigate, Link } from "react-router-dom";
 import { ShoppingBag, MessageCircle, ChevronLeft, Star, Truck, ShieldCheck, RotateCcw, Plus, Minus, Heart } from "lucide-react";
 import { addToCart, getCartCount } from "@/lib/cart-store";
-import heroBag from "@/assets/hero-bag.jpg";
 import logoImg from "@/assets/Logo.png";
 
-const IMGS = [heroBag, heroBag, heroBag, heroBag];
-const SIZES = ["XS", "S", "M", "L", "XL", "One Size"];
 const WHATSAPP_LINK = "https://wa.me/393515439347";
 
 export default function ProductPage() {
   const { id = "" } = useParams();
   const navigate = useNavigate();
-  const [activeImg, setActiveImg] = useState(0);
-  const [selectedSize, setSelectedSize] = useState("");
   const [qty, setQty] = useState(1);
   const [added, setAdded] = useState(false);
   const [cartCount, setCartCount] = useState(0);
@@ -26,7 +21,7 @@ export default function ProductPage() {
     return () => window.removeEventListener("storage", onStorage);
   }, []);
 
-  let product = { title: "Designer Bag", price: "$299", tag: "Luxury", img: heroBag, imgs: IMGS, description: "" };
+  let product = { title: "Designer Bag", price: "$299", tag: "Luxury", img: "", description: "" };
   try {
     const bytes = Uint8Array.from(atob(id), (c) => c.charCodeAt(0));
     const decoded = JSON.parse(new TextDecoder().decode(bytes));
@@ -34,15 +29,13 @@ export default function ProductPage() {
       title: decoded.title,
       price: decoded.price,
       tag: decoded.tag ?? "Luxury",
-      img: decoded.img ?? heroBag,
-      imgs: [decoded.img ?? heroBag, heroBag, heroBag, heroBag],
+      img: decoded.img ?? "",
       description: decoded.description ?? "",
     };
   } catch { /* use fallback */ }
 
   function handleAddToCart() {
-    if (!selectedSize) { alert("Please select a size first"); return; }
-    addToCart({ id, title: product.title, price: product.price, tag: product.tag, img: product.imgs[0], size: selectedSize, quantity: qty });
+    addToCart({ id, title: product.title, price: product.price, tag: product.tag, img: product.img, size: "", quantity: qty });
     setAdded(true);
     setCartCount(getCartCount());
     setTimeout(() => setAdded(false), 2000);
@@ -76,21 +69,17 @@ export default function ProductPage() {
         </nav>
 
         <div className="grid gap-6 lg:grid-cols-2 lg:gap-12">
-          {/* Images */}
-          <div className="space-y-3">
-            <div className="relative overflow-hidden rounded-2xl border border-border bg-card">
-              <img src={product.imgs[activeImg]} alt={product.title} className="aspect-square w-full object-cover" />
-              <button onClick={() => setWishlist(!wishlist)} className="absolute right-3 top-3 rounded-full bg-white/90 p-2 shadow-md transition hover:scale-110">
-                <Heart className={`h-5 w-5 ${wishlist ? "fill-red-500 text-red-500" : "text-gray-400"}`} />
-              </button>
-            </div>
-            <div className="grid grid-cols-4 gap-2">
-              {product.imgs.map((img, i) => (
-                <button key={i} onClick={() => setActiveImg(i)} className={`overflow-hidden rounded-xl border-2 transition ${activeImg === i ? "border-burgundy" : "border-border hover:border-gold"}`}>
-                  <img src={img} alt="" className="aspect-square w-full object-cover" />
-                </button>
-              ))}
-            </div>
+          {/* Single Image */}
+          <div className="relative overflow-hidden rounded-2xl border border-border bg-card">
+            {product.img ? (
+              <img src={product.img} alt={product.title} className="aspect-square w-full object-cover"
+                onError={(e) => { (e.target as HTMLImageElement).style.display = "none"; }} />
+            ) : (
+              <div className="aspect-square w-full flex items-center justify-center bg-secondary text-muted-foreground text-sm">No Image</div>
+            )}
+            <button onClick={() => setWishlist(!wishlist)} className="absolute right-3 top-3 rounded-full bg-white/90 p-2 shadow-md transition hover:scale-110">
+              <Heart className={`h-5 w-5 ${wishlist ? "fill-red-500 text-red-500" : "text-gray-400"}`} />
+            </button>
           </div>
 
           {/* Info */}
@@ -108,15 +97,6 @@ export default function ProductPage() {
             <div className="mt-2 flex items-center gap-2">
               <span className="h-2 w-2 rounded-full bg-green-500" />
               <span className="text-xs font-medium text-green-600">In Stock — Ships from Italy & Dubai</span>
-            </div>
-
-            <div className="mt-5">
-              <span className="mb-3 block text-sm font-semibold uppercase tracking-widest text-ink">Select Size</span>
-              <div className="flex flex-wrap gap-2">
-                {SIZES.map((s) => (
-                  <button key={s} onClick={() => setSelectedSize(s)} className={`rounded-lg border px-4 py-2.5 text-sm font-medium transition active:scale-95 ${selectedSize === s ? "border-burgundy bg-burgundy text-cream" : "border-border hover:border-burgundy"}`}>{s}</button>
-                ))}
-              </div>
             </div>
 
             <div className="mt-5">
