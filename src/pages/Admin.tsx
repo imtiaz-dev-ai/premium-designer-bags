@@ -356,8 +356,23 @@ function ProductForm({ initial, brands, onSave, onClose }: {
     description: initial?.description ?? "",
     inStock: initial?.inStock ?? true,
   });
+  const [uploading, setUploading] = useState(false);
 
   const set = (k: keyof typeof form, v: string | boolean) => setForm((f) => ({ ...f, [k]: v }));
+
+  async function handleImageUpload(e: React.ChangeEvent<HTMLInputElement>) {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    setUploading(true);
+    const ext = file.name.split(".").pop();
+    const fileName = `${crypto.randomUUID()}.${ext}`;
+    const { supabase } = await import("@/lib/supabase");
+    const { error } = await supabase.storage.from("products").upload(fileName, file, { upsert: true });
+    if (error) { alert("Upload failed: " + error.message); setUploading(false); return; }
+    const { data } = supabase.storage.from("products").getPublicUrl(fileName);
+    set("img", data.publicUrl);
+    setUploading(false);
+  }
 
   function submit(e: React.FormEvent) {
     e.preventDefault();
@@ -396,7 +411,17 @@ function ProductForm({ initial, brands, onSave, onClose }: {
             </div>
           </div>
 
-          <Field label="Image URL" value={form.img} onChange={(v) => set("img", v)} placeholder="https://..." />
+          <div>
+            <label className="mb-1.5 block text-[10px] font-semibold uppercase tracking-widest text-muted-foreground">Image</label>
+            <div className="space-y-2">
+              <label className={`flex cursor-pointer items-center justify-center gap-2 rounded-lg border-2 border-dashed border-border py-4 text-sm text-muted-foreground transition hover:border-burgundy hover:text-burgundy ${uploading ? "opacity-50 pointer-events-none" : ""}`}>
+                <Upload className="h-4 w-4" />
+                {uploading ? "Uploading..." : "Click to upload image"}
+                <input type="file" accept="image/*" className="hidden" onChange={handleImageUpload} disabled={uploading} />
+              </label>
+              <Field label="Or paste image URL" value={form.img} onChange={(v) => set("img", v)} placeholder="https://..." />
+            </div>
+          </div>
           {form.img && (
             <img src={form.img} alt="preview" className="h-32 w-full rounded-xl object-cover border border-border"
               onError={(e) => { (e.target as HTMLImageElement).style.display = "none"; }} />
