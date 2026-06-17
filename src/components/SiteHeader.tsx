@@ -3,31 +3,29 @@ import { Link, useLocation, useNavigate } from "react-router-dom";
 import { Menu, X, ShoppingBag, Phone, ChevronDown, MessageCircle } from "lucide-react";
 import { getSettings } from "@/lib/store";
 import { getCartCount } from "@/lib/cart-store";
+import { CATEGORY_BRANDS } from "@/lib/catalog";
 import logoImg from "@/assets/Logo.png";
 
-// Primary nav — always visible on desktop
 const PRIMARY_LINKS = [
-  { href: "/categories/bags",    label: "Bags",    brands: ["Louis Vuitton", "Chanel", "Hermès", "Dior", "Gucci", "Prada", "Celine", "Saint Laurent", "Bottega Veneta", "Goyard"] },
-  { href: "/categories/shoes",   label: "Shoes",   brands: ["Hermès", "Chanel", "Louis Vuitton", "Fendi", "Gucci", "Dior", "Bottega Veneta", "Loewe", "Prada", "Valentino"] },
-  { href: "/categories/jewelry", label: "Jewelry", brands: ["Cartier", "Bvlgari", "Messika", "Tiffany & Co", "Van Cleef & Arpels", "Chanel"] },
-  { href: "/categories/watches", label: "Watches", brands: ["Cartier", "Rolex", "Omega", "Patek Philippe", "Tag Heuer"] },
+  { href: "/categories/bags",        label: "Bags",        brands: CATEGORY_BRANDS.bags },
+  { href: "/categories/shoes",       label: "Shoes",       brands: CATEGORY_BRANDS.shoes },
+  { href: "/categories/jewelry",     label: "Jewelry",     brands: CATEGORY_BRANDS.jewelry },
+  { href: "/categories/watches",     label: "Watches",     brands: CATEGORY_BRANDS.watches },
 ];
 
-// Secondary nav — grouped under "More" dropdown
 const MORE_LINKS = [
-  { href: "/categories/clothes",    label: "Clothes",    brands: [] },
-  { href: "/categories/hats",       label: "Hats",       brands: [] },
-  { href: "/categories/scarfs",     label: "Scarfs",     brands: [] },
-  { href: "/categories/sunglasses", label: "Sunglasses", brands: [] },
-  { href: "/categories/belts",      label: "Belts",      brands: [] },
+  { href: "/categories/clothes",    label: "Clothes",    brands: CATEGORY_BRANDS.clothes },
+  { href: "/categories/hats",       label: "Hats",       brands: CATEGORY_BRANDS.hats },
+  { href: "/categories/scarfs",     label: "Scarfs",     brands: CATEGORY_BRANDS.scarfs },
+  { href: "/categories/sunglasses", label: "Sunglasses", brands: CATEGORY_BRANDS.sunglasses },
+  { href: "/categories/belts",      label: "Belts",      brands: CATEGORY_BRANDS.belts },
 ];
 
-// All links for mobile menu
 const ALL_LINKS = [
   ...PRIMARY_LINKS,
   ...MORE_LINKS,
-  { href: "/about",   label: "About",   brands: [] },
-  { href: "/policy",  label: "Policy",  brands: [] },
+  { href: "/about",  label: "About",  brands: [] },
+  { href: "/policy", label: "Policy", brands: [] },
 ];
 
 export default function SiteHeader() {
@@ -118,21 +116,16 @@ export default function SiteHeader() {
             </Link>
 
             {PRIMARY_LINKS.map((l) => (
-              <div
-                key={l.href}
-                className="relative"
-                onMouseEnter={() => openDropdown(l.label)}
-                onMouseLeave={closeDropdown}
-              >
+              <div key={l.href} className="relative" onMouseEnter={() => openDropdown(l.label)} onMouseLeave={closeDropdown}>
                 <Link
                   to={l.href}
                   className={`flex items-center gap-0.5 px-2.5 py-1.5 rounded-md transition-colors hover:text-burgundy hover:bg-secondary/60 ${isActive(l.href) ? "text-burgundy font-semibold" : ""}`}
                 >
                   {l.label} <ChevronDown className="h-3 w-3 opacity-60" />
                 </Link>
-                {activeDropdown === l.label && (
+                {activeDropdown === l.label && l.brands.length > 0 && (
                   <div
-                    className="absolute left-0 top-full z-50 mt-1 w-48 rounded-xl border border-border bg-card py-2 shadow-2xl"
+                    className="absolute left-0 top-full z-50 mt-1 w-52 rounded-xl border border-border bg-card py-2 shadow-2xl"
                     onMouseEnter={() => openDropdown(l.label)}
                     onMouseLeave={closeDropdown}
                   >
@@ -151,28 +144,39 @@ export default function SiteHeader() {
             ))}
 
             {/* More dropdown */}
-            <div
-              className="relative"
-              onMouseEnter={() => openDropdown("more")}
-              onMouseLeave={closeDropdown}
-            >
+            <div className="relative" onMouseEnter={() => openDropdown("more")} onMouseLeave={closeDropdown}>
               <button className={`flex items-center gap-0.5 px-2.5 py-1.5 rounded-md transition-colors hover:text-burgundy hover:bg-secondary/60 ${isMoreActive() ? "text-burgundy font-semibold" : ""}`}>
                 More <ChevronDown className="h-3 w-3 opacity-60" />
               </button>
               {activeDropdown === "more" && (
                 <div
-                  className="absolute left-0 top-full z-50 mt-1 w-44 rounded-xl border border-border bg-card py-2 shadow-2xl"
+                  className="absolute left-0 top-full z-50 mt-1 w-52 rounded-xl border border-border bg-card py-2 shadow-2xl"
                   onMouseEnter={() => openDropdown("more")}
                   onMouseLeave={closeDropdown}
                 >
                   {MORE_LINKS.map((l) => (
-                    <Link
-                      key={l.href}
-                      to={l.href}
-                      className={`block px-4 py-2 text-xs transition-colors hover:bg-secondary hover:text-burgundy ${isActive(l.href) ? "text-burgundy font-semibold" : "text-muted-foreground"}`}
-                    >
-                      {l.label}
-                    </Link>
+                    <div key={l.href} className="group relative">
+                      <Link
+                        to={l.href}
+                        className={`flex items-center justify-between px-4 py-2 text-xs transition-colors hover:bg-secondary hover:text-burgundy ${isActive(l.href) ? "text-burgundy font-semibold" : "text-muted-foreground"}`}
+                      >
+                        {l.label}
+                        {l.brands.length > 0 && <ChevronDown className="h-3 w-3 -rotate-90 opacity-50" />}
+                      </Link>
+                      {l.brands.length > 0 && (
+                        <div className="hidden group-hover:block absolute left-full top-0 w-48 rounded-xl border border-border bg-card py-2 shadow-2xl z-50">
+                          {l.brands.map((brand) => (
+                            <Link
+                              key={brand}
+                              to={`${l.href}?brand=${encodeURIComponent(brand)}`}
+                              className="block px-4 py-2 text-xs text-muted-foreground hover:bg-secondary hover:text-burgundy transition-colors"
+                            >
+                              {brand}
+                            </Link>
+                          ))}
+                        </div>
+                      )}
+                    </div>
                   ))}
                 </div>
               )}
@@ -181,12 +185,7 @@ export default function SiteHeader() {
             <Link to="/about" className={`px-2.5 py-1.5 rounded-md transition-colors hover:text-burgundy hover:bg-secondary/60 ${isActive("/about") ? "text-burgundy font-semibold" : ""}`}>
               About
             </Link>
-
-            <a
-              href="#contact"
-              onClick={handleContactClick}
-              className="px-2.5 py-1.5 rounded-md transition-colors hover:text-burgundy hover:bg-secondary/60 cursor-pointer"
-            >
+            <a href="#contact" onClick={handleContactClick} className="px-2.5 py-1.5 rounded-md transition-colors hover:text-burgundy hover:bg-secondary/60 cursor-pointer">
               Contact
             </a>
           </nav>
@@ -210,25 +209,17 @@ export default function SiteHeader() {
                 </span>
               )}
             </Link>
-            <button
-              aria-label="Menu"
-              onClick={() => setOpen(!open)}
-              className="p-2 xl:hidden transition-colors hover:text-burgundy"
-            >
+            <button aria-label="Menu" onClick={() => setOpen(!open)} className="p-2 xl:hidden transition-colors hover:text-burgundy">
               {open ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
             </button>
           </div>
         </div>
 
-        {/* Mobile / tablet menu */}
+        {/* Mobile menu */}
         {open && (
           <div className="border-t border-border bg-card xl:hidden">
             <div className="max-h-[75vh] overflow-y-auto px-4 py-3">
-              <Link
-                to="/"
-                className={`block border-b border-border py-3 text-sm font-semibold ${location.pathname === "/" ? "text-burgundy" : "text-muted-foreground"}`}
-                onClick={() => setOpen(false)}
-              >
+              <Link to="/" className={`block border-b border-border py-3 text-sm font-semibold ${location.pathname === "/" ? "text-burgundy" : "text-muted-foreground"}`} onClick={() => setOpen(false)}>
                 Home
               </Link>
 
@@ -236,8 +227,7 @@ export default function SiteHeader() {
                 l.brands.length > 0 ? (
                   <details key={l.href} className="border-b border-border">
                     <summary className={`cursor-pointer py-3 text-sm font-semibold list-none flex items-center justify-between ${isActive(l.href) ? "text-burgundy" : "text-muted-foreground"}`}>
-                      {l.label}
-                      <ChevronDown className="h-3.5 w-3.5 opacity-60" />
+                      {l.label} <ChevronDown className="h-3.5 w-3.5 opacity-60" />
                     </summary>
                     <ul className="pl-4 pb-3 space-y-1">
                       {l.brands.map((brand) => (
@@ -265,14 +255,9 @@ export default function SiteHeader() {
                 )
               )}
 
-              <a
-                href="#contact"
-                onClick={handleContactClick}
-                className="block border-b border-border py-3 text-sm font-semibold text-muted-foreground hover:text-burgundy transition-colors cursor-pointer"
-              >
+              <a href="#contact" onClick={handleContactClick} className="block border-b border-border py-3 text-sm font-semibold text-muted-foreground hover:text-burgundy transition-colors cursor-pointer">
                 Contact
               </a>
-
               <a
                 href={settings.whatsappLink}
                 target="_blank"

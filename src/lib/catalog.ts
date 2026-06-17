@@ -630,10 +630,16 @@ export function getCategoryBySlug(slug: string) {
 }
 
 // ── Featured brands for the home brand section ───────────────────────────────
-export const FEATURED_BRANDS = [
-  "Louis Vuitton", "Chanel", "Hermès", "Gucci", "Prada", "Saint Laurent",
-  "Celine", "Bottega Veneta", "Goyard", "Fendi", "Valentino", "Chloé",
-];
+export const FEATURED_BRANDS = Array.from(new Set([
+  ...SHARED_BRANDS,
+  ...CATEGORY_BRANDS.jewelry,
+  ...CATEGORY_BRANDS.watches,
+  ...CATEGORY_BRANDS.clothes,
+  ...CATEGORY_BRANDS.hats,
+  ...CATEGORY_BRANDS.scarfs,
+  ...CATEGORY_BRANDS.sunglasses,
+  ...CATEGORY_BRANDS.belts,
+]));
 
 export type BrandProduct = {
   id: string;
