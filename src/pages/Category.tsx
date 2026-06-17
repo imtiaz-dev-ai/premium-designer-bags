@@ -18,12 +18,16 @@ export default function CategoryPage() {
   const [allBrands, setAllBrands] = useState<string[]>(CATEGORY_BRANDS[slug] ?? BRANDS.slice(0, 10));
 
   useEffect(() => {
+    // Merge: hardcoded + localStorage admin brands + Supabase product tags
+    const localCatBrands: Record<string, string[]> = (() => {
+      try { return JSON.parse(localStorage.getItem("admin_category_brands") ?? "{}"); } catch { return {}; }
+    })();
+
     getProducts().then((products) => {
-      const fromDb = products
-        .filter((p) => p.category === slug && p.tag)
-        .map((p) => p.tag);
+      const fromDb = products.filter((p) => p.category === slug && p.tag).map((p) => p.tag);
       const hardcoded = CATEGORY_BRANDS[slug] ?? [];
-      const merged = Array.from(new Set([...hardcoded, ...fromDb]));
+      const fromLocal = localCatBrands[slug] ?? [];
+      const merged = Array.from(new Set([...hardcoded, ...fromLocal, ...fromDb]));
       setAllBrands(merged);
     });
   }, [slug]);

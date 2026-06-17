@@ -372,44 +372,107 @@ function ProductsTab({ products, loading, brands, onAdd, onEdit, onDelete }: {
 }
 
 /* ── Brands Tab ── */
+const CATEGORY_BRANDS_KEY = "admin_category_brands";
+
+function getCategoryBrands(): Record<string, string[]> {
+  try { return JSON.parse(localStorage.getItem(CATEGORY_BRANDS_KEY) ?? "{}"); } catch { return {}; }
+}
+function saveCategoryBrands(data: Record<string, string[]>) {
+  localStorage.setItem(CATEGORY_BRANDS_KEY, JSON.stringify(data));
+}
+
 function BrandsTab({ brands, onChange }: { brands: string[]; onChange: (b: string[]) => void }) {
   const [newBrand, setNewBrand] = useState("");
+  const [newCategory, setNewCategory] = useState("");
   const [err, setErr] = useState("");
+  const [catBrands, setCatBrands] = useState<Record<string, string[]>>(() => getCategoryBrands());
 
   function add() {
     const name = newBrand.trim();
-    if (!name) return;
-    if (brands.includes(name)) { setErr("Brand already exists."); return; }
-    onChange([...brands, name]);
+    if (!name) { setErr("Brand name required."); return; }
+    if (!newCategory) { setErr("Category required."); return; }
+
+    // Add to dropdown list if not exists
+    if (!brands.includes(name)) onChange([...brands, name]);
+
+    // Save to category mapping
+    const updated = { ...catBrands };
+    if (!updated[newCategory]) updated[newCategory] = [];
+    if (!updated[newCategory].includes(name)) {
+      updated[newCategory] = [...updated[newCategory], name];
+      setCatBrands(updated);
+      saveCategoryBrands(updated);
+    }
+
     setNewBrand("");
+    setNewCategory("");
     setErr("");
   }
 
   function remove(brand: string) {
     if (!confirm(`Delete "${brand}"?`)) return;
     onChange(brands.filter((b) => b !== brand));
+    // Remove from all categories
+    const updated = Object.fromEntries(
+      Object.entries(catBrands).map(([cat, list]) => [cat, list.filter((b) => b !== brand)])
+    );
+    setCatBrands(updated);
+    saveCategoryBrands(updated);
+  }
+
+  function removeFromCategory(cat: string, brand: string) {
+    const updated = { ...catBrands, [cat]: catBrands[cat].filter((b) => b !== brand) };
+    setCatBrands(updated);
+    saveCategoryBrands(updated);
   }
 
   return (
-    <div>
+    <div className="space-y-4">
       <div className="rounded-2xl border border-border bg-card p-4 sm:p-6">
         <div className="mb-4 flex items-center justify-between">
-          <h3 className="text-xs font-bold uppercase tracking-[0.3em] text-gold">Manage Brands</h3>
-          <button onClick={() => { if (confirm("Reset to default?")) onChange(DEFAULT_BRANDS); }}
+          <h3 className="text-xs font-bold uppercase tracking-[0.3em] text-gold">Add Brand to Category</h3>
+          <button onClick={() => { if (confirm("Reset dropdown brands to default?")) { onChange(DEFAULT_BRANDS); setCatBrands({}); saveCategoryBrands({}); } }}
             className="text-xs text-muted-foreground underline">Reset</button>
         </div>
-        <div className="mb-3 flex gap-2">
+        <div className="mb-3 grid grid-cols-1 gap-2 sm:grid-cols-[1fr_1fr_auto]">
           <input value={newBrand} onChange={(e) => { setNewBrand(e.target.value); setErr(""); }}
             onKeyDown={(e) => e.key === "Enter" && add()}
-            placeholder="New brand name..."
-            className="flex-1 rounded-xl border border-border bg-background px-4 py-3 text-sm outline-none focus:border-burgundy" />
+            placeholder="Brand name (e.g. Balenciaga) *"
+            className="rounded-xl border border-border bg-background px-4 py-3 text-sm outline-none focus:border-burgundy" />
+          <select value={newCategory} onChange={(e) => { setNewCategory(e.target.value); setErr(""); }}
+            className="rounded-xl border border-border bg-background px-3 py-3 text-sm outline-none focus:border-burgundy">
+            <option value="">Select Category *</option>
+            {CATEGORIES.map((c) => <option key={c} value={c}>{c}</option>)}
+          </select>
           <button onClick={add}
-            className="flex items-center gap-1.5 rounded-xl px-4 py-3 text-sm font-semibold text-cream active:scale-95 transition-transform"
+            className="flex items-center justify-center gap-1.5 rounded-xl px-5 py-3 text-sm font-semibold text-cream active:scale-95 transition-transform"
             style={{ background: "var(--gradient-luxe)" }}>
-            <Plus className="h-4 w-4" />
+            <Plus className="h-4 w-4" /> Add
           </button>
         </div>
-        {err && <p className="mb-3 text-xs text-red-500">{err}</p>}
+        {err && <p className="mb-3 text-xs font-semibold text-red-500">{err}</p>}
+      </div>
+
+      {/* Category-wise brand list */}
+      {CATEGORIES.filter((cat) => catBrands[cat]?.length > 0).map((cat) => (
+        <div key={cat} className="rounded-2xl border border-border bg-card p-4 sm:p-6">
+          <h4 className="mb-3 text-xs font-bold uppercase tracking-[0.3em] text-gold capitalize">{cat}</h4>
+          <div className="flex flex-wrap gap-2">
+            {catBrands[cat].map((brand) => (
+              <span key={brand} className="flex items-center gap-1.5 rounded-full border border-border bg-background px-3 py-1.5 text-xs font-medium text-ink">
+                {brand}
+                <button onClick={() => removeFromCategory(cat, brand)} className="text-red-400 hover:text-red-600">
+                  <X className="h-3 w-3" />
+                </button>
+              </span>
+            ))}
+          </div>
+        </div>
+      ))}
+
+      {/* All brands dropdown list */}
+      <div className="rounded-2xl border border-border bg-card p-4 sm:p-6">
+        <h3 className="mb-3 text-xs font-bold uppercase tracking-[0.3em] text-gold">All Brands (Dropdown)</h3>
         <div className="grid grid-cols-1 gap-2 sm:grid-cols-2">
           {brands.map((brand) => (
             <div key={brand} className="flex items-center justify-between rounded-xl border border-border bg-background px-4 py-3">

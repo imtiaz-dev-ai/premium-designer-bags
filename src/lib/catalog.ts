@@ -573,7 +573,7 @@ const SHARED_BRANDS = [
 export const CATEGORY_BRANDS: Record<string, string[]> = {
   bags: SHARED_BRANDS,
   shoes: SHARED_BRANDS,
-  jewelry: ["Cartier", "Bvlgari", "Messika", "Chanel", "Gucci", "Hermès", "Tiffany & Co", "Van Cleef & Arpels"],
+  jewelry: ["Chanel", "Louis Vuitton", "Hermès", "Gucci", "Dior", "Saint Laurent", "Celine", "Cartier", "Bvlgari", "Messika", "Van Cleef & Arpels", "Tiffany & Co", "David Yurman"],
   watches: ["Cartier", "Hermès", "Rolex", "Omega", "Patek Philippe", "Tag Heuer"],
   clothes: ["Chanel", "Dior", "Gucci", "Prada", "Burberry", "Loro Piana", "Saint Laurent"],
   hats: ["Louis Vuitton", "Chanel", "Gucci", "Prada", "Burberry", "Fendi"],
@@ -677,7 +677,7 @@ export function slugToBrand(slug: string): string | undefined {
     ...Object.keys(BRAND_PRODUCTS),
     "Dior", "Loro Piana", "Tiffany & Co", "Van Cleef & Arpels",
     "Patek Philippe", "Tag Heuer", "Loewe", "Burberry",
-    "Balenciaga", "Miss Dior", "Bvlgari", "Messika", "Rolex", "Omega",
+    "Balenciaga", "Miss Dior", "Bvlgari", "Messika", "Rolex", "Omega", "David Yurman",
   ];
   const unique = Array.from(new Set(allBrands));
   return unique.find((b) => brandToSlug(b) === slug);
