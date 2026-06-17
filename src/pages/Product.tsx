@@ -72,7 +72,7 @@ export default function ProductPage() {
           {/* Single Image */}
           <div className="relative overflow-hidden rounded-2xl border border-border bg-card">
             {product.img ? (
-              <img src={product.img} alt={product.title} className="aspect-square w-full object-cover"
+              <img src={product.img} alt={product.title} className="aspect-square w-full object-contain bg-white"
                 onError={(e) => { (e.target as HTMLImageElement).style.display = "none"; }} />
             ) : (
               <div className="aspect-square w-full flex items-center justify-center bg-secondary text-muted-foreground text-sm">No Image</div>

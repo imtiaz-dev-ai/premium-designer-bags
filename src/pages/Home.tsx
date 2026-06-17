@@ -197,7 +197,7 @@ function ProductCard({ p, index }: { p: Product; index: number }) {
   return (
     <a href={`/products/${id}`} className="group block overflow-hidden rounded-[1.5rem] border border-border bg-card shadow-sm transition duration-300 hover:-translate-y-1 hover:shadow-2xl">
       <div className="relative overflow-hidden rounded-t-[1.5rem] bg-card">
-        <img src={p.img} alt={p.title} width={1024} height={1024} loading="lazy" className="h-56 w-full object-cover transition duration-700 group-hover:scale-105 sm:h-80" />
+        <img src={p.img} alt={p.title} width={1024} height={1024} loading="lazy" className="h-56 w-full object-contain bg-white transition duration-700 group-hover:scale-105 sm:h-80" />
         <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/75 to-transparent px-4 py-4">
           <div className="flex items-center justify-between text-[11px] font-semibold uppercase tracking-[0.22em] text-cream">
             <span>{p.tag ?? "Designer"}</span>
