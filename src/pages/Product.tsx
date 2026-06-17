@@ -68,14 +68,14 @@ export default function ProductPage() {
           <span className="text-foreground line-clamp-1">{product.title}</span>
         </nav>
 
-        <div className="grid gap-6 lg:grid-cols-2 lg:gap-12 lg:items-start">
+        <div className="grid gap-6 lg:grid-cols-2 lg:gap-12">
           {/* Single Image */}
-          <div className="relative rounded-2xl border border-border bg-white overflow-hidden lg:sticky lg:top-24">
+          <div className="relative overflow-hidden rounded-2xl border border-border bg-card">
             {product.img ? (
-              <img src={product.img} alt={product.title} className="w-full h-auto object-contain block"
+              <img src={product.img} alt={product.title} className="aspect-square w-full object-cover"
                 onError={(e) => { (e.target as HTMLImageElement).style.display = "none"; }} />
             ) : (
-              <div className="w-full flex items-center justify-center bg-secondary text-muted-foreground text-sm" style={{ minHeight: "400px" }}>No Image</div>
+              <div className="aspect-square w-full flex items-center justify-center bg-secondary text-muted-foreground text-sm">No Image</div>
             )}
             <button onClick={() => setWishlist(!wishlist)} className="absolute right-3 top-3 rounded-full bg-white/90 p-2 shadow-md transition hover:scale-110">
               <Heart className={`h-5 w-5 ${wishlist ? "fill-red-500 text-red-500" : "text-gray-400"}`} />
@@ -124,12 +124,12 @@ export default function ProductPage() {
               </div>
             )}
 
-            <div className="mt-6 border-t border-border pt-6">
-              <h3 className="mb-3 text-sm font-semibold uppercase tracking-widest text-ink">Description</h3>
-              <p className="text-sm leading-relaxed text-muted-foreground whitespace-pre-line">
-                {product.description || `This ${product.tag} piece is sourced directly from Italy & Dubai with full authenticity assurance. Real photos are sent before dispatch so you can verify the quality yourself. Ships worldwide with tracking — estimated delivery 7–18 business days. Contact us on WhatsApp to reserve your item.`}
-              </p>
-            </div>
+            {product.description && (
+              <div className="mt-6 border-t border-border pt-6">
+                <h3 className="mb-3 text-sm font-semibold uppercase tracking-widest text-ink">Description</h3>
+                <p className="text-sm leading-relaxed text-muted-foreground whitespace-pre-line">{product.description}</p>
+              </div>
+            )}
 
             <div className="mt-6 grid grid-cols-3 gap-2 border-t border-border pt-6">
               {[{ icon: Truck, t: "Free Shipping", d: "Italy & Dubai" }, { icon: ShieldCheck, t: "Authentic", d: "Verified" }, { icon: RotateCcw, t: "Returns", d: "14-day policy" }].map((f) => (

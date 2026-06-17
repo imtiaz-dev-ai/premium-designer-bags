@@ -564,9 +564,15 @@ export const BRAND_PRODUCTS: Record<string, CatalogProduct[]> = {
   ],
 };
 
+const SHARED_BRANDS = [
+  "Louis Vuitton", "Chanel", "Hermès", "Gucci", "Prada", "Saint Laurent",
+  "Celine", "Bottega Veneta", "Goyard", "Fendi", "Valentino", "Chloé",
+  "Balenciaga", "Burberry", "Loewe", "Dior", "Miss Dior",
+];
+
 export const CATEGORY_BRANDS: Record<string, string[]> = {
-  bags: ["Louis Vuitton", "Chanel", "Hermès", "Gucci", "Prada", "Saint Laurent", "Celine", "Bottega Veneta", "Goyard", "Fendi", "Valentino", "Chloé"],
-  shoes: ["Hermès", "Chanel", "Louis Vuitton", "Gucci", "Dior", "Prada", "Valentino", "Fendi", "Bottega Veneta", "Loewe"],
+  bags: SHARED_BRANDS,
+  shoes: SHARED_BRANDS,
   jewelry: ["Cartier", "Bvlgari", "Messika", "Chanel", "Gucci", "Hermès", "Tiffany & Co", "Van Cleef & Arpels"],
   watches: ["Cartier", "Hermès", "Rolex", "Omega", "Patek Philippe", "Tag Heuer"],
   clothes: ["Chanel", "Dior", "Gucci", "Prada", "Burberry", "Loro Piana", "Saint Laurent"],
@@ -671,6 +677,7 @@ export function slugToBrand(slug: string): string | undefined {
     ...Object.keys(BRAND_PRODUCTS),
     "Dior", "Loro Piana", "Tiffany & Co", "Van Cleef & Arpels",
     "Patek Philippe", "Tag Heuer", "Loewe", "Burberry",
+    "Balenciaga", "Miss Dior", "Bvlgari", "Messika", "Rolex", "Omega",
   ];
   const unique = Array.from(new Set(allBrands));
   return unique.find((b) => brandToSlug(b) === slug);

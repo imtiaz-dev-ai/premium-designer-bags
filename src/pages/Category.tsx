@@ -1,6 +1,8 @@
 import { useParams, useNavigate, Link } from "react-router-dom";
+import { useState, useEffect } from "react";
 import { MessageCircle } from "lucide-react";
 import { getCategoryBySlug, CATEGORY_BRANDS, BRANDS, brandToSlug, CATEGORY_BRAND_IMAGES } from "@/lib/catalog";
+import { getProducts } from "@/lib/store";
 import SiteHeader from "@/components/SiteHeader";
 
 const WHATSAPP_LINK = "https://wa.me/393515439347";
@@ -10,8 +12,23 @@ export default function CategoryPage() {
   const navigate = useNavigate();
   const slug = decodeURIComponent(category);
   const page = getCategoryBySlug(slug);
-  const categoryBrands = CATEGORY_BRANDS[slug] ?? BRANDS.slice(0, 10);
   const brandImages = CATEGORY_BRAND_IMAGES[slug] ?? {};
+
+  // Merge hardcoded brands + brands from Supabase products for this category
+  const [allBrands, setAllBrands] = useState<string[]>(CATEGORY_BRANDS[slug] ?? BRANDS.slice(0, 10));
+
+  useEffect(() => {
+    getProducts().then((products) => {
+      const fromDb = products
+        .filter((p) => p.category === slug && p.tag)
+        .map((p) => p.tag);
+      const hardcoded = CATEGORY_BRANDS[slug] ?? [];
+      const merged = Array.from(new Set([...hardcoded, ...fromDb]));
+      setAllBrands(merged);
+    });
+  }, [slug]);
+
+  const categoryBrands = allBrands;
 
   if (!page) {
     return (
