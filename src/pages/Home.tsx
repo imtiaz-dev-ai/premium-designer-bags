@@ -1,12 +1,12 @@
 import { getSettings, defaultSettings, getSiteBrands, getProducts, type Product } from "@/lib/store";
 import { CATEGORY_PAGES, BRANDS, FEATURED_BRANDS, brandToSlug } from "@/lib/catalog";
 import { useState, useEffect } from "react";
-import { getCartCount } from "@/lib/cart-store";
-import { Menu, X, Search, ShoppingBag, MapPin, Phone, ChevronDown, Truck, ShieldCheck, MessageCircle, RotateCcw, Mail, Star, Sparkles } from "lucide-react";
+import { MapPin, Truck, ShieldCheck, MessageCircle, RotateCcw, Mail, Star, Sparkles } from "lucide-react";
 import heroModel from "@/assets/hero-model.jpg";
 import zelleQr from "@/assets/zelle-qr.jpeg";
 import venmoQr from "@/assets/venmo-qr.jpeg";
 import heroBag from "@/assets/hero-bag.jpg";
+import SiteHeader from "@/components/SiteHeader";
 import logoImg from "@/assets/Logo.png";
 import brandBottega from "@/assets/bags/brands/Bottega bag.jpeg";
 import brandShoes from "@/assets/brand/Shoes.jfif";
@@ -22,20 +22,6 @@ import collectionBanner from "@/assets/hero-model.jpg";
 const WHATSAPP_LINK = "https://wa.me/393515439347";
 
 type Product = { title: string; price: string; tag?: string; img: string };
-
-const NAV_LINKS = [
-  { href: "/categories/bags",       label: "Bags",       brands: ["Louis Vuitton", "Chanel", "Hermès", "Dior", "Gucci", "Prada", "Celine", "Saint Laurent", "Bottega Veneta", "Goyard"] },
-  { href: "/categories/shoes",      label: "Shoes",      brands: ["Hermès", "Chanel", "Louis Vuitton", "Fendi", "Gucci", "Dior", "Bottega Veneta", "Celine", "Loewe", "Prada"] },
-  { href: "/categories/jewelry",    label: "Jewelry",    brands: ["Cartier", "Tiffany & Co", "Van Cleef & Arpels", "Hermès", "Chanel", "Gucci"] },
-  { href: "/categories/watches",    label: "Watches",    brands: ["Cartier", "Hermès", "Rolex", "Omega", "Patek Philippe", "Tag Heuer"] },
-  { href: "/categories/clothes",    label: "Clothes",    brands: ["Loro Piana", "Gucci", "Prada", "Burberry", "Valentino", "Saint Laurent"] },
-  { href: "/categories/hats",       label: "Hats",       brands: ["Louis Vuitton", "Gucci", "Prada", "Burberry", "Fendi", "Chanel"] },
-  { href: "/categories/scarfs",     label: "Scarfs",     brands: ["Hermès", "Gucci", "Louis Vuitton", "Burberry", "Chanel", "Fendi"] },
-  { href: "/categories/sunglasses", label: "Sunglasses", brands: ["Chanel", "Dior", "Gucci", "Prada", "Celine", "Saint Laurent"] },
-  { href: "/categories/belts",      label: "Belts",      brands: ["Louis Vuitton", "Gucci", "Hermès", "Prada", "Fendi", "Bottega Veneta"] },
-  { href: "/about",                  label: "About",      brands: [] },
-  { href: "#contact",               label: "Contact",    brands: [] },
-];
 
 const PAYMENT_METHODS = [
   { name: "PayPal", details: ["Email: romaboma242@gmail.com"] },
@@ -90,8 +76,7 @@ export default function HomePage() {
 
   return (
     <div className="min-h-screen bg-background text-foreground" style={{ fontFamily: "var(--font-sans)" }}>
-      <TopBar settings={settings} />
-      <Header />
+      <SiteHeader />
       <Hero wa={wa} />
       <Marquee items={settings.marqueeItems} />
       <FeaturesStrip wa={settings.whatsapp} />
@@ -101,119 +86,10 @@ export default function HomePage() {
       <ProductSection id="shoes" title="Shoes" subtitle="Designer Footwear" products={shoes} />
       <ValueProps />
       <Reviews />
+      <FAQ />
       <CTASection wa={settings.whatsapp} waLink={settings.whatsappLink} />
       <Footer settings={settings} activeBrands={activeBrands} />
     </div>
-  );
-}
-
-function TopBar({ settings }: { settings: ReturnType<typeof getSettings> }) {
-  return (
-    <div className="text-xs text-cream" style={{ background: "var(--gradient-luxe)" }}>
-      <div className="mx-auto flex max-w-7xl flex-wrap items-center justify-between gap-2 px-4 py-2">
-        <div className="flex items-center gap-1.5">
-          <MapPin className="h-3 w-3 text-gold" />
-          <span>Italy · Dubai · UK · USA · Worldwide Delivery</span>
-          <span className="hidden items-center gap-1.5 sm:flex ml-4"><Sparkles className="h-3 w-3 text-gold" /> Curated designer sourcing, real photos before shipping</span>
-        </div>
-        <div className="flex items-center gap-4">
-          <a href={settings.instagram} target="_blank" rel="noopener noreferrer" className="flex items-center gap-1.5 hover:text-gold">
-            <svg className="h-3 w-3" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
-            <span className="hidden sm:inline">@the_diamond_lux</span>
-          </a>
-          <a href={settings.whatsappLink} className="flex items-center gap-1.5 hover:text-gold">
-            <Phone className="h-3 w-3 text-gold" /> {settings.whatsapp}
-          </a>
-        </div>
-      </div>
-    </div>
-  );
-}
-
-function Header() {
-  const [open, setOpen] = useState(false);
-  const [activeDropdown, setActiveDropdown] = useState<string | null>(null);
-  const [cartCount, setCartCount] = useState(0);
-  useEffect(() => {
-    setCartCount(getCartCount());
-    const onStorage = () => setCartCount(getCartCount());
-    window.addEventListener("storage", onStorage);
-    return () => window.removeEventListener("storage", onStorage);
-  }, []);
-  return (
-    <header className="sticky top-0 z-50 border-b border-border bg-background/85 backdrop-blur-md">
-      <div className="mx-auto flex max-w-7xl items-center justify-between gap-4 px-4 py-4">
-        <a href="/" className="flex items-center gap-3">
-          <img src={logoImg} alt="Premium Designer Bags" className="h-12 w-12 rounded-full object-cover" />
-          <div className="flex flex-col">
-            <span className="text-lg font-semibold tracking-tight text-burgundy" style={{ fontFamily: "var(--font-display)" }}>Premium Designer Bags</span>
-            <span className="text-[10px] font-medium tracking-[0.45em] text-gold uppercase">Elevated.</span>
-          </div>
-        </a>
-        <nav className="hidden items-center gap-4 text-sm font-medium lg:flex">
-          <a href="/" className="hover:text-burgundy">Home</a>
-          {NAV_LINKS.map((l) => (
-            l.brands.length === 0 ? (
-              <a key={l.href} href={l.href} className="hover:text-burgundy">{l.label}</a>
-            ) : (
-              <div key={l.href} className="relative"
-                onMouseEnter={() => setActiveDropdown(l.label)}
-                onMouseLeave={() => setActiveDropdown(null)}
-              >
-                <a href={l.href} className="flex items-center gap-0.5 hover:text-burgundy">
-                  {l.label} <ChevronDown className="h-3 w-3" />
-                </a>
-                {activeDropdown === l.label && (
-                  <div className="absolute left-0 top-full z-50 mt-2 w-44 rounded-xl border border-border bg-card py-2 shadow-2xl">
-                    {l.brands.map((brand) => (
-                      <a key={brand} href={`${l.href}?brand=${encodeURIComponent(brand)}`}
-                        className="block px-4 py-2 text-xs text-muted-foreground hover:bg-secondary hover:text-burgundy"
-                      >{brand}</a>
-                    ))}
-                  </div>
-                )}
-              </div>
-            )
-          ))}
-        </nav>
-        <div className="flex items-center gap-3">
-          <button aria-label="Search" className="hidden p-2 hover:text-burgundy md:block"><Search className="h-5 w-5" /></button>
-          <a href={WHATSAPP_LINK} className="hidden items-center gap-2 px-4 py-2 text-xs font-semibold uppercase tracking-wider text-cream shadow-md transition hover:opacity-90 md:inline-flex" style={{ background: "var(--gradient-luxe)" }}>
-            <MessageCircle className="h-4 w-4" /> WhatsApp
-          </a>
-          <button aria-label="Cart" className="relative p-2 hover:text-burgundy" onClick={() => window.location.href = '/cart'}>
-            <ShoppingBag className="h-5 w-5" />
-            {cartCount > 0 && <span className="absolute -right-0 -top-0 grid h-4 w-4 place-items-center rounded-full bg-burgundy text-[9px] font-bold text-cream">{cartCount}</span>}
-          </button>
-          <button aria-label="Menu" onClick={() => setOpen(!open)} className="p-2 lg:hidden">
-            {open ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
-          </button>
-        </div>
-      </div>
-      {open && (
-        <div className="border-t border-border bg-card lg:hidden">
-          <div className="max-h-[70vh] overflow-y-auto px-4 py-4">
-            <a href="/" className="block border-b border-border py-3 text-sm font-semibold text-burgundy">Home</a>
-            {NAV_LINKS.map((l) => (
-              l.brands.length === 0 ? (
-                <a key={l.href} href={l.href} className="block py-3 text-sm font-semibold text-muted-foreground">{l.label}</a>
-              ) : (
-                <details key={l.href} className="border-b border-border py-1">
-                  <summary className="cursor-pointer py-2 text-sm font-semibold text-muted-foreground">{l.label}</summary>
-                  <ul className="pl-4 pb-2 space-y-1">
-                    {l.brands.map((brand) => (
-                      <li key={brand}>
-                        <a href={`${l.href}?brand=${encodeURIComponent(brand)}`} className="block py-1 text-xs text-muted-foreground hover:text-burgundy">{brand}</a>
-                      </li>
-                    ))}
-                  </ul>
-                </details>
-              )
-            ))}
-          </div>
-        </div>
-      )}
-    </header>
   );
 }
 
@@ -469,6 +345,74 @@ function Reviews() {
                   <div className="text-[11px] text-muted-foreground">{r.location}</div>
                 </div>
               </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function FAQ() {
+  const FAQS = [
+    {
+      q: "Are the products authentic / original?",
+      a: "Yes. Every item we sell is sourced directly from verified suppliers in Italy and Dubai. We send real photos of the actual product before shipping so you can confirm authenticity yourself.",
+    },
+    {
+      q: "How do I place an order?",
+      a: "All orders are placed via WhatsApp. Simply message us with the product you want, and we'll guide you through the process personally — from photos to payment to delivery.",
+    },
+    {
+      q: "Which countries do you ship to?",
+      a: "We ship worldwide — USA, UK, Europe, Middle East, Asia, and beyond. Delivery typically takes 7–18 business days depending on your location. Express shipping is also available on request.",
+    },
+    {
+      q: "What payment methods do you accept?",
+      a: "We accept PayPal, Zelle, Venmo, Cash App, Bank Transfer, and Credit Card. All payment details are shared securely via WhatsApp after you confirm your order.",
+    },
+    {
+      q: "Can I return or get a refund?",
+      a: "Yes. Returns are accepted within 14 days of delivery if the item is unused and in original condition. If an item arrives damaged or incorrect, we offer a full refund or free replacement.",
+    },
+    {
+      q: "Do you send photos before shipping?",
+      a: "Absolutely — this is standard for every order. We send real photos of your exact item before dispatch so you can approve it. No surprises, no stock images.",
+    },
+    {
+      q: "How long does delivery take?",
+      a: "Standard delivery is 7–18 business days. Express shipping is available — ask us on WhatsApp for pricing and estimated delivery time to your country.",
+    },
+    {
+      q: "Can I request a specific item not listed on the site?",
+      a: "Yes! Just message us on WhatsApp with the brand, model, colour, and size. We source directly, so we can often find pieces not shown online.",
+    },
+  ];
+
+  const [open, setOpen] = useState<number | null>(null);
+
+  return (
+    <section className="border-b border-border bg-background">
+      <div className="mx-auto max-w-3xl px-4 py-16 md:py-24">
+        <div className="mb-10 text-center">
+          <p className="mb-2 text-[10px] font-semibold uppercase tracking-[0.35em] text-gold">— FAQs</p>
+          <h2 className="text-4xl tracking-tight text-ink md:text-5xl" style={{ fontFamily: "var(--font-display)" }}>
+            Frequently Asked <span className="italic text-burgundy">Questions</span>
+          </h2>
+        </div>
+        <div className="divide-y divide-border">
+          {FAQS.map((faq, i) => (
+            <div key={i}>
+              <button
+                onClick={() => setOpen(open === i ? null : i)}
+                className="flex w-full items-center justify-between gap-4 py-5 text-left"
+              >
+                <span className="text-sm font-semibold text-ink md:text-base">{faq.q}</span>
+                <span className={`shrink-0 text-xl font-light text-burgundy transition-transform duration-200 ${open === i ? "rotate-45" : ""}`}>+</span>
+              </button>
+              {open === i && (
+                <p className="pb-5 text-sm leading-relaxed text-muted-foreground">{faq.a}</p>
+              )}
             </div>
           ))}
         </div>

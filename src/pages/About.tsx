@@ -1,31 +1,14 @@
 import { MapPin, MessageCircle, ShieldCheck, Truck, Star, Sparkles } from "lucide-react";
 import { Link } from "react-router-dom";
-import logoImg from "@/assets/Logo.png";
 import heroModel from "@/assets/hero-model.jpg";
+import SiteHeader from "@/components/SiteHeader";
 
 const WHATSAPP_LINK = "https://wa.me/393515439347";
 
 export default function AboutPage() {
   return (
     <div className="min-h-screen bg-background text-foreground" style={{ fontFamily: "var(--font-sans)" }}>
-      <header className="sticky top-0 z-50 border-b border-border bg-background/90 backdrop-blur-md">
-        <div className="mx-auto flex max-w-7xl items-center justify-between px-4 py-4">
-          <Link to="/" className="flex items-center gap-3">
-            <img src={logoImg} alt="Premium Designer Bags" className="h-12 w-12 rounded-full object-cover" />
-            <div className="flex flex-col">
-              <span className="text-lg font-semibold tracking-tight text-burgundy" style={{ fontFamily: "var(--font-display)" }}>Premium Designer Bags</span>
-              <span className="text-[10px] font-medium tracking-[0.45em] text-gold uppercase">Elevated.</span>
-            </div>
-          </Link>
-          <nav className="flex items-center gap-6 text-sm font-medium">
-            <Link to="/" className="hover:text-burgundy">Home</Link>
-            <Link to="/policy" className="hover:text-burgundy">Policy</Link>
-            <a href={WHATSAPP_LINK} className="inline-flex items-center gap-2 px-4 py-2 text-xs font-semibold uppercase tracking-wider text-cream" style={{ background: "var(--gradient-luxe)" }}>
-              <MessageCircle className="h-4 w-4" /> WhatsApp
-            </a>
-          </nav>
-        </div>
-      </header>
+      <SiteHeader />
 
       <section className="relative overflow-hidden border-b border-border">
         <img src={heroModel} alt="" className="absolute inset-0 h-full w-full object-cover opacity-20" />
@@ -112,7 +95,9 @@ export default function AboutPage() {
       </section>
 
       <footer className="border-t border-border bg-background px-4 py-6 text-center text-xs text-muted-foreground">
-        © {new Date().getFullYear()} Premium Designer Bags · <Link to="/policy" className="hover:text-burgundy">Return Policy</Link> · <Link to="/" className="hover:text-burgundy">Shop</Link>
+        © {new Date().getFullYear()} Premium Designer Bags ·{" "}
+        <Link to="/policy" className="hover:text-burgundy">Return Policy</Link> ·{" "}
+        <Link to="/" className="hover:text-burgundy">Shop</Link>
       </footer>
     </div>
   );

@@ -4,6 +4,7 @@ import {
   Link,
   createRootRouteWithContext,
   useRouter,
+  useRouterState,
   HeadContent,
   Scripts,
 } from "@tanstack/react-router";
@@ -93,6 +94,8 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
         rel: "stylesheet",
         href: appCss,
       },
+      { rel: "icon", type: "image/png", href: "/favicon.png" },
+      { rel: "apple-touch-icon", href: "/favicon.png" },
       { rel: "preconnect", href: "https://fonts.googleapis.com" },
       { rel: "preconnect", href: "https://fonts.gstatic.com", crossOrigin: "anonymous" },
       {
@@ -123,21 +126,25 @@ function RootShell({ children }: { children: ReactNode }) {
 
 function RootComponent() {
   const { queryClient } = Route.useRouteContext();
+  const pathname = useRouterState({ select: (s) => s.location.pathname });
+  const isAdmin = pathname.startsWith("/admin");
 
   return (
     <QueryClientProvider client={queryClient}>
       <Outlet />
-      <a
-        href="https://wa.me/393515439347"
-        target="_blank"
-        rel="noopener noreferrer"
-        aria-label="Chat on WhatsApp"
-        className="fixed bottom-6 right-6 z-50 flex items-center gap-2 rounded-full px-4 py-3 text-white shadow-2xl transition hover:scale-105 hover:opacity-95"
-        style={{ background: "#25D366" }}
-      >
-        <MessageCircle className="h-5 w-5" />
-        <span className="text-sm font-semibold">Order via WhatsApp</span>
-      </a>
+      {!isAdmin && (
+        <a
+          href="https://wa.me/393515439347"
+          target="_blank"
+          rel="noopener noreferrer"
+          aria-label="Chat on WhatsApp"
+          className="fixed bottom-6 right-6 z-50 flex items-center gap-2 rounded-full px-4 py-3 text-white shadow-2xl transition hover:scale-105 hover:opacity-95"
+          style={{ background: "#25D366" }}
+        >
+          <MessageCircle className="h-5 w-5" />
+          <span className="text-sm font-semibold">Order via WhatsApp</span>
+        </a>
+      )}
     </QueryClientProvider>
   );
 }

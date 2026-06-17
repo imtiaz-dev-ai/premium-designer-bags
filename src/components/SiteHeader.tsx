@@ -1,30 +1,48 @@
-import { useState, useEffect } from "react";
-import { Link, useNavigate } from "react-router-dom";
-import { Menu, X, Search, ShoppingBag, Phone, ChevronDown, MessageCircle } from "lucide-react";
+import { useState, useEffect, useRef } from "react";
+import { Link, useLocation, useNavigate } from "react-router-dom";
+import { Menu, X, ShoppingBag, Phone, ChevronDown, MessageCircle } from "lucide-react";
 import { getSettings } from "@/lib/store";
 import { getCartCount } from "@/lib/cart-store";
 import logoImg from "@/assets/Logo.png";
 
-const NAV_LINKS = [
-  { href: "/categories/bags", label: "Bags", brands: ["Louis Vuitton", "Chanel", "Hermès", "Dior", "Gucci", "Prada", "Celine", "Saint Laurent", "Bottega Veneta", "Goyard"] },
-  { href: "/categories/shoes", label: "Shoes", brands: ["Hermès", "Chanel", "Louis Vuitton", "Fendi", "Gucci", "Dior", "Bottega Veneta", "Celine", "Loewe", "Prada"] },
-  { href: "/categories/jewelry", label: "Jewelry", brands: ["Cartier", "Tiffany & Co", "Van Cleef & Arpels", "Hermès", "Chanel", "Gucci"] },
-  { href: "/categories/watches", label: "Watches", brands: ["Cartier", "Hermès", "Rolex", "Omega", "Patek Philippe", "Tag Heuer"] },
-  { href: "/categories/clothes", label: "Clothes", brands: ["Loro Piana", "Gucci", "Prada", "Burberry", "Valentino", "Saint Laurent"] },
-  { href: "/categories/hats", label: "Hats", brands: ["Louis Vuitton", "Gucci", "Prada", "Burberry", "Fendi", "Chanel"] },
-  { href: "/categories/scarfs", label: "Scarfs", brands: ["Hermès", "Gucci", "Louis Vuitton", "Burberry", "Chanel", "Fendi"] },
-  { href: "/categories/sunglasses", label: "Sunglasses", brands: ["Chanel", "Dior", "Gucci", "Prada", "Celine", "Saint Laurent"] },
-  { href: "/categories/belts", label: "Belts", brands: ["Louis Vuitton", "Gucci", "Hermès", "Prada", "Fendi", "Bottega Veneta"] },
-  { href: "/about", label: "About", brands: [] },
-  { href: "#contact", label: "Contact", brands: [] },
+// Primary nav — always visible on desktop
+const PRIMARY_LINKS = [
+  { href: "/categories/bags",    label: "Bags",    brands: ["Louis Vuitton", "Chanel", "Hermès", "Dior", "Gucci", "Prada", "Celine", "Saint Laurent", "Bottega Veneta", "Goyard"] },
+  { href: "/categories/shoes",   label: "Shoes",   brands: ["Hermès", "Chanel", "Louis Vuitton", "Fendi", "Gucci", "Dior", "Bottega Veneta", "Loewe", "Prada", "Valentino"] },
+  { href: "/categories/jewelry", label: "Jewelry", brands: ["Cartier", "Bvlgari", "Messika", "Tiffany & Co", "Van Cleef & Arpels", "Chanel"] },
+  { href: "/categories/watches", label: "Watches", brands: ["Cartier", "Rolex", "Omega", "Patek Philippe", "Tag Heuer"] },
+];
+
+// Secondary nav — grouped under "More" dropdown
+const MORE_LINKS = [
+  { href: "/categories/clothes",    label: "Clothes",    brands: [] },
+  { href: "/categories/hats",       label: "Hats",       brands: [] },
+  { href: "/categories/scarfs",     label: "Scarfs",     brands: [] },
+  { href: "/categories/sunglasses", label: "Sunglasses", brands: [] },
+  { href: "/categories/belts",      label: "Belts",      brands: [] },
+];
+
+// All links for mobile menu
+const ALL_LINKS = [
+  ...PRIMARY_LINKS,
+  ...MORE_LINKS,
+  { href: "/about",   label: "About",   brands: [] },
+  { href: "/policy",  label: "Policy",  brands: [] },
 ];
 
 export default function SiteHeader() {
   const settings = getSettings();
+  const location = useLocation();
   const navigate = useNavigate();
   const [open, setOpen] = useState(false);
   const [activeDropdown, setActiveDropdown] = useState<string | null>(null);
   const [cartCount, setCartCount] = useState(0);
+  const closeTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  useEffect(() => {
+    setOpen(false);
+    setActiveDropdown(null);
+  }, [location.pathname]);
 
   useEffect(() => {
     setCartCount(getCartCount());
@@ -32,6 +50,37 @@ export default function SiteHeader() {
     window.addEventListener("storage", onStorage);
     return () => window.removeEventListener("storage", onStorage);
   }, []);
+
+  function isActive(href: string) {
+    if (href === "/") return location.pathname === "/";
+    return location.pathname.startsWith(href);
+  }
+
+  function isMoreActive() {
+    return MORE_LINKS.some((l) => location.pathname.startsWith(l.href));
+  }
+
+  function openDropdown(key: string) {
+    if (closeTimer.current) clearTimeout(closeTimer.current);
+    setActiveDropdown(key);
+  }
+
+  function closeDropdown() {
+    closeTimer.current = setTimeout(() => setActiveDropdown(null), 120);
+  }
+
+  function handleContactClick(e: React.MouseEvent) {
+    e.preventDefault();
+    if (location.pathname !== "/") {
+      navigate("/");
+      setTimeout(() => {
+        document.getElementById("contact")?.scrollIntoView({ behavior: "smooth" });
+      }, 300);
+    } else {
+      document.getElementById("contact")?.scrollIntoView({ behavior: "smooth" });
+    }
+    setOpen(false);
+  }
 
   return (
     <>
@@ -42,87 +91,198 @@ export default function SiteHeader() {
             <Phone className="h-3 w-3 text-gold" />
             Italy · Dubai · UK · USA · Worldwide Delivery
           </span>
-          <a href={settings.whatsappLink} className="flex items-center gap-1.5 hover:text-gold">
+          <a href={settings.whatsappLink} target="_blank" rel="noopener noreferrer" className="flex items-center gap-1.5 hover:text-gold transition-colors">
             <Phone className="h-3 w-3 text-gold" /> {settings.whatsapp}
           </a>
         </div>
       </div>
 
-      <header className="sticky top-0 z-50 border-b border-border bg-background/85 backdrop-blur-md">
-        <div className="mx-auto flex max-w-7xl items-center justify-between gap-4 px-4 py-4">
-          <Link to="/" className="flex items-center gap-3">
-            <img src={logoImg} alt="Premium Designer Bags" className="h-12 w-12 rounded-full object-cover" />
+      <header className="sticky top-0 z-50 border-b border-border bg-background/95 backdrop-blur-md">
+        <div className="mx-auto flex max-w-7xl items-center justify-between gap-4 px-4 py-3">
+
+          {/* Logo */}
+          <Link to="/" className="flex items-center gap-3 shrink-0">
+            <img src={logoImg} alt="Premium Designer Bags" className="h-11 w-11 rounded-full object-cover" />
             <div className="hidden flex-col sm:flex">
-              <span className="text-lg font-semibold tracking-tight text-burgundy" style={{ fontFamily: "var(--font-display)" }}>Premium Designer Bags</span>
+              <span className="text-base font-semibold tracking-tight text-burgundy" style={{ fontFamily: "var(--font-display)" }}>
+                Premium Designer Bags
+              </span>
               <span className="text-[10px] font-medium tracking-[0.45em] text-gold uppercase">Elevated.</span>
             </div>
           </Link>
 
-          <nav className="hidden items-center gap-4 text-sm font-medium lg:flex">
-            <Link to="/" className="hover:text-burgundy">Home</Link>
-            {NAV_LINKS.map((l) =>
-              l.brands.length === 0 ? (
-                <a key={l.href} href={l.href} className="hover:text-burgundy">{l.label}</a>
-              ) : (
-                <div key={l.href} className="relative"
-                  onMouseEnter={() => setActiveDropdown(l.label)}
-                  onMouseLeave={() => setActiveDropdown(null)}
+          {/* Desktop Nav */}
+          <nav className="hidden items-center gap-0.5 text-sm font-medium xl:flex">
+            <Link to="/" className={`px-2.5 py-1.5 rounded-md transition-colors hover:text-burgundy hover:bg-secondary/60 ${location.pathname === "/" ? "text-burgundy font-semibold" : ""}`}>
+              Home
+            </Link>
+
+            {PRIMARY_LINKS.map((l) => (
+              <div
+                key={l.href}
+                className="relative"
+                onMouseEnter={() => openDropdown(l.label)}
+                onMouseLeave={closeDropdown}
+              >
+                <Link
+                  to={l.href}
+                  className={`flex items-center gap-0.5 px-2.5 py-1.5 rounded-md transition-colors hover:text-burgundy hover:bg-secondary/60 ${isActive(l.href) ? "text-burgundy font-semibold" : ""}`}
                 >
-                  <Link to={l.href} className="flex items-center gap-0.5 hover:text-burgundy">
-                    {l.label} <ChevronDown className="h-3 w-3" />
-                  </Link>
-                  {activeDropdown === l.label && (
-                    <div className="absolute left-0 top-full z-50 mt-2 w-44 rounded-xl border border-border bg-card py-2 shadow-2xl">
-                      {l.brands.map((brand) => (
-                        <Link key={brand} to={`${l.href}?brand=${encodeURIComponent(brand)}`}
-                          className="block px-4 py-2 text-xs text-muted-foreground hover:bg-secondary hover:text-burgundy"
-                        >
-                          {brand}
-                        </Link>
-                      ))}
-                    </div>
-                  )}
+                  {l.label} <ChevronDown className="h-3 w-3 opacity-60" />
+                </Link>
+                {activeDropdown === l.label && (
+                  <div
+                    className="absolute left-0 top-full z-50 mt-1 w-48 rounded-xl border border-border bg-card py-2 shadow-2xl"
+                    onMouseEnter={() => openDropdown(l.label)}
+                    onMouseLeave={closeDropdown}
+                  >
+                    {l.brands.map((brand) => (
+                      <Link
+                        key={brand}
+                        to={`${l.href}?brand=${encodeURIComponent(brand)}`}
+                        className="block px-4 py-2 text-xs text-muted-foreground hover:bg-secondary hover:text-burgundy transition-colors"
+                      >
+                        {brand}
+                      </Link>
+                    ))}
+                  </div>
+                )}
+              </div>
+            ))}
+
+            {/* More dropdown */}
+            <div
+              className="relative"
+              onMouseEnter={() => openDropdown("more")}
+              onMouseLeave={closeDropdown}
+            >
+              <button className={`flex items-center gap-0.5 px-2.5 py-1.5 rounded-md transition-colors hover:text-burgundy hover:bg-secondary/60 ${isMoreActive() ? "text-burgundy font-semibold" : ""}`}>
+                More <ChevronDown className="h-3 w-3 opacity-60" />
+              </button>
+              {activeDropdown === "more" && (
+                <div
+                  className="absolute left-0 top-full z-50 mt-1 w-44 rounded-xl border border-border bg-card py-2 shadow-2xl"
+                  onMouseEnter={() => openDropdown("more")}
+                  onMouseLeave={closeDropdown}
+                >
+                  {MORE_LINKS.map((l) => (
+                    <Link
+                      key={l.href}
+                      to={l.href}
+                      className={`block px-4 py-2 text-xs transition-colors hover:bg-secondary hover:text-burgundy ${isActive(l.href) ? "text-burgundy font-semibold" : "text-muted-foreground"}`}
+                    >
+                      {l.label}
+                    </Link>
+                  ))}
                 </div>
-              )
-            )}
+              )}
+            </div>
+
+            <Link to="/about" className={`px-2.5 py-1.5 rounded-md transition-colors hover:text-burgundy hover:bg-secondary/60 ${isActive("/about") ? "text-burgundy font-semibold" : ""}`}>
+              About
+            </Link>
+
+            <a
+              href="#contact"
+              onClick={handleContactClick}
+              className="px-2.5 py-1.5 rounded-md transition-colors hover:text-burgundy hover:bg-secondary/60 cursor-pointer"
+            >
+              Contact
+            </a>
           </nav>
 
-          <div className="flex items-center gap-3">
-            <button aria-label="Search" className="hidden p-2 hover:text-burgundy md:block"><Search className="h-5 w-5" /></button>
-            <a href={settings.whatsappLink} className="hidden items-center gap-2 px-4 py-2 text-xs font-semibold uppercase tracking-wider text-cream shadow-md transition hover:opacity-90 md:inline-flex" style={{ background: "var(--gradient-luxe)" }}>
+          {/* Right actions */}
+          <div className="flex items-center gap-2">
+            <a
+              href={settings.whatsappLink}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="hidden items-center gap-2 px-4 py-2 text-xs font-semibold uppercase tracking-wider text-cream shadow-md transition hover:opacity-90 md:inline-flex"
+              style={{ background: "var(--gradient-luxe)" }}
+            >
               <MessageCircle className="h-4 w-4" /> WhatsApp
             </a>
-            <button aria-label="Cart" className="relative p-2 hover:text-burgundy" onClick={() => navigate("/cart")}>
+            <Link to="/cart" aria-label="Cart" className="relative p-2 hover:text-burgundy transition-colors">
               <ShoppingBag className="h-5 w-5" />
-              {cartCount > 0 && <span className="absolute -right-0 -top-0 grid h-4 w-4 place-items-center rounded-full bg-burgundy text-[9px] font-bold text-cream">{cartCount}</span>}
-            </button>
-            <button aria-label="Menu" onClick={() => setOpen(!open)} className="p-2 lg:hidden">
+              {cartCount > 0 && (
+                <span className="absolute -right-0 -top-0 grid h-4 w-4 place-items-center rounded-full bg-burgundy text-[9px] font-bold text-cream">
+                  {cartCount}
+                </span>
+              )}
+            </Link>
+            <button
+              aria-label="Menu"
+              onClick={() => setOpen(!open)}
+              className="p-2 xl:hidden transition-colors hover:text-burgundy"
+            >
               {open ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
             </button>
           </div>
         </div>
 
-        {/* Mobile menu */}
+        {/* Mobile / tablet menu */}
         {open && (
-          <div className="border-t border-border bg-card lg:hidden">
-            <div className="max-h-[70vh] overflow-y-auto px-4 py-4">
-              <Link to="/" className="block border-b border-border py-3 text-sm font-semibold text-burgundy" onClick={() => setOpen(false)}>Home</Link>
-              {NAV_LINKS.map((l) =>
-                l.brands.length === 0 ? (
-                  <a key={l.href} href={l.href} className="block py-3 text-sm font-semibold text-muted-foreground" onClick={() => setOpen(false)}>{l.label}</a>
-                ) : (
-                  <details key={l.href} className="border-b border-border py-1">
-                    <summary className="cursor-pointer py-2 text-sm font-semibold text-muted-foreground">{l.label}</summary>
-                    <ul className="pl-4 pb-2 space-y-1">
+          <div className="border-t border-border bg-card xl:hidden">
+            <div className="max-h-[75vh] overflow-y-auto px-4 py-3">
+              <Link
+                to="/"
+                className={`block border-b border-border py-3 text-sm font-semibold ${location.pathname === "/" ? "text-burgundy" : "text-muted-foreground"}`}
+                onClick={() => setOpen(false)}
+              >
+                Home
+              </Link>
+
+              {ALL_LINKS.map((l) =>
+                l.brands.length > 0 ? (
+                  <details key={l.href} className="border-b border-border">
+                    <summary className={`cursor-pointer py-3 text-sm font-semibold list-none flex items-center justify-between ${isActive(l.href) ? "text-burgundy" : "text-muted-foreground"}`}>
+                      {l.label}
+                      <ChevronDown className="h-3.5 w-3.5 opacity-60" />
+                    </summary>
+                    <ul className="pl-4 pb-3 space-y-1">
                       {l.brands.map((brand) => (
                         <li key={brand}>
-                          <Link to={`${l.href}?brand=${encodeURIComponent(brand)}`} className="block py-1 text-xs text-muted-foreground hover:text-burgundy" onClick={() => setOpen(false)}>{brand}</Link>
+                          <Link
+                            to={`${l.href}?brand=${encodeURIComponent(brand)}`}
+                            className="block py-1.5 text-xs text-muted-foreground hover:text-burgundy transition-colors"
+                            onClick={() => setOpen(false)}
+                          >
+                            {brand}
+                          </Link>
                         </li>
                       ))}
                     </ul>
                   </details>
+                ) : (
+                  <Link
+                    key={l.href}
+                    to={l.href}
+                    className={`block border-b border-border py-3 text-sm font-semibold transition-colors hover:text-burgundy ${isActive(l.href) ? "text-burgundy" : "text-muted-foreground"}`}
+                    onClick={() => setOpen(false)}
+                  >
+                    {l.label}
+                  </Link>
                 )
               )}
+
+              <a
+                href="#contact"
+                onClick={handleContactClick}
+                className="block border-b border-border py-3 text-sm font-semibold text-muted-foreground hover:text-burgundy transition-colors cursor-pointer"
+              >
+                Contact
+              </a>
+
+              <a
+                href={settings.whatsappLink}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="mt-3 flex items-center justify-center gap-2 py-3 text-sm font-semibold text-cream rounded-xl"
+                style={{ background: "var(--gradient-luxe)" }}
+                onClick={() => setOpen(false)}
+              >
+                <MessageCircle className="h-4 w-4" /> Chat on WhatsApp
+              </a>
             </div>
           </div>
         )}

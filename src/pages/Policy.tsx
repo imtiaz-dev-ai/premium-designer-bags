@@ -1,49 +1,55 @@
 import { MessageCircle, Truck, RotateCcw, ShieldCheck, Clock, MapPin } from "lucide-react";
 import { Link } from "react-router-dom";
-import logoImg from "@/assets/Logo.png";
+import SiteHeader from "@/components/SiteHeader";
 
 const WHATSAPP_LINK = "https://wa.me/393515439347";
 
 const SECTIONS = [
   {
     icon: RotateCcw, title: "Return Policy",
-    items: ["Returns accepted within 14 days of delivery.", "Item must be unused, unworn, and in original packaging.", "Contact us via WhatsApp with photos of the item before returning.", "Return shipping cost is the responsibility of the buyer unless the item is defective or incorrect.", "Customised or final-sale items are non-returnable."],
+    items: [
+      "Returns accepted within 14 days of delivery.",
+      "Item must be unused, unworn, and in original packaging.",
+      "Contact us via WhatsApp with photos of the item before returning.",
+      "Return shipping cost is the responsibility of the buyer unless the item is defective or incorrect.",
+      "Customised or final-sale items are non-returnable.",
+    ],
   },
   {
     icon: ShieldCheck, title: "Refund Policy",
-    items: ["Refunds are processed within 5–7 business days after we receive and inspect the returned item.", "Refunds are issued via the original payment method (PayPal, bank transfer, etc.).", "If an item arrives damaged or incorrect, we offer a full refund or free replacement — contact us immediately with photos.", "Shipping fees are non-refundable unless the error is on our side."],
+    items: [
+      "Refunds are processed within 5–7 business days after we receive and inspect the returned item.",
+      "Refunds are issued via the original payment method (PayPal, bank transfer, etc.).",
+      "If an item arrives damaged or incorrect, we offer a full refund or free replacement — contact us immediately with photos.",
+      "Shipping fees are non-refundable unless the error is on our side.",
+    ],
   },
   {
     icon: Truck, title: "Shipping Policy",
-    items: ["We ship worldwide from Italy & Dubai.", "Estimated delivery: 7–18 business days depending on destination.", "A tracking number is provided after dispatch.", "We send real photos of your item before shipping for your approval.", "Customs duties and import taxes (if any) are the buyer's responsibility.", "Express shipping available — ask via WhatsApp for pricing."],
+    items: [
+      "We ship worldwide from Italy & Dubai.",
+      "Estimated delivery: 7–18 business days depending on destination.",
+      "A tracking number is provided after dispatch.",
+      "We send real photos of your item before shipping for your approval.",
+      "Customs duties and import taxes (if any) are the buyer's responsibility.",
+      "Express shipping available — ask via WhatsApp for pricing.",
+    ],
   },
   {
     icon: Clock, title: "Order Processing",
-    items: ["Orders are processed within 1–3 business days.", "We confirm every order personally via WhatsApp.", "You will receive photo confirmation before we ship.", "Orders are placed exclusively via WhatsApp for personalised service."],
+    items: [
+      "Orders are processed within 1–3 business days.",
+      "We confirm every order personally via WhatsApp.",
+      "You will receive photo confirmation before we ship.",
+      "Orders are placed exclusively via WhatsApp for personalised service.",
+    ],
   },
 ];
 
 export default function PolicyPage() {
   return (
     <div className="min-h-screen bg-background text-foreground" style={{ fontFamily: "var(--font-sans)" }}>
-      <header className="sticky top-0 z-50 border-b border-border bg-background/90 backdrop-blur-md">
-        <div className="mx-auto flex max-w-7xl items-center justify-between px-4 py-4">
-          <Link to="/" className="flex items-center gap-3">
-            <img src={logoImg} alt="Premium Designer Bags" className="h-12 w-12 rounded-full object-cover" />
-            <div className="flex flex-col">
-              <span className="text-lg font-semibold tracking-tight text-burgundy" style={{ fontFamily: "var(--font-display)" }}>Premium Designer Bags</span>
-              <span className="text-[10px] font-medium tracking-[0.45em] text-gold uppercase">Elevated.</span>
-            </div>
-          </Link>
-          <nav className="flex items-center gap-6 text-sm font-medium">
-            <Link to="/" className="hover:text-burgundy">Home</Link>
-            <Link to="/about" className="hover:text-burgundy">About</Link>
-            <a href={WHATSAPP_LINK} className="inline-flex items-center gap-2 px-4 py-2 text-xs font-semibold uppercase tracking-wider text-cream" style={{ background: "var(--gradient-luxe)" }}>
-              <MessageCircle className="h-4 w-4" /> WhatsApp
-            </a>
-          </nav>
-        </div>
-      </header>
+      <SiteHeader />
 
       <section className="border-b border-border bg-card">
         <div className="mx-auto max-w-4xl px-4 py-20 text-center">
@@ -51,7 +57,9 @@ export default function PolicyPage() {
           <h1 className="text-5xl tracking-tight text-ink md:text-6xl" style={{ fontFamily: "var(--font-display)" }}>
             Returns, Refunds &<br /><span className="italic text-burgundy">Shipping</span>
           </h1>
-          <p className="mx-auto mt-6 max-w-xl text-muted-foreground">We keep it simple and transparent. If something isn't right, we make it right.</p>
+          <p className="mx-auto mt-6 max-w-xl text-muted-foreground">
+            We keep it simple and transparent. If something isn't right, we make it right.
+          </p>
         </div>
       </section>
 
@@ -82,9 +90,17 @@ export default function PolicyPage() {
 
       <section className="bg-card">
         <div className="mx-auto max-w-3xl px-4 py-20 text-center">
-          <h2 className="text-3xl tracking-tight text-ink" style={{ fontFamily: "var(--font-display)" }}>Have a question about your order?</h2>
-          <p className="mx-auto mt-4 max-w-md text-muted-foreground">We respond fast on WhatsApp. Message us directly — no forms, no bots, just real support.</p>
-          <a href={WHATSAPP_LINK} className="mt-8 inline-flex items-center gap-2 px-10 py-4 text-xs font-semibold uppercase tracking-[0.25em] text-cream shadow-xl transition hover:-translate-y-0.5" style={{ background: "var(--gradient-luxe)" }}>
+          <h2 className="text-3xl tracking-tight text-ink" style={{ fontFamily: "var(--font-display)" }}>
+            Have a question about your order?
+          </h2>
+          <p className="mx-auto mt-4 max-w-md text-muted-foreground">
+            We respond fast on WhatsApp. Message us directly — no forms, no bots, just real support.
+          </p>
+          <a
+            href={WHATSAPP_LINK}
+            className="mt-8 inline-flex items-center gap-2 px-10 py-4 text-xs font-semibold uppercase tracking-[0.25em] text-cream shadow-xl transition hover:-translate-y-0.5"
+            style={{ background: "var(--gradient-luxe)" }}
+          >
             <MessageCircle className="h-4 w-4" /> Chat on WhatsApp
           </a>
           <div className="mt-6 flex items-center justify-center gap-2 text-sm text-muted-foreground">
@@ -94,7 +110,9 @@ export default function PolicyPage() {
       </section>
 
       <footer className="border-t border-border bg-background px-4 py-6 text-center text-xs text-muted-foreground">
-        © {new Date().getFullYear()} Premium Designer Bags · <Link to="/about" className="hover:text-burgundy">About Us</Link> · <Link to="/" className="hover:text-burgundy">Shop</Link>
+        © {new Date().getFullYear()} Premium Designer Bags ·{" "}
+        <Link to="/about" className="hover:text-burgundy">About Us</Link> ·{" "}
+        <Link to="/" className="hover:text-burgundy">Shop</Link>
       </footer>
     </div>
   );
