@@ -90,7 +90,7 @@ export default function BrandPage() {
                 </div>
                 <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
                   {byCategory[cat].map((product) => {
-                    const productId = utf8Base64Encode(JSON.stringify({ title: product.title, price: product.price, tag: product.tag, img: product.img }));
+                    const productId = utf8Base64Encode(JSON.stringify({ title: product.title, price: product.price, tag: product.tag, img: product.img, description: product.description ?? "" }));
                     return (
                       <div key={product.id} className="group overflow-hidden rounded-[1.5rem] border border-border bg-card shadow-sm transition hover:-translate-y-1 hover:shadow-xl">
                         <a href={`/products/${productId}`}>

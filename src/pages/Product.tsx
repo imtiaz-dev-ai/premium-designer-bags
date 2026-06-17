@@ -2,9 +2,26 @@ import { useState, useEffect } from "react";
 import { useParams, useNavigate, Link } from "react-router-dom";
 import { ShoppingBag, MessageCircle, ChevronLeft, Star, Truck, ShieldCheck, RotateCcw, Plus, Minus, Heart } from "lucide-react";
 import { addToCart, getCartCount } from "@/lib/cart-store";
+import { getProducts } from "@/lib/store";
 import logoImg from "@/assets/Logo.png";
 
 const WHATSAPP_LINK = "https://wa.me/393515439347";
+
+function decodeProduct(id: string) {
+  try {
+    const bytes = Uint8Array.from(atob(id), (c) => c.charCodeAt(0));
+    const decoded = JSON.parse(new TextDecoder().decode(bytes));
+    return {
+      title: decoded.title ?? "Designer Bag",
+      price: decoded.price ?? "$299",
+      tag: decoded.tag ?? "Luxury",
+      img: decoded.img ?? "",
+      description: decoded.description ?? "",
+    };
+  } catch {
+    return { title: "Designer Bag", price: "$299", tag: "Luxury", img: "", description: "" };
+  }
+}
 
 export default function ProductPage() {
   const { id = "" } = useParams();
@@ -13,6 +30,9 @@ export default function ProductPage() {
   const [added, setAdded] = useState(false);
   const [cartCount, setCartCount] = useState(0);
   const [wishlist, setWishlist] = useState(false);
+  const [description, setDescription] = useState("");
+
+  const product = decodeProduct(id);
 
   useEffect(() => {
     setCartCount(getCartCount());
@@ -21,18 +41,19 @@ export default function ProductPage() {
     return () => window.removeEventListener("storage", onStorage);
   }, []);
 
-  let product = { title: "Designer Bag", price: "$299", tag: "Luxury", img: "", description: "" };
-  try {
-    const bytes = Uint8Array.from(atob(id), (c) => c.charCodeAt(0));
-    const decoded = JSON.parse(new TextDecoder().decode(bytes));
-    product = {
-      title: decoded.title,
-      price: decoded.price,
-      tag: decoded.tag ?? "Luxury",
-      img: decoded.img ?? "",
-      description: decoded.description ?? "",
-    };
-  } catch { /* use fallback */ }
+  // Always fetch fresh description from Supabase
+  useEffect(() => {
+    getProducts().then((all) => {
+      const match = all.find((p) => p.title === product.title);
+      if (match?.description) {
+        setDescription(match.description);
+      } else if (product.description) {
+        setDescription(product.description);
+      }
+    });
+  }, [product.title]);
+
+  const finalDescription = description || `This ${product.tag} piece is sourced directly from Italy & Dubai with full authenticity assurance. Real photos are sent before dispatch so you can verify the quality yourself. Ships worldwide with tracking — estimated delivery 7–18 business days. Contact us on WhatsApp to reserve your item.`;
 
   function handleAddToCart() {
     addToCart({ id, title: product.title, price: product.price, tag: product.tag, img: product.img, size: "", quantity: qty });
@@ -68,14 +89,14 @@ export default function ProductPage() {
           <span className="text-foreground line-clamp-1">{product.title}</span>
         </nav>
 
-        <div className="grid gap-6 lg:grid-cols-2 lg:gap-12">
-          {/* Single Image */}
-          <div className="relative overflow-hidden rounded-2xl border border-border bg-card">
+        <div className="grid gap-6 lg:grid-cols-2 lg:gap-12 lg:items-start">
+          {/* Image */}
+          <div className="relative rounded-2xl border border-border bg-white overflow-hidden lg:sticky lg:top-24">
             {product.img ? (
-              <img src={product.img} alt={product.title} className="aspect-square w-full object-cover"
+              <img src={product.img} alt={product.title} className="w-full h-auto object-contain block"
                 onError={(e) => { (e.target as HTMLImageElement).style.display = "none"; }} />
             ) : (
-              <div className="aspect-square w-full flex items-center justify-center bg-secondary text-muted-foreground text-sm">No Image</div>
+              <div className="w-full flex items-center justify-center bg-secondary text-muted-foreground text-sm" style={{ minHeight: "400px" }}>No Image</div>
             )}
             <button onClick={() => setWishlist(!wishlist)} className="absolute right-3 top-3 rounded-full bg-white/90 p-2 shadow-md transition hover:scale-110">
               <Heart className={`h-5 w-5 ${wishlist ? "fill-red-500 text-red-500" : "text-gray-400"}`} />
@@ -124,12 +145,10 @@ export default function ProductPage() {
               </div>
             )}
 
-            {product.description && (
-              <div className="mt-6 border-t border-border pt-6">
-                <h3 className="mb-3 text-sm font-semibold uppercase tracking-widest text-ink">Description</h3>
-                <p className="text-sm leading-relaxed text-muted-foreground whitespace-pre-line">{product.description}</p>
-              </div>
-            )}
+            <div className="mt-6 border-t border-border pt-6">
+              <h3 className="mb-3 text-sm font-semibold uppercase tracking-widest text-ink">Description</h3>
+              <p className="text-sm leading-relaxed text-foreground/80 whitespace-pre-line">{finalDescription}</p>
+            </div>
 
             <div className="mt-6 grid grid-cols-3 gap-2 border-t border-border pt-6">
               {[{ icon: Truck, t: "Free Shipping", d: "Italy & Dubai" }, { icon: ShieldCheck, t: "Authentic", d: "Verified" }, { icon: RotateCcw, t: "Returns", d: "14-day policy" }].map((f) => (

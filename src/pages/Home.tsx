@@ -192,8 +192,8 @@ function FeaturesStrip({ wa }: { wa: string }) {
   );
 }
 
-function ProductCard({ p, index }: { p: Product; index: number }) {
-  const id = utf8Base64Encode(JSON.stringify({ title: p.title, price: p.price, tag: p.tag ?? "Luxury", img: p.img }));
+function ProductCard({ p }: { p: Product }) {
+  const id = utf8Base64Encode(JSON.stringify({ title: p.title, price: p.price, tag: p.tag ?? "Luxury", img: p.img, description: (p as any).description ?? "" }));
   return (
     <a href={`/products/${id}`} className="group block overflow-hidden rounded-[1.5rem] border border-border bg-card shadow-sm transition duration-300 hover:-translate-y-1 hover:shadow-2xl">
       <div className="relative overflow-hidden rounded-t-[1.5rem] bg-card">
@@ -227,7 +227,7 @@ function ProductSection({ id, title, subtitle, products }: { id: string; title: 
           <h2 className="text-4xl tracking-tight text-ink md:text-5xl" style={{ fontFamily: "var(--font-display)" }}>{subtitle}</h2>
         </div>
         <div className="grid grid-cols-1 gap-x-4 gap-y-8 sm:grid-cols-2 lg:grid-cols-4">
-          {products.map((p, i) => <ProductCard key={i} p={p} index={i} />)}
+          {products.map((p, i) => <ProductCard key={i} p={p} />)}
         </div>
         <p className="mt-12 text-center text-xs uppercase tracking-[0.35em] text-gold">✦ All products loaded ✦</p>
       </div>
