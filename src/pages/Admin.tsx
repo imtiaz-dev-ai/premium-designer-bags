@@ -8,7 +8,7 @@ import {
 } from "@/lib/store";
 import { migrateCatalogToSupabase } from "@/lib/migrate";
 import {
-  BESTSELLERS, SHOES, JEWELRY, WATCHES, CLOTHES, HATS, SCARFS, SUNGLASSES, BELTS, COLLECTION,
+  BESTSELLERS, SHOES, JEWELRY, WATCHES, CLOTHES, HATS, SCARFS, SUNGLASSES, BELTS, COLLECTION, BRAND_PRODUCTS,
 } from "@/lib/catalog";
 import { supabase } from "@/lib/supabase";
 import {
@@ -103,18 +103,15 @@ export default function AdminPage() {
 
   async function handleMigrate() {
     if (!confirm("Migrate all catalog products to Supabase?")) return;
-    const allCatalog = [
-      ...BESTSELLERS.map((p) => ({ ...p, tag: p.tag ?? "", category: "bags", section: "bestsellers", description: "" })),
-      ...SHOES.map((p) => ({ ...p, tag: p.tag ?? "", category: "shoes", section: "shoes", description: "" })),
-      ...JEWELRY.map((p) => ({ ...p, tag: p.tag ?? "", category: "jewelry", section: "jewelry", description: "" })),
-      ...WATCHES.map((p) => ({ ...p, tag: p.tag ?? "", category: "watches", section: "watches", description: "" })),
-      ...CLOTHES.map((p) => ({ ...p, tag: p.tag ?? "", category: "clothes", section: "clothes", description: "" })),
-      ...HATS.map((p) => ({ ...p, tag: p.tag ?? "", category: "hats", section: "hats", description: "" })),
-      ...SCARFS.map((p) => ({ ...p, tag: p.tag ?? "", category: "scarfs", section: "scarfs", description: "" })),
-      ...SUNGLASSES.map((p) => ({ ...p, tag: p.tag ?? "", category: "sunglasses", section: "sunglasses", description: "" })),
-      ...BELTS.map((p) => ({ ...p, tag: p.tag ?? "", category: "belts", section: "belts", description: "" })),
-      ...COLLECTION.map((p) => ({ ...p, tag: p.tag ?? "", category: "collection", section: "collection", description: "" })),
-    ];
+    const allCatalog = Object.values(BRAND_PRODUCTS).flat().map((p) => ({
+      title: p.title,
+      price: p.price,
+      tag: p.tag ?? "",
+      img: p.img,
+      category: "bags",
+      section: "bestsellers",
+      description: p.description ?? "",
+    }));
     const { inserted, error } = await migrateCatalogToSupabase(allCatalog);
     if (error) { alert("Migration failed: " + error); return; }
     const fresh = await getProducts();

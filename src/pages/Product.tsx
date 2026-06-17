@@ -124,12 +124,12 @@ export default function ProductPage() {
               </div>
             )}
 
-            {product.description && (
-              <div className="mt-6 border-t border-border pt-6">
-                <h3 className="mb-3 text-sm font-semibold uppercase tracking-widest text-ink">Description</h3>
-                <p className="text-sm leading-relaxed text-muted-foreground whitespace-pre-line">{product.description}</p>
-              </div>
-            )}
+            <div className="mt-6 border-t border-border pt-6">
+              <h3 className="mb-3 text-sm font-semibold uppercase tracking-widest text-ink">Description</h3>
+              <p className="text-sm leading-relaxed text-muted-foreground whitespace-pre-line">
+                {product.description || `This ${product.tag} piece is sourced directly from Italy & Dubai with full authenticity assurance. Real photos are sent before dispatch so you can verify the quality yourself. Ships worldwide with tracking — estimated delivery 7–18 business days. Contact us on WhatsApp to reserve your item.`}
+              </p>
+            </div>
 
             <div className="mt-6 grid grid-cols-3 gap-2 border-t border-border pt-6">
               {[{ icon: Truck, t: "Free Shipping", d: "Italy & Dubai" }, { icon: ShieldCheck, t: "Authentic", d: "Verified" }, { icon: RotateCcw, t: "Returns", d: "14-day policy" }].map((f) => (
