@@ -18,11 +18,16 @@ import {
 import logoImg from "@/assets/Logo.png";
 
 const DEFAULT_BRANDS = [
-  "Louis Vuitton", "Chanel", "Hermès", "Gucci", "Prada", "Dior",
+  // Bags & Shoes
+  "Louis Vuitton", "Chanel", "Hermès", "Gucci", "Prada", "Dior", "Miss Dior",
   "Saint Laurent", "Celine", "Bottega Veneta", "Goyard", "Fendi",
-  "Valentino", "Chloé", "Cartier", "Bvlgari", "Messika", "Burberry",
-  "Loewe", "Rolex", "Omega", "Loro Piana", "Tiffany & Co",
-  "Van Cleef & Arpels", "Patek Philippe", "Tag Heuer",
+  "Valentino", "Chloé", "Balenciaga", "Burberry", "Loewe",
+  // Jewelry
+  "Cartier", "Bvlgari", "Messika", "Van Cleef & Arpels", "Tiffany & Co", "David Yurman",
+  // Watches
+  "Rolex", "Patek Philippe", "Richard Mille",
+  // Others
+  "Loro Piana",
 ];
 
 const CATEGORIES = [
