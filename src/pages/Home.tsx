@@ -68,6 +68,21 @@ export default function HomePage() {
   const [shoes, setShoes] = useState<Product[]>([]);
 
   useEffect(() => {
+    document.title = "Premium Designer Bags — Luxury Louis Vuitton, Chanel, Hermès from Italy & Dubai";
+    const setMeta = (name: string, content: string, prop = false) => {
+      const attr = prop ? "property" : "name";
+      let el = document.querySelector(`meta[${attr}="${name}"]`) as HTMLMetaElement;
+      if (!el) { el = document.createElement("meta"); el.setAttribute(attr, name); document.head.appendChild(el); }
+      el.content = content;
+    };
+    setMeta("description", "Shop authentic luxury designer bags, shoes, jewelry and accessories. Louis Vuitton, Chanel, Hermès, Dior sourced from Italy & Dubai. WhatsApp ordering, worldwide delivery.");
+    setMeta("keywords", "luxury designer bags, buy designer bags online, Louis Vuitton bags, Chanel bags, Hermès Birkin, Dior bags, Gucci bags, luxury handbags Italy, designer fashion Dubai");
+    setMeta("og:title", "Premium Designer Bags — Luxury Fashion from Italy & Dubai", true);
+    setMeta("og:description", "Authentic luxury bags, shoes, jewelry from Italy & Dubai. WhatsApp ordering, worldwide delivery.", true);
+    setMeta("og:url", "https://premiumdesignerbags.com", true);
+  }, []);
+
+  useEffect(() => {
     getProducts().then((all) => {
       setBestsellers(all.filter((p) => p.category === "bags" || p.category === "collection").slice(0, 8));
       setShoes(all.filter((p) => p.category === "shoes").slice(0, 8));
@@ -86,6 +101,7 @@ export default function HomePage() {
       <ProductSection id="shoes" title="Shoes" subtitle="Designer Footwear" products={shoes} />
       <ValueProps />
       <Reviews />
+      <CustomRequestSection wa={settings.whatsappLink} />
       <FAQ />
       <CTASection wa={settings.whatsapp} waLink={settings.whatsappLink} />
       <Footer settings={settings} activeBrands={activeBrands} />
@@ -347,6 +363,32 @@ function Reviews() {
               </div>
             </div>
           ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function CustomRequestSection({ wa }: { wa: string }) {
+  return (
+    <section className="border-b border-border bg-secondary">
+      <div className="mx-auto max-w-7xl px-4 py-16 md:py-20">
+        <div className="mx-auto max-w-xl">
+          <div className="mb-4 flex items-center gap-2">
+            <Star className="h-5 w-5 fill-gold text-gold" />
+            <span className="text-[10px] font-bold uppercase tracking-[0.3em] text-gold">Don't see yours?</span>
+          </div>
+          <h2 className="text-4xl tracking-tight text-ink md:text-5xl" style={{ fontFamily: "var(--font-display)" }}>Custom Request</h2>
+          <p className="mt-4 text-base leading-relaxed text-muted-foreground">
+            Looking for a specific colour, size, or hardware? We source on request from our Italy and Dubai network. Tell us what you're after — we'll find it.
+          </p>
+          <p className="mt-6 text-xl font-semibold text-burgundy">Price on Request</p>
+          <a
+            href={wa}
+            className="mt-6 inline-flex items-center gap-2 rounded-xl bg-[#25D366] px-8 py-4 text-xs font-bold uppercase tracking-widest text-white transition hover:opacity-90"
+          >
+            <MessageCircle className="h-4 w-4" /> Send a Custom Request
+          </a>
         </div>
       </div>
     </section>

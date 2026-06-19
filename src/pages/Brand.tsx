@@ -14,8 +14,23 @@ export default function BrandPage() {
   const [products, setProducts] = useState<Product[]>([]);
 
   useEffect(() => {
+    if (brand) {
+      document.title = `${brand} — Luxury Designer Collection | Premium Designer Bags`;
+      const setMeta = (name: string, content: string, prop = false) => {
+        const attr = prop ? "property" : "name";
+        let el = document.querySelector(`meta[${attr}="${name}"]`) as HTMLMetaElement;
+        if (!el) { el = document.createElement("meta"); el.setAttribute(attr, name); document.head.appendChild(el); }
+        el.content = content;
+      };
+      setMeta("description", `Shop authentic ${brand} bags, shoes, jewelry and accessories sourced from Italy & Dubai. Real photos, WhatsApp ordering, worldwide delivery.`);
+      setMeta("keywords", `${brand} bags, ${brand} handbags, buy ${brand} online, authentic ${brand} Italy Dubai`);
+      setMeta("og:title", `${brand} Collection — Premium Designer Bags`, true);
+      setMeta("og:description", `Authentic ${brand} luxury fashion from Italy & Dubai. WhatsApp ordering, worldwide delivery.`, true);
+      setMeta("og:url", `https://premiumdesignerbags.com/brand/${brandSlug}`, true);
+    }
+  useEffect(() => {
     getProducts().then(setProducts);
-  }, []);
+  }, [brandSlug]);
 
   if (!brand) {
     return (

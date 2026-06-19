@@ -199,6 +199,25 @@ function ProductPage() {
               </div>
             )}
 
+            {/* Custom Request Card */}
+            <div className="mt-6 rounded-2xl bg-[#111] p-6 text-cream">
+              <div className="mb-3 flex items-center gap-2">
+                <Star className="h-5 w-5 fill-gold text-gold" />
+                <span className="text-[10px] font-bold uppercase tracking-[0.3em] text-gold">Don't see yours?</span>
+              </div>
+              <h3 className="text-xl font-semibold text-white" style={{ fontFamily: "var(--font-display)" }}>Custom Request</h3>
+              <p className="mt-2 text-sm leading-relaxed text-white/60">
+                Looking for a specific colour, size, or hardware? We source on request from our Italy and Dubai network. Tell us what you're after — we'll find it.
+              </p>
+              <p className="mt-4 text-base font-semibold text-gold">Price on Request</p>
+              <a
+                href={`${WHATSAPP_LINK}?text=${encodeURIComponent("Hi, I have a custom request for: " + product.title)}`}
+                className="mt-4 inline-flex w-full items-center justify-center gap-2 rounded-xl bg-[#25D366] py-3 text-xs font-bold uppercase tracking-widest text-white transition hover:opacity-90"
+              >
+                <MessageCircle className="h-4 w-4" /> Send a Custom Request
+              </a>
+            </div>
+
             {/* Features */}
             <div className="mt-8 grid grid-cols-3 gap-3 border-t border-border pt-8">
               {[
@@ -239,6 +258,24 @@ function ProductPage() {
               </a>
             </div>
           </div>
+        </div>
+
+        {/* Ready to Order CTA */}
+        <div className="mt-16 rounded-3xl border border-border bg-card px-8 py-12 text-center">
+          <p className="mb-3 text-[10px] font-semibold uppercase tracking-[0.35em] text-gold">— Ready to Order?</p>
+          <h2 className="mx-auto max-w-xl text-3xl tracking-tight text-ink md:text-4xl" style={{ fontFamily: "var(--font-display)" }}>
+            Request your luxury item with <span className="italic text-burgundy">private WhatsApp support.</span>
+          </h2>
+          <p className="mx-auto mt-4 max-w-md text-sm text-muted-foreground">
+            We accept orders exclusively via WhatsApp for the most personal, white-glove service.
+          </p>
+          <a
+            href={`${WHATSAPP_LINK}?text=${encodeURIComponent("Hi, I'd like to order: " + product.title)}`}
+            className="mt-8 inline-flex items-center gap-2 px-10 py-4 text-xs font-semibold uppercase tracking-[0.25em] text-cream shadow-xl transition hover:-translate-y-0.5"
+            style={{ background: "var(--gradient-luxe)" }}
+          >
+            <MessageCircle className="h-4 w-4" /> Chat on WhatsApp
+          </a>
         </div>
 
         {/* Reviews */}

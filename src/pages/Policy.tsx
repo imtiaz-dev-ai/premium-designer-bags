@@ -1,5 +1,6 @@
 import { MessageCircle, Truck, RotateCcw, ShieldCheck, Clock, MapPin } from "lucide-react";
 import { Link } from "react-router-dom";
+import { useEffect } from "react";
 import SiteHeader from "@/components/SiteHeader";
 
 const WHATSAPP_LINK = "https://wa.me/393515439347";
@@ -47,6 +48,20 @@ const SECTIONS = [
 ];
 
 export default function PolicyPage() {
+  useEffect(() => {
+    document.title = "Return & Refund Policy — Premium Designer Bags";
+    const setMeta = (name: string, content: string, prop = false) => {
+      const attr = prop ? "property" : "name";
+      let el = document.querySelector(`meta[${attr}="${name}"]`) as HTMLMetaElement;
+      if (!el) { el = document.createElement("meta"); el.setAttribute(attr, name); document.head.appendChild(el); }
+      el.content = content;
+    };
+    setMeta("description", "Read our return, refund, and shipping policies. 14-day returns and worldwide delivery from Italy & Dubai.");
+    setMeta("keywords", "designer bags return policy, luxury fashion refund, shipping policy Italy Dubai, 14 day returns");
+    setMeta("og:title", "Return & Refund Policy — Premium Designer Bags", true);
+    setMeta("og:description", "14-day returns, worldwide delivery from Italy & Dubai. Transparent policies for luxury orders.", true);
+    setMeta("og:url", "https://premiumdesignerbags.com/policy", true);
+  }, []);
   return (
     <div className="min-h-screen bg-background text-foreground" style={{ fontFamily: "var(--font-sans)" }}>
       <SiteHeader />

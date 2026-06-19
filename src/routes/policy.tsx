@@ -7,6 +7,12 @@ export const Route = createFileRoute("/policy")({
     meta: [
       { title: "Return & Refund Policy — Premium Designer Bags" },
       { name: "description", content: "Read our return, refund, and shipping policies. We offer 14-day returns and worldwide delivery from Italy & Dubai." },
+      { name: "keywords", content: "designer bags return policy, luxury fashion refund policy, shipping policy Italy Dubai, 14 day returns designer bags, worldwide shipping luxury" },
+      { property: "og:title", content: "Return & Refund Policy — Premium Designer Bags" },
+      { property: "og:description", content: "14-day returns, worldwide delivery from Italy & Dubai. Transparent policies for luxury fashion orders." },
+      { property: "og:url", content: "https://premiumdesignerbags.com/policy" },
+      { property: "og:image", content: "https://premiumdesignerbags.com/og-image.jpg" },
+      { rel: "canonical", href: "https://premiumdesignerbags.com/policy" } as never,
     ],
   }),
   component: PolicyPage,

@@ -8,6 +8,22 @@ import { getSettings } from "@/lib/store";
 import logoImg from "@/assets/Logo.png";
 
 export const Route = createFileRoute("/brand/$brand")({
+  head: ({ params }) => {
+    const slug = decodeURIComponent(params.brand);
+    const brand = slug.replace(/-/g, " ").replace(/\b\w/g, (c) => c.toUpperCase());
+    return {
+      meta: [
+        { title: `${brand} — Luxury Designer Collection | Premium Designer Bags` },
+        { name: "description", content: `Shop authentic ${brand} bags, shoes, jewelry and accessories sourced from Italy & Dubai. Real photos, WhatsApp ordering, worldwide delivery.` },
+        { name: "keywords", content: `${brand} bags, ${brand} handbags, buy ${brand} online, authentic ${brand} Italy Dubai, ${brand} luxury fashion` },
+        { property: "og:title", content: `${brand} Collection — Premium Designer Bags` },
+        { property: "og:description", content: `Authentic ${brand} luxury fashion sourced from Italy & Dubai. WhatsApp ordering, worldwide delivery.` },
+        { property: "og:url", content: `https://premiumdesignerbags.com/brand/${slug}` },
+        { property: "og:image", content: "https://premiumdesignerbags.com/og-image.jpg" },
+        { rel: "canonical", href: `https://premiumdesignerbags.com/brand/${slug}` } as never,
+      ],
+    };
+  },
   component: BrandPage,
 });
 

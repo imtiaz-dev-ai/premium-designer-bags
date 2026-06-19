@@ -7,6 +7,22 @@ import { supabase } from "@/lib/supabase";
 import logoImg from "@/assets/Logo.png";
 
 export const Route = createFileRoute("/categories/$category")({
+  head: ({ params }) => {
+    const slug = decodeURIComponent(params.category);
+    const title = slug.charAt(0).toUpperCase() + slug.slice(1);
+    return {
+      meta: [
+        { title: `${title} — Luxury Designer ${title} | Premium Designer Bags` },
+        { name: "description", content: `Shop authentic luxury designer ${slug} from Louis Vuitton, Chanel, Hermès, Dior, Gucci and more. Sourced from Italy & Dubai. WhatsApp ordering, worldwide delivery.` },
+        { name: "keywords", content: `luxury designer ${slug}, buy designer ${slug} online, ${slug} Italy Dubai, authentic ${slug} worldwide shipping` },
+        { property: "og:title", content: `${title} — Luxury Designer ${title} | Premium Designer Bags` },
+        { property: "og:description", content: `Authentic luxury designer ${slug} from Italy & Dubai. WhatsApp ordering, worldwide delivery.` },
+        { property: "og:url", content: `https://premiumdesignerbags.com/categories/${slug}` },
+        { property: "og:image", content: "https://premiumdesignerbags.com/og-image.jpg" },
+        { rel: "canonical", href: `https://premiumdesignerbags.com/categories/${slug}` } as never,
+      ],
+    };
+  },
   component: CategoryPage,
 });
 

@@ -27,11 +27,13 @@ export const Route = createFileRoute("/")({
     meta: [
       { title: "Premium Designer Bags — Luxury Louis Vuitton, Chanel, Hermès from Italy & Dubai" },
       { name: "description", content: "Shop authentic luxury designer bags, shoes, jewelry and accessories. Louis Vuitton, Chanel, Hermès, Dior sourced from Italy & Dubai. WhatsApp ordering, worldwide delivery." },
+      { name: "keywords", content: "luxury designer bags, buy designer bags online, Louis Vuitton bags, Chanel bags, Hermès Birkin, Dior bags, Gucci bags, luxury handbags Italy, designer fashion Dubai, worldwide designer delivery" },
       { name: "robots", content: "index, follow" },
       { property: "og:title", content: "Premium Designer Bags — Luxury Fashion from Italy & Dubai" },
       { property: "og:description", content: "Authentic luxury bags, shoes, jewelry from Italy & Dubai. WhatsApp ordering, worldwide delivery." },
       { property: "og:url", content: "https://premiumdesignerbags.com" },
       { property: "og:image", content: "https://premiumdesignerbags.com/og-image.jpg" },
+      { rel: "canonical", href: "https://premiumdesignerbags.com" } as never,
     ],
   }),
   component: Index,
@@ -71,6 +73,7 @@ function Index() {
 
       <ValueProps />
       <Reviews />
+      <CustomRequestSection wa={settings.whatsappLink} />
       <CTASection wa={settings.whatsapp} waLink={settings.whatsappLink} />
       <Footer settings={settings} activeBrands={dbBrands} />
     </div>
@@ -506,6 +509,32 @@ function ValueProps() {
   );
 }
 
+function CustomRequestSection({ wa }: { wa: string }) {
+  return (
+    <section className="border-b border-border bg-[#111]">
+      <div className="mx-auto max-w-7xl px-4 py-20">
+        <div className="mx-auto max-w-xl">
+          <div className="mb-4 flex items-center gap-2">
+            <Star className="h-5 w-5 fill-gold text-gold" />
+            <span className="text-[10px] font-bold uppercase tracking-[0.3em] text-gold">Don't see yours?</span>
+          </div>
+          <h2 className="text-4xl tracking-tight text-white md:text-5xl" style={{ fontFamily: "var(--font-display)" }}>Custom Request</h2>
+          <p className="mt-4 text-base leading-relaxed text-white/60">
+            Looking for a specific colour, size, or hardware? We source on request from our Italy and Dubai network. Tell us what you're after — we'll find it.
+          </p>
+          <p className="mt-6 text-xl font-semibold text-gold">Price on Request</p>
+          <a
+            href={wa}
+            className="mt-6 inline-flex items-center gap-2 rounded-xl bg-[#25D366] px-8 py-4 text-xs font-bold uppercase tracking-widest text-white transition hover:opacity-90"
+          >
+            <MessageCircle className="h-4 w-4" /> Send a Custom Request
+          </a>
+        </div>
+      </div>
+    </section>
+  );
+}
+
 function CTASection({ wa, waLink }: { wa: string; waLink: string }) {
   return (
     <section id="contact" className="border-b border-border bg-card">
@@ -521,7 +550,8 @@ function CTASection({ wa, waLink }: { wa: string; waLink: string }) {
           <MessageCircle className="h-4 w-4" /> Chat on WhatsApp — {wa}
         </a>
         <p className="mt-10 text-[10px] font-semibold uppercase tracking-[0.3em] text-muted-foreground">Accepted Payments</p>
-        <div className="mx-auto mt-4 grid max-w-4xl gap-6 lg:grid-cols-2">
+
+        <div className="mx-auto mt-8 grid max-w-4xl gap-6 lg:grid-cols-2">
           {PAYMENT_METHODS.map((m) => (
             <div key={m.name} className="rounded-3xl border border-border bg-background p-6 text-center shadow-sm transition hover:border-gold hover:shadow-lg">
               <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-2xl bg-gold/10 text-burgundy">{m.icon}</div>

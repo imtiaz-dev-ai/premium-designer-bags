@@ -8,6 +8,12 @@ export const Route = createFileRoute("/about")({
     meta: [
       { title: "About Us — Premium Designer Bags" },
       { name: "description", content: "Learn about Premium Designer Bags — luxury fashion sourced from Italy & Dubai with real photos, worldwide delivery, and WhatsApp support." },
+      { name: "keywords", content: "about premium designer bags, luxury fashion sourcing Italy Dubai, authentic designer handbags, WhatsApp luxury shopping, designer bags worldwide delivery" },
+      { property: "og:title", content: "About Us — Premium Designer Bags" },
+      { property: "og:description", content: "Luxury fashion sourced from Italy & Dubai with real photos, worldwide delivery, and WhatsApp support." },
+      { property: "og:url", content: "https://premiumdesignerbags.com/about" },
+      { property: "og:image", content: "https://premiumdesignerbags.com/og-image.jpg" },
+      { rel: "canonical", href: "https://premiumdesignerbags.com/about" } as never,
     ],
   }),
   component: AboutPage,

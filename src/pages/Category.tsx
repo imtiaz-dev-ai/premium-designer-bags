@@ -18,6 +18,20 @@ export default function CategoryPage() {
   const [allBrands, setAllBrands] = useState<string[]>(CATEGORY_BRANDS[slug] ?? BRANDS.slice(0, 10));
 
   useEffect(() => {
+    const setMeta = (name: string, content: string, prop = false) => {
+      const attr = prop ? "property" : "name";
+      let el = document.querySelector(`meta[${attr}="${name}"]`) as HTMLMetaElement;
+      if (!el) { el = document.createElement("meta"); el.setAttribute(attr, name); document.head.appendChild(el); }
+      el.content = content;
+    };
+    if (page) {
+      document.title = `${page.title} — Luxury Designer ${page.title} | Premium Designer Bags`;
+      setMeta("description", `Shop authentic luxury designer ${slug} from Louis Vuitton, Chanel, Hermès, Dior, Gucci and more. Sourced from Italy & Dubai. WhatsApp ordering, worldwide delivery.`);
+      setMeta("keywords", `luxury designer ${slug}, buy designer ${slug} online, ${slug} Italy Dubai, authentic ${slug} worldwide shipping`);
+      setMeta("og:title", `${page.title} — Luxury Designer ${page.title} | Premium Designer Bags`, true);
+      setMeta("og:description", `Authentic luxury designer ${slug} from Italy & Dubai. WhatsApp ordering, worldwide delivery.`, true);
+      setMeta("og:url", `https://premiumdesignerbags.com/categories/${slug}`, true);
+    }
     // Merge: hardcoded + localStorage admin brands + Supabase product tags
     const localCatBrands: Record<string, string[]> = (() => {
       try { return JSON.parse(localStorage.getItem("admin_category_brands") ?? "{}"); } catch { return {}; }

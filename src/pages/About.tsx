@@ -1,11 +1,26 @@
 import { MapPin, MessageCircle, ShieldCheck, Truck, Star, Sparkles } from "lucide-react";
 import { Link } from "react-router-dom";
+import { useEffect } from "react";
 import heroModel from "@/assets/hero-model.jpg";
 import SiteHeader from "@/components/SiteHeader";
 
 const WHATSAPP_LINK = "https://wa.me/393515439347";
 
 export default function AboutPage() {
+  useEffect(() => {
+    document.title = "About Us — Premium Designer Bags";
+    const setMeta = (name: string, content: string, prop = false) => {
+      const attr = prop ? "property" : "name";
+      let el = document.querySelector(`meta[${attr}="${name}"]`) as HTMLMetaElement;
+      if (!el) { el = document.createElement("meta"); el.setAttribute(attr, name); document.head.appendChild(el); }
+      el.content = content;
+    };
+    setMeta("description", "Learn about Premium Designer Bags — luxury fashion sourced from Italy & Dubai with real photos, worldwide delivery, and WhatsApp support.");
+    setMeta("keywords", "about premium designer bags, luxury fashion sourcing Italy Dubai, authentic designer handbags, WhatsApp luxury shopping");
+    setMeta("og:title", "About Us — Premium Designer Bags", true);
+    setMeta("og:description", "Luxury fashion sourced from Italy & Dubai with real photos, worldwide delivery, and WhatsApp support.", true);
+    setMeta("og:url", "https://premiumdesignerbags.com/about", true);
+  }, []);
   return (
     <div className="min-h-screen bg-background text-foreground" style={{ fontFamily: "var(--font-sans)" }}>
       <SiteHeader />
