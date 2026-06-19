@@ -28,6 +28,8 @@ export default function BrandPage() {
       setMeta("og:description", `Authentic ${brand} luxury fashion from Italy & Dubai. WhatsApp ordering, worldwide delivery.`, true);
       setMeta("og:url", `https://premiumdesignerbags.com/brand/${brandSlug}`, true);
     }
+  }, [brand, brandSlug]);
+
   useEffect(() => {
     getProducts().then(setProducts);
   }, [brandSlug]);

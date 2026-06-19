@@ -68,7 +68,7 @@ export default function HomePage() {
   const [shoes, setShoes] = useState<Product[]>([]);
 
   useEffect(() => {
-    document.title = "Premium Designer Bags — Luxury Louis Vuitton, Chanel, Hermès from Italy & Dubai";
+    document.title = "Premium Designer Bags — Luxury Handbags, Shoes & Accessories from Italy & Dubai";
     const setMeta = (name: string, content: string, prop = false) => {
       const attr = prop ? "property" : "name";
       let el = document.querySelector(`meta[${attr}="${name}"]`) as HTMLMetaElement;
@@ -104,6 +104,7 @@ export default function HomePage() {
       <CustomRequestSection wa={settings.whatsappLink} />
       <FAQ />
       <CTASection wa={settings.whatsapp} waLink={settings.whatsappLink} />
+      <SeoContent />
       <Footer settings={settings} activeBrands={activeBrands} />
     </div>
   );
@@ -491,6 +492,42 @@ function CTASection({ wa, waLink }: { wa: string; waLink: string }) {
             </div>
           ))}
         </div>
+      </div>
+    </section>
+  );
+}
+
+function SeoContent() {
+  return (
+    <section className="border-t border-border bg-background">
+      <div className="mx-auto max-w-4xl px-4 py-14 text-sm leading-relaxed text-muted-foreground">
+        <p className="mb-4">
+          Welcome to <strong className="text-ink">Premium Designer Bags</strong> — your ultimate destination for premium designer bags, luxury handbags, shoes, and accessories. We specialize in offering high-quality, stylish, and authentic luxury fashion designed to elevate your personal style.
+        </p>
+        <p className="mb-4">
+          Our curated collection includes <strong className="text-ink">designer shoulder bags, crossbody bags, shoes, jewelry, watches, scarves, belts, sunglasses, and women's fashion accessories</strong> that suit every occasion. Whether you are looking for something elegant for formal events or a timeless piece for everyday use, we have the perfect selection for you.
+        </p>
+        <h2 className="mb-3 mt-6 text-base font-semibold uppercase tracking-widest text-ink">Why Choose Us?</h2>
+        <p className="mb-4">
+          We are committed to delivering excellence in both product quality and customer experience. Every piece in our collection is carefully sourced to ensure <strong className="text-ink">premium quality, durability, and modern design</strong>. Each product reflects sophistication and luxury, making it ideal for fashion-conscious individuals worldwide.
+        </p>
+        <ul className="mb-4 space-y-1 pl-4 list-disc">
+          <li>100% quality assurance on every order</li>
+          <li>Trendy and timeless luxury designs</li>
+          <li>Real photo confirmation before every shipment</li>
+          <li>Customer satisfaction guaranteed</li>
+        </ul>
+        <h2 className="mb-3 mt-6 text-base font-semibold uppercase tracking-widest text-ink">Worldwide Shipping & Delivery</h2>
+        <p className="mb-4">
+          We offer <strong className="text-ink">worldwide shipping</strong> from Italy and Dubai, ensuring customers from every region can enjoy our premium collection. Our delivery process is fast, secure, and fully tracked — with a tracking number provided after every dispatch.
+        </p>
+        <h2 className="mb-3 mt-6 text-base font-semibold uppercase tracking-widest text-ink">Authenticity & Quality</h2>
+        <p className="mb-4">
+          All our products are sourced with a focus on <strong className="text-ink">quality craftsmanship and premium materials</strong>, hand-selected from trusted suppliers in Italy and Dubai. We send real photos of your item before shipping so you can verify quality yourself — no guesswork, no surprises.
+        </p>
+        <p className="mt-6">
+          Upgrade your style with our exclusive collection and experience the perfect blend of <strong className="text-ink">fashion, quality, and authentic luxury</strong> — all available via personal WhatsApp ordering.
+        </p>
       </div>
     </section>
   );
