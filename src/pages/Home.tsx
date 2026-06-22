@@ -63,6 +63,7 @@ function utf8Base64Encode(value: string) {
 export default function HomePage() {
   const settings = getSettings();
   const wa = settings.whatsappLink || defaultSettings.whatsappLink;
+  const waNumber = settings.whatsapp || defaultSettings.whatsapp;
   const activeBrands = getSiteBrands() ?? BRANDS;
   const [bestsellers, setBestsellers] = useState<Product[]>([]);
   const [shoes, setShoes] = useState<Product[]>([]);

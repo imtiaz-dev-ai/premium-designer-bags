@@ -11,6 +11,7 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as ReceiptRouteImport } from './routes/receipt'
 import { Route as PolicyRouteImport } from './routes/policy'
+import { Route as LandingRouteImport } from './routes/landing'
 import { Route as CheckoutRouteImport } from './routes/checkout'
 import { Route as CartRouteImport } from './routes/cart'
 import { Route as AboutRouteImport } from './routes/about'
@@ -22,6 +23,11 @@ import { Route as CategoriesCategoryRouteImport } from './routes/categories/$cat
 import { Route as BrandBrandRouteImport } from './routes/brand/$brand'
 import { Route as AdminLoginRouteImport } from './routes/admin/login'
 
+const LandingRoute = LandingRouteImport.update({
+  id: '/landing',
+  path: '/landing',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ReceiptRoute = ReceiptRouteImport.update({
   id: '/receipt',
   path: '/receipt',
@@ -88,6 +94,7 @@ export interface FileRoutesByFullPath {
   '/about': typeof AboutRoute
   '/cart': typeof CartRoute
   '/checkout': typeof CheckoutRoute
+  '/landing': typeof LandingRoute
   '/policy': typeof PolicyRoute
   '/receipt': typeof ReceiptRoute
   '/admin/login': typeof AdminLoginRoute
@@ -102,6 +109,7 @@ export interface FileRoutesByTo {
   '/about': typeof AboutRoute
   '/cart': typeof CartRoute
   '/checkout': typeof CheckoutRoute
+  '/landing': typeof LandingRoute
   '/policy': typeof PolicyRoute
   '/receipt': typeof ReceiptRoute
   '/admin/login': typeof AdminLoginRoute
@@ -117,6 +125,7 @@ export interface FileRoutesById {
   '/about': typeof AboutRoute
   '/cart': typeof CartRoute
   '/checkout': typeof CheckoutRoute
+  '/landing': typeof LandingRoute
   '/policy': typeof PolicyRoute
   '/receipt': typeof ReceiptRoute
   '/admin/login': typeof AdminLoginRoute
@@ -133,6 +142,7 @@ export interface FileRouteTypes {
     | '/about'
     | '/cart'
     | '/checkout'
+    | '/landing'
     | '/policy'
     | '/receipt'
     | '/admin/login'
@@ -147,6 +157,7 @@ export interface FileRouteTypes {
     | '/about'
     | '/cart'
     | '/checkout'
+    | '/landing'
     | '/policy'
     | '/receipt'
     | '/admin/login'
@@ -161,6 +172,7 @@ export interface FileRouteTypes {
     | '/about'
     | '/cart'
     | '/checkout'
+    | '/landing'
     | '/policy'
     | '/receipt'
     | '/admin/login'
@@ -176,6 +188,7 @@ export interface RootRouteChildren {
   AboutRoute: typeof AboutRoute
   CartRoute: typeof CartRoute
   CheckoutRoute: typeof CheckoutRoute
+  LandingRoute: typeof LandingRoute
   PolicyRoute: typeof PolicyRoute
   ReceiptRoute: typeof ReceiptRoute
   AdminLoginRoute: typeof AdminLoginRoute
@@ -230,6 +243,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/landing': {
+      id: '/landing'
+      path: '/landing'
+      fullPath: '/landing'
+      preLoaderRoute: typeof LandingRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/categories/': {
       id: '/categories/'
       path: '/categories'
@@ -280,6 +300,7 @@ const rootRouteChildren: RootRouteChildren = {
   AboutRoute: AboutRoute,
   CartRoute: CartRoute,
   CheckoutRoute: CheckoutRoute,
+  LandingRoute: LandingRoute,
   PolicyRoute: PolicyRoute,
   ReceiptRoute: ReceiptRoute,
   AdminLoginRoute: AdminLoginRoute,
